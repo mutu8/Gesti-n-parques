@@ -13,3 +13,5 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\ob
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\bin\Debug\CapaEntidad.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\bin\Debug\CapaEntidad.pdb
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\obj\Debug\CapaDatos.csproj.Up2Date
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\bin\Debug\Newtonsoft.Json.xml

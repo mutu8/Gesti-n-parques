@@ -9,3 +9,5 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaLogica\b
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaLogica\bin\Debug\CapaDatos.pdb
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaLogica\bin\Debug\CapaEntidad.pdb
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaLogica\obj\Debug\CapaLogica.csproj.Up2Date
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaLogica\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaLogica\bin\Debug\Newtonsoft.Json.xml

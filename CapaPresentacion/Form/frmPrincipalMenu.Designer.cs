@@ -151,14 +151,15 @@
             // btnSettings
             // 
             this.btnSettings.BackColor = System.Drawing.Color.Transparent;
+            this.btnSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btnSettings.BorderColor = System.Drawing.Color.Transparent;
             this.btnSettings.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSettings.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnSettings.Icon = ((System.Drawing.Image)(resources.GetObject("btnSettings.Icon")));
+            this.btnSettings.Icon = global::CapaPresentacion.Properties.Resources.mapas_y_banderass;
             this.btnSettings.Location = new System.Drawing.Point(0, 0);
-            this.btnSettings.Menu = "Settings";
+            this.btnSettings.Menu = "Puntos";
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(95, 73);
+            this.btnSettings.Size = new System.Drawing.Size(95, 91);
             this.btnSettings.TabIndex = 1;
             this.btnSettings.menuClick += new System.EventHandler(this.btnSettings_menuClick);
             // 

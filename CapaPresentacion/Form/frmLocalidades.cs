@@ -8,14 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CapaLogica;
+using CapaPresentación;
+using CapaPresentación.Formularios;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace CapaPresentacion.ClasesForm
+namespace CapaPresentacion
 {
     public partial class frmLocalidades : Form
     {
-
+        private bool frmMapaAbierto = false;
+        private frmMapa frmMapaInstancia;
         public frmLocalidades()
         {
             InitializeComponent();
@@ -24,7 +28,7 @@ namespace CapaPresentacion.ClasesForm
             //materiaMaterialSkinManager.Instance.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey900, Accent.Cyan700, TextShade.WHITE);
         }
 
-        private void CargarLocalidades(ComboBox cbo)
+        private void CargarLocalidades(System.Windows.Forms.ComboBox cbo)
         {
             try
             {
@@ -66,5 +70,34 @@ namespace CapaPresentacion.ClasesForm
             }
         }
 
+        private void btnMapa_MouseClick(object sender, MouseEventArgs e)
+        {
+            // Verificar si el formulario secundario ya está abierto
+            if (!frmMapaAbierto)
+            {
+                // Si no está abierto, crear una instancia y mostrar el formulario secundario
+                frmMapaInstancia = new frmMapa();
+
+                // Centrar el formulario en la pantalla antes de mostrarlo
+                frmMapaInstancia.StartPosition = FormStartPosition.CenterScreen;
+
+                // Actualizar la bandera cuando el formulario se cierre
+                frmMapaInstancia.FormClosed += (s, args) => frmMapaAbierto = false;
+
+                // Mostrar el formulario secundario
+                frmMapaInstancia.Show();
+                frmMapaAbierto = true; // Actualizar la bandera
+            }
+            else
+            {
+                // Si ya está abierto, enfocar el formulario secundario
+                frmMapaInstancia.Focus();
+            }
+        }
+
+        private void txtBusqueda_Click(object sender, EventArgs e)
+        {
+            txtBusqueda.Text = ""; // Borra el contenido del TextBox cuando se hace clic en él
+        }
     }
 }

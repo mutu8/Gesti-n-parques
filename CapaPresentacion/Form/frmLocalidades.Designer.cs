@@ -1,4 +1,4 @@
-﻿namespace CapaPresentacion.ClasesForm
+﻿namespace CapaPresentacion
 {
     partial class frmLocalidades
     {
@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panelCarta = new System.Windows.Forms.Panel();
+            this.btnMapa = new System.Windows.Forms.Button();
             this.txtDetalle = new System.Windows.Forms.RichTextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.cboLocalidad = new System.Windows.Forms.ComboBox();
@@ -43,6 +44,7 @@
             // panelCarta
             // 
             this.panelCarta.BackColor = System.Drawing.Color.Transparent;
+            this.panelCarta.Controls.Add(this.btnMapa);
             this.panelCarta.Controls.Add(this.txtDetalle);
             this.panelCarta.Controls.Add(this.textBox1);
             this.panelCarta.Controls.Add(this.cboLocalidad);
@@ -56,6 +58,20 @@
             this.panelCarta.Name = "panelCarta";
             this.panelCarta.Size = new System.Drawing.Size(1255, 770);
             this.panelCarta.TabIndex = 2;
+            // 
+            // btnMapa
+            // 
+            this.btnMapa.BackColor = System.Drawing.SystemColors.Control;
+            this.btnMapa.BackgroundImage = global::CapaPresentacion.Properties.Resources.icons8_marcador_de_mapa_90;
+            this.btnMapa.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnMapa.FlatAppearance.BorderSize = 0;
+            this.btnMapa.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnMapa.Location = new System.Drawing.Point(438, 75);
+            this.btnMapa.Name = "btnMapa";
+            this.btnMapa.Size = new System.Drawing.Size(28, 28);
+            this.btnMapa.TabIndex = 32;
+            this.btnMapa.UseVisualStyleBackColor = false;
+            this.btnMapa.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnMapa_MouseClick);
             // 
             // txtDetalle
             // 
@@ -88,14 +104,15 @@
             // materialFloatingActionButton1
             // 
             this.materialFloatingActionButton1.Depth = 0;
-            this.materialFloatingActionButton1.Icon = global::CapaPresentacion.Properties.Resources.Plus;
+            this.materialFloatingActionButton1.ForeColor = System.Drawing.Color.Transparent;
+            this.materialFloatingActionButton1.Icon = global::CapaPresentacion.Properties.Resources.plus_pequeno;
             this.materialFloatingActionButton1.Location = new System.Drawing.Point(1041, 58);
             this.materialFloatingActionButton1.Mini = true;
             this.materialFloatingActionButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFloatingActionButton1.Name = "materialFloatingActionButton1";
             this.materialFloatingActionButton1.Size = new System.Drawing.Size(41, 40);
             this.materialFloatingActionButton1.TabIndex = 28;
-            this.materialFloatingActionButton1.Text = "materialFloatingActionButton1";
+            this.materialFloatingActionButton1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.materialFloatingActionButton1.UseVisualStyleBackColor = true;
             // 
             // btnBusqueda
@@ -142,14 +159,14 @@
             this.txtBusqueda.TabIndex = 25;
             this.txtBusqueda.Text = "Búsqueda";
             // 
-            // cartaForm
+            // frmLocalidades
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1255, 770);
             this.Controls.Add(this.panelCarta);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "cartaForm";
+            this.Name = "frmLocalidades";
             this.Text = "cartaForm";
             this.panelCarta.ResumeLayout(false);
             this.panelCarta.PerformLayout();
@@ -168,5 +185,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TextBox txtBusqueda;
+        private System.Windows.Forms.Button btnMapa;
     }
 }

@@ -73,6 +73,16 @@ namespace CapaPresentacion.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_marcador_de_mapa_90 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-marcador-de-mapa-90", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Lupa {
             get {
                 object obj = ResourceManager.GetObject("Lupa", resourceCulture);
@@ -83,9 +93,29 @@ namespace CapaPresentacion.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Plus {
+        internal static System.Drawing.Bitmap mapas_y_banderas {
             get {
-                object obj = ResourceManager.GetObject("Plus", resourceCulture);
+                object obj = ResourceManager.GetObject("mapas_y_banderas", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mapas_y_banderass {
+            get {
+                object obj = ResourceManager.GetObject("mapas-y-banderass", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap plus_pequeno {
+            get {
+                object obj = ResourceManager.GetObject("plus_pequeno", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

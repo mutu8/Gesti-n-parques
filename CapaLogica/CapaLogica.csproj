@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="logConexion.cs" />
+    <Compile Include="logConversion.cs" />
     <Compile Include="logLocalidades.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
