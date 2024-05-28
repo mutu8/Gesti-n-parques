@@ -16,6 +16,7 @@ using CapaLogica;
 using System.IO;
 using System.Net;
 using CapaPresentacion;
+using static CapaLogica.FormUtil;
 
 namespace CapaPresentacion
 {
@@ -27,22 +28,15 @@ namespace CapaPresentacion
 
         List<ucMenu> menuButtons;
         MaterialSkinManager materialSkinManager;
-
         private string connectionString = logConexion.Instancia.ObtenerConexion();
         public Home()   
         {
             InitializeComponent();
-            menuButtons = new List<ucMenu>() {btnHome, btnSettings};
+            menuButtons = new List<ucMenu>() {btnHome, btnPuntos, btnVisitas};
             ClickMenu(menuButtons);
-
-            // URL de la imagen
-            string urlImagen = "https://i.ibb.co/dBg6mHz/441300407-122145797360131780-6025702174811646983-n.jpg";
-
-            // Llamar a la función para cargar la imagen en el PictureBox
-            // CargarImagenDesdeUrl(urlImagen, pictureBox1);
         }
 
-        public void LoadForm(Form form)
+        public void LoadFormPanel(Form form)
         {
             // Eliminar todos los controles existentes en el panelCentral
             this.panelCentral.Controls.Clear();
@@ -72,10 +66,30 @@ namespace CapaPresentacion
             switch (_menuButton.Name)
             {
                 case "btnHome":
-                    activeMenu(btnHome, btnSettings);
+
+                    activeMenu(btnHome, btnPuntos);
+                    activeMenu(btnHome, btnVisitas);
+                    // Ocultar los controles necesarios y cargar el formulario secundario
+                    OcultarControles(panelCentral);
                     break;
-                case "btnSettings":
-                    activeMenu(btnSettings, btnHome);
+
+                case "btnPuntos":
+                    
+                    activeMenu(btnPuntos, btnHome);
+                    activeMenu(btnPuntos, btnVisitas);
+                    // Crear una instancia del formulario secundario que deseas cargar
+                    frmLocalidades f = new frmLocalidades();
+
+                    // Ocultar los controles necesarios
+                    OcultarControles(panelCentral);
+                    //Cargar el formulario secundario
+                    LoadFormPanel(f);
+                    MostrarControles(panelCentral);
+                    break;
+
+                case "btnVisitas":
+                    activeMenu(btnVisitas, btnHome);
+                    activeMenu(btnVisitas, btnPuntos);
                     break;
             }
         }
@@ -191,24 +205,9 @@ namespace CapaPresentacion
             return false;
         }
 
-        private void btnSettings_menuClick(object sender, EventArgs e)
+        private void btnPuntos_Load(object sender, EventArgs e)
         {
-            // Crear una instancia del formulario secundario que deseas cargar
-            frmLocalidades f = new frmLocalidades();
 
-            // Ocultar los controles necesarios
-            OcultarControles(panelCentral);
-            //Cargar el formulario secundario
-            LoadForm(f);
-            MostrarControles(panelCentral);
         }
-
-        private void btnHome_menuClick(object sender, EventArgs e)
-        {
-            // Ocultar los controles necesarios y cargar el formulario secundario
-            OcultarControles(panelCentral);
-        }
-
-  
     }
 }

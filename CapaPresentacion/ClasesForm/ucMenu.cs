@@ -14,6 +14,7 @@ namespace CapaPresentacion.ClasesForm
     public partial class ucMenu : UserControl
     {
 
+
         string menuTitle = "";
         Image icon;
         Color _borderColor = Color.Transparent;
@@ -63,16 +64,17 @@ namespace CapaPresentacion.ClasesForm
             InitializeComponent();
         }
 
+        private void menu_Click_1(object sender, EventArgs e)
+        {
+            menuClick?.Invoke(this, e);
+
+        }
+
         private void menu_Paint(object sender, PaintEventArgs e)
         {
             menu.Text = menuTitle;
             menu.Image = icon;
             borderPanel.BackColor = _borderColor;
-        }
-
-        private void menu_Click_1(object sender, EventArgs e)
-        {
-            menuClick?.Invoke(this, e);
         }
     }
 }

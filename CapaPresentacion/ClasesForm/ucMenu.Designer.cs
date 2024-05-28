@@ -35,7 +35,7 @@
             // 
             // borderPanel
             // 
-            this.borderPanel.BackColor = System.Drawing.Color.White;
+            this.borderPanel.BackColor = System.Drawing.Color.Gray;
             this.borderPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.borderPanel.Location = new System.Drawing.Point(0, 0);
             this.borderPanel.Name = "borderPanel";

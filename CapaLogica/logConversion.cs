@@ -27,10 +27,10 @@ namespace CapaLogica
             return await _datConversion.ObtenerDireccion(lat, lng);
         }
 
-        public async Task<Tuple<double, double>> ConvertirDireccionALatitudLongitud(string direccion)
+        public Task<Tuple<double, double>> ConvertirDireccionALatitudLongitud(string direccion)
         {
-            return await _datConversion.ConvertirDireccionALatitudLongitud(direccion);
+            return _datConversion.ConvertirDireccionALatitudLongitud(direccion);
         }
-    }
 
+    }
 }

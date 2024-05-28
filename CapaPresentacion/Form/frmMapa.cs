@@ -15,6 +15,8 @@ using CapaPresentacion;
 using CapaLogica;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using CapaEntidad;
+using static DevExpress.Utils.Drawing.Helpers.NativeMethods;
 
 namespace CapaPresentación.Formularios
 {
@@ -24,14 +26,41 @@ namespace CapaPresentación.Formularios
         GMapOverlay markerOverlay;
         private readonly logConversion _logConversion;
 
-        double LatInicial = -8.103034453133846;
-        double LngInicial = -79.01766201952019;
+        private double _latInicial = -8.103034453133846;
+        private double _lngInicial = -79.01766201952019;
 
+        public double LatInicial
+        {
+            get { return _latInicial; }
+            set { _latInicial = value; }
+        }
+
+        public double LngInicial
+        {
+            get { return _lngInicial; }
+            set { _lngInicial = value; }
+        }
+
+        public string textoBoton { get; set; }
+        public string Nombre_Localidad { get; set; }
+        public string Descripcion { get; set; }
+        public string Direccion { get; set; }
+        public string Referencias { get; set; }
+        public string Urbanizacion { get; set; }
+        public string Jiron { get; set; }
+        public string Manzana { get; set; }
+        public decimal Latitud { get; set; }
+        public decimal Longitud { get; set; }
+        public string ImageUrl { get; set; }
+ 
         public frmMapa()
         {
             InitializeComponent();
             this.MaximizeBox = false; // Desactivar el botón de maximizar
-            _logConversion = logConversion.Instancia; // Instancia del logConversion
+
+            // Inicializar _logConversion
+            _logConversion = logConversion.Instancia;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -43,7 +72,7 @@ namespace CapaPresentación.Formularios
             gMapControl1.Position = new PointLatLng(LatInicial, LngInicial);
             gMapControl1.MinZoom = 0;
             gMapControl1.MaxZoom = 24;
-            gMapControl1.Zoom = 9;
+            gMapControl1.Zoom = 20;
             gMapControl1.AutoScroll = true;
 
             // Marcador
@@ -57,21 +86,19 @@ namespace CapaPresentación.Formularios
 
             // Ahora agregamos el mapa y el marcador al control map
             gMapControl1.Overlays.Add(markerOverlay);
-        }
 
-        private async Task<string> ObtenerYMostrarDireccion(double latitud, double longitud)
-        {
-            try
-            {
-                string direccion = await _logConversion.ObtenerDireccion(latitud, longitud); // Llamada a ObtenerDireccion de logConversion
-                Console.WriteLine(direccion); // Solo para depuración, puedes quitarlo
-                return direccion;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al obtener la dirección: " + ex.Message);
-                return null;
-            }
+            btnAgregar.Text = textoBoton;
+
+            // Mostrar los valores pasados
+            txtNombre.Text = Nombre_Localidad;
+            txtDescripcion.Text = Descripcion;
+            txtDireccion.Text = Direccion;
+            txtReferencia.Text = Referencias;
+            txtUrbanizacion.Text = Urbanizacion;
+            txtJiron.Text = Jiron;
+            txtManzana.Text = Manzana;
+            txtlatitud.Text = Latitud.ToString();
+            txtlongitud.Text = Longitud.ToString();
         }
 
         private async void gMapControl1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -85,7 +112,8 @@ namespace CapaPresentación.Formularios
             txtlongitud.Text = longitud.ToString();
 
             // Se obtiene la dirección y se muestra en el marcador
-            string direccion = await ObtenerYMostrarDireccion(latitud, longitud);
+            //string direccion = await ObtenerYMostrarDireccion(latitud, longitud);
+            //txtDireccion.Text = direccion;
 
             // Se crea el marcador para moverlo al lugar indicado por el usuario
             marker.Position = new PointLatLng(latitud, longitud);
@@ -122,6 +150,7 @@ namespace CapaPresentación.Formularios
         {
             try
             {
+                txtBusqueda.Text = "";
                 var coordenadas = await _logConversion.ConvertirDireccionALatitudLongitud(cad); // Llamada a ConvertirDireccionALatitudLongitud de logConversion
 
                 if (coordenadas != null)
@@ -138,7 +167,14 @@ namespace CapaPresentación.Formularios
                     // Se posicionan en los TextBox de latitud y longitud
                     txtlatitud.Text = latitud.ToString();
                     txtlongitud.Text = longitud.ToString();
-                    txtDescripcion.Text = desc;
+                    txtDireccion.Text = desc;
+
+                    // Mover el marcador al nuevo lugar y actualizar el mapa
+                    marker.Position = new GMap.NET.PointLatLng(latitud, longitud);
+                    marker.ToolTipText = string.Format("Ubicación:\nLatitud:{0}\nLongitud:{1}", latitud, longitud);
+
+                    // Centrar el mapa en la nueva posición del marcador
+                    gMapControl1.Position = new GMap.NET.PointLatLng(latitud, longitud);
                 }
                 else
                 {
@@ -151,12 +187,104 @@ namespace CapaPresentación.Formularios
             }
         }
 
-        private void btnBuscar_Click(object sender, EventArgs e)
+
+        private void btnBusqueda_MouseClick(object sender, MouseEventArgs e)
         {
             string direccion = txtBusqueda.Text; // Obtener la dirección del TextBox
             _ = buscarLLAsync(direccion);
         }
 
+        private void LimpiarTextBoxes()
+        {
+            foreach (Control control in Controls)
+            {
+                if (control is TextBox)
+                {
+                    ((TextBox)control).Clear();
+                }
+            }
+        }
 
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            // Obtener los valores de los controles antes de abrir el formulario de imagen
+            string nombre = txtNombre.Text;
+            string descripcion = txtDescripcion.Text;
+            string direccion = txtDireccion.Text;
+            string referencia = txtReferencia.Text;
+            string urbanizacion = txtUrbanizacion.Text;
+            string jiron = txtJiron.Text;
+            string manzana = txtManzana.Text;
+            decimal latitud = Convert.ToDecimal(txtlatitud.Text);
+            decimal longitud = Convert.ToDecimal(txtlongitud.Text);
+            
+            // La acción específica para el botón "Agregar" se realizará dentro del case correspondiente
+                
+            switch (btnAgregar.Text)   
+            {
+                    case "Agregar":
+
+                        frmImagen f = new frmImagen();
+                        f.Show();
+
+                        // Manejar el evento FormClosing para obtener el URL de la imagen y luego insertar los detalles
+                        f.FormClosing += (senderForm, eFormClosing) =>
+                        {
+                            // Cuando el formulario se está cerrando, obtén el URL de la imagen
+                            string url = f.ImageUrl;
+
+                            // Insertar los detalles de localidades y localidades utilizando los valores almacenados previamente
+                            logLocalidades.Instancia.InsertarDetallesLocalidadesYLocalidades(
+                                nombre,
+                                descripcion,
+                                direccion,
+                                referencia,
+                                urbanizacion,
+                                jiron,
+                                manzana,
+                                latitud,
+                                longitud,
+                                url);
+
+                            MessageBox.Show("Agregado correctamente!!");
+                            LimpiarTextBoxes();
+                        };
+
+                        break;
+             }
+            
+        }
+
+        private void materialFloatingActionButton1_Click(object sender, EventArgs e)
+        {
+            // Intentar abrir el formulario frmMapa usando la función general
+            FormUtil.TryOpenForm(() =>
+            {
+                var frmMapa = new frmMapa();
+                frmMapa.textoBoton = "Agregar";
+                frmMapa.StartPosition = FormStartPosition.CenterScreen;
+                return frmMapa;
+            });
+
+            // Capturar la imagen del control de mapa
+            Image imagenMapa = gMapControl1.ToImage();
+
+            // Mostrar un diálogo de guardado de archivos
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "Archivos de imagen (*.png)|*.png|Todos los archivos (*.*)|*.*";
+            saveDialog.Title = "Guardar imagen del mapa";
+            saveDialog.FileName = "mapa_capturado";
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                // Guardar la imagen en la ubicación seleccionada por el usuario
+                imagenMapa.Save(saveDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+            }
+        }
+
+        private void gMapControl1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

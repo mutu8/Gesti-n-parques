@@ -37,7 +37,9 @@
             this.panelCentral = new System.Windows.Forms.Panel();
             this.BarraIzquierda = new CapaPresentacion.ClasesForm.Gradient_SidebarPanel();
             this.panelOpciones = new System.Windows.Forms.Panel();
-            this.btnSettings = new CapaPresentacion.ClasesForm.ucMenu();
+            this.btnVisitas = new CapaPresentacion.ClasesForm.ucMenu();
+            this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
+            this.btnPuntos = new CapaPresentacion.ClasesForm.ucMenu();
             this.panelBS = new System.Windows.Forms.Panel();
             this.btnHome = new CapaPresentacion.ClasesForm.ucMenu();
             this.panelBI = new System.Windows.Forms.Panel();
@@ -141,27 +143,55 @@
             // panelOpciones
             // 
             this.panelOpciones.BackColor = System.Drawing.Color.Transparent;
-            this.panelOpciones.Controls.Add(this.btnSettings);
+            this.panelOpciones.Controls.Add(this.btnVisitas);
+            this.panelOpciones.Controls.Add(this.materialDivider1);
+            this.panelOpciones.Controls.Add(this.btnPuntos);
             this.panelOpciones.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelOpciones.Location = new System.Drawing.Point(0, 200);
             this.panelOpciones.Name = "panelOpciones";
             this.panelOpciones.Size = new System.Drawing.Size(95, 398);
             this.panelOpciones.TabIndex = 10;
             // 
-            // btnSettings
+            // btnVisitas
             // 
-            this.btnSettings.BackColor = System.Drawing.Color.Transparent;
-            this.btnSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnSettings.BorderColor = System.Drawing.Color.Transparent;
-            this.btnSettings.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSettings.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnSettings.Icon = global::CapaPresentacion.Properties.Resources.mapas_y_banderass;
-            this.btnSettings.Location = new System.Drawing.Point(0, 0);
-            this.btnSettings.Menu = "Puntos";
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(95, 91);
-            this.btnSettings.TabIndex = 1;
-            this.btnSettings.menuClick += new System.EventHandler(this.btnSettings_menuClick);
+            this.btnVisitas.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.btnVisitas.BackColor = System.Drawing.Color.Transparent;
+            this.btnVisitas.BorderColor = System.Drawing.Color.Transparent;
+            this.btnVisitas.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnVisitas.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnVisitas.Icon = global::CapaPresentacion.Properties.Resources.visitor__1_;
+            this.btnVisitas.Location = new System.Drawing.Point(0, 107);
+            this.btnVisitas.Menu = "Visitas";
+            this.btnVisitas.Name = "btnVisitas";
+            this.btnVisitas.Size = new System.Drawing.Size(95, 95);
+            this.btnVisitas.TabIndex = 2;
+            // 
+            // materialDivider1
+            // 
+            this.materialDivider1.BackColor = System.Drawing.Color.Transparent;
+            this.materialDivider1.Depth = 0;
+            this.materialDivider1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialDivider1.Location = new System.Drawing.Point(0, 90);
+            this.materialDivider1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialDivider1.Name = "materialDivider1";
+            this.materialDivider1.Size = new System.Drawing.Size(95, 17);
+            this.materialDivider1.TabIndex = 0;
+            this.materialDivider1.Text = "materialDivider1";
+            // 
+            // btnPuntos
+            // 
+            this.btnPuntos.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.btnPuntos.BackColor = System.Drawing.Color.Transparent;
+            this.btnPuntos.BorderColor = System.Drawing.Color.Transparent;
+            this.btnPuntos.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPuntos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnPuntos.Icon = global::CapaPresentacion.Properties.Resources.mapas_y_banderass;
+            this.btnPuntos.Location = new System.Drawing.Point(0, 0);
+            this.btnPuntos.Menu = "Puntos";
+            this.btnPuntos.Name = "btnPuntos";
+            this.btnPuntos.Size = new System.Drawing.Size(95, 90);
+            this.btnPuntos.TabIndex = 0;
+            this.btnPuntos.Load += new System.EventHandler(this.btnPuntos_Load);
             // 
             // panelBS
             // 
@@ -175,6 +205,7 @@
             // 
             // btnHome
             // 
+            this.btnHome.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.btnHome.BackColor = System.Drawing.Color.Transparent;
             this.btnHome.BorderColor = System.Drawing.Color.Transparent;
             this.btnHome.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -185,7 +216,6 @@
             this.btnHome.Name = "btnHome";
             this.btnHome.Size = new System.Drawing.Size(95, 73);
             this.btnHome.TabIndex = 0;
-            this.btnHome.menuClick += new System.EventHandler(this.btnHome_menuClick);
             // 
             // panelBI
             // 
@@ -225,7 +255,7 @@
 
         #endregion
         private ClasesForm.Gradient_SidebarPanel BarraIzquierda;
-        private ClasesForm.ucMenu btnSettings;
+        private ClasesForm.ucMenu btnPuntos;
         private System.Windows.Forms.Panel panelBS;
         private System.Windows.Forms.Panel panelBI;
         private System.Windows.Forms.Panel panelOpciones;
@@ -236,5 +266,7 @@
         private System.Windows.Forms.Panel BarraControl;
         private System.Windows.Forms.Panel panelCentral;
         private ClasesForm.ucMenu btnHome;
+        private ClasesForm.ucMenu btnVisitas;
+        private MaterialSkin.Controls.MaterialDivider materialDivider1;
     }
 }
