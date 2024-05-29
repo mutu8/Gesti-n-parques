@@ -101,8 +101,7 @@ namespace CapaPresentacion
                     frmMapa.Direccion = row["Direccion"] != DBNull.Value ? row["Direccion"].ToString() : string.Empty;
                     frmMapa.Referencias = row["Referencias"] != DBNull.Value ? row["Referencias"].ToString() : string.Empty;
                     frmMapa.Urbanizacion = row["Urbanizacion"] != DBNull.Value ? row["Urbanizacion"].ToString() : string.Empty;
-                    frmMapa.Jiron = row["Jiron"] != DBNull.Value ? row["Jiron"].ToString() : string.Empty;
-                    frmMapa.Manzana = row["Manzana"] != DBNull.Value ? row["Manzana"].ToString() : string.Empty;
+                    frmMapa.Sector = row["Sector"] != DBNull.Value ? row["Sector"].ToString() : string.Empty;
                     frmMapa.Latitud = row["Latitud"] != DBNull.Value ? Convert.ToDecimal(row["Latitud"]) : 0;
                     frmMapa.Longitud = row["Longitud"] != DBNull.Value ? Convert.ToDecimal(row["Longitud"]) : 0;
                     frmMapa.ImageUrl = row["url_Localidad"] != DBNull.Value ? row["url_Localidad"].ToString() : string.Empty;
@@ -147,6 +146,19 @@ namespace CapaPresentacion
                     MessageBox.Show("No se encontraron detalles para la localidad especificada.");
                 }
 
+                // Asignar el evento FormClosing
+                frmImagenInstancia.FormClosing += (senderForm, eFormClosing) =>
+                {
+                    // Cuando el formulario se está cerrando, obtener el URL de la imagen actualizado
+                    string urlActualizado = frmImagenInstancia.ImageUrl;
+
+                    // Obtener los IDs de detalle de localidad y de localidad
+                    (int idLocalidad, int idDetalleLocalidad) = logLocalidades.Instancia.ObtenerId(txtNombre.Text, txtDireccion.Text);
+
+                    // Actualizar la URL de la imagen en la base de datos
+                    logLocalidades.Instancia.ActualizarUrlImagen(idDetalleLocalidad, idLocalidad, urlActualizado);
+                };
+
                 frmImagenInstancia.StartPosition = FormStartPosition.CenterScreen;
                 return frmImagenInstancia;
             }))
@@ -155,6 +167,7 @@ namespace CapaPresentacion
                 frmImagenAbierto = true;
             }
         }
+
 
         private void materialFloatingActionButton3_Click(object sender, EventArgs e)
         {

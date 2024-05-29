@@ -47,8 +47,7 @@ namespace CapaPresentación.Formularios
         public string Direccion { get; set; }
         public string Referencias { get; set; }
         public string Urbanizacion { get; set; }
-        public string Jiron { get; set; }
-        public string Manzana { get; set; }
+        public string Sector { get; set; }
         public decimal Latitud { get; set; }
         public decimal Longitud { get; set; }
         public string ImageUrl { get; set; }
@@ -60,8 +59,32 @@ namespace CapaPresentación.Formularios
 
             // Inicializar _logConversion
             _logConversion = logConversion.Instancia;
-
+            CargarComboBoxUrbanizaciones();
+            CargarComboBoxSectores();
         }
+
+        private void CargarComboBoxUrbanizaciones()
+        {
+            List<string> urbanizaciones = logLocalidades.Instancia.ObtenerUrbanizaciones();
+
+            cboUrb.Items.Clear();
+            foreach (string urbanizacion in urbanizaciones)
+            {
+                cboUrb.Items.Add(urbanizacion);
+            }
+        }
+
+        private void CargarComboBoxSectores()
+        {
+            List<string> sectores = logLocalidades.Instancia.ObtenerSectores();
+
+            cboSector.Items.Clear();
+            foreach (string sector in sectores)
+            {
+                cboSector.Items.Add(sector);
+            }
+        }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -94,9 +117,8 @@ namespace CapaPresentación.Formularios
             txtDescripcion.Text = Descripcion;
             txtDireccion.Text = Direccion;
             txtReferencia.Text = Referencias;
-            txtUrbanizacion.Text = Urbanizacion;
-            txtJiron.Text = Jiron;
-            txtManzana.Text = Manzana;
+            cboUrb.SelectedItem = Urbanizacion;
+            cboSector.SelectedItem = Sector;
             txtlatitud.Text = Latitud.ToString();
             txtlongitud.Text = Longitud.ToString();
         }
@@ -204,7 +226,32 @@ namespace CapaPresentación.Formularios
                 }
             }
         }
+        // Método para insertar detalles de localidades y localidades
+        void InsertarDetallesConImagen(string nombre, string descripcion, string referencia, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud, string urlImagen)
+        {
+            // Validar que los campos obligatorios no estén vacíos
+            if (!string.IsNullOrEmpty(nombre) && !string.IsNullOrEmpty(direccion) && sector != null)
+            {
+                // Insertar detalles solo si los campos obligatorios tienen valor
+                logLocalidades.Instancia.InsertarDetallesLocalidadesYLocalidades(
+                    nombre,
+                    descripcion,
+                    referencia,
+                    urbanizacion,
+                    sector,
+                    direccion,
+                    latitud,
+                    longitud,
+                    urlImagen);
 
+                MessageBox.Show("Agregado correctamente!!");
+                LimpiarTextBoxes();
+            }
+            else
+            {
+                MessageBox.Show("Por favor, complete todos los campos obligatorios.");
+            }
+        }
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             // Obtener los valores de los controles antes de abrir el formulario de imagen
@@ -212,9 +259,8 @@ namespace CapaPresentación.Formularios
             string descripcion = txtDescripcion.Text;
             string direccion = txtDireccion.Text;
             string referencia = txtReferencia.Text;
-            string urbanizacion = txtUrbanizacion.Text;
-            string jiron = txtJiron.Text;
-            string manzana = txtManzana.Text;
+            string urbanizacion = cboUrb.Text;
+            string sector = cboSector.Text;
             decimal latitud = Convert.ToDecimal(txtlatitud.Text);
             decimal longitud = Convert.ToDecimal(txtlongitud.Text);
             
@@ -222,8 +268,14 @@ namespace CapaPresentación.Formularios
                 
             switch (btnAgregar.Text)   
             {
-                    case "Agregar":
+                case "Agregar":
 
+                    // Preguntar al usuario si quiere agregar una imagen
+                    DialogResult result = MessageBox.Show("¿Desea agregar una imagen?", "Agregar Imagen", MessageBoxButtons.YesNo);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        // Si el usuario quiere agregar una imagen, abrir el formulario de imagen
                         frmImagen f = new frmImagen();
                         f.Show();
 
@@ -233,26 +285,40 @@ namespace CapaPresentación.Formularios
                             // Cuando el formulario se está cerrando, obtén el URL de la imagen
                             string url = f.ImageUrl;
 
-                            // Insertar los detalles de localidades y localidades utilizando los valores almacenados previamente
-                            logLocalidades.Instancia.InsertarDetallesLocalidadesYLocalidades(
-                                nombre,
-                                descripcion,
-                                direccion,
-                                referencia,
-                                urbanizacion,
-                                jiron,
-                                manzana,
-                                latitud,
-                                longitud,
-                                url);
-
-                            MessageBox.Show("Agregado correctamente!!");
-                            LimpiarTextBoxes();
+                            // Insertar detalles con el URL de la imagen obtenido
+                            InsertarDetallesConImagen(nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, url);
                         };
+                    }
+                    else if (result == DialogResult.No)
+                    {
+                        // Si el usuario no quiere agregar una imagen, insertar los detalles sin abrir el formulario de imagen
+                        InsertarDetallesConImagen(nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, null); // Pasar null como URL de imagen
+                    }
 
-                        break;
-             }
-            
+                    break;
+
+
+                case "Guardar":
+                    try
+                    {
+                        // Obtener el ID de la localidad y el ID del detalle de localidad
+                        (int idLocalidad, int idDetalleLocalidad) = logLocalidades.Instancia.ObtenerId(nombre, direccion);
+
+                        // Actualizar los detalles de localidades en la base de datos
+                        logLocalidades.Instancia.ActualizarDetallesLocalidades(idDetalleLocalidad, nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud);
+
+                        MessageBox.Show("ACTUALIZADO CORRECTAMENTE!!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al actualizar: " + ex.Message);
+                    }
+                    break;
+
+
+
+            }
+
         }
 
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)

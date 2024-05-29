@@ -83,29 +83,50 @@ namespace CapaPresentacion
         {
             try
             {
-                // Sube la nueva imagen con el mismo nombre de archivo
+                // Verificar si la ruta de la imagen está vacía
+                if (string.IsNullOrEmpty(imagePath))
+                {
+                    // Si la URL de la imagen no está vacía, eliminar la imagen de Cloudinary
+                    if (!string.IsNullOrEmpty(ImageUrl))
+                    {
+                        DeleteImageByUrl(ImageUrl);
+                    }
+
+                    // Asignar una cadena vacía a ImageUrl y mostrar un mensaje
+                    ImageUrl = "";
+                    MessageBox.Show("Guardado completado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    return; // Salir del método
+                }
+
+
+                // Subir la nueva imagen a Cloudinary
                 var uploadParams = new ImageUploadParams()
                 {
                     File = new FileDescription(imagePath)
                 };
 
+                // Intentar subir la imagen a Cloudinary
                 var uploadResult = cloudinary.Upload(uploadParams);
 
                 if (uploadResult.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    // Actualizar la URL de la imagen con la URL segura de Cloudinary
                     ImageUrl = uploadResult.SecureUrl.ToString();
-                    MessageBox.Show("Image uploaded successfully. URL: " + uploadResult.SecureUrl, "Upload Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Imagen subida exitosamente. URL: " + uploadResult.SecureUrl, "Subida Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("Image upload failed. Status code: " + uploadResult.StatusCode, "Upload Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Error al subir la imagen. Código de estado: " + uploadResult.StatusCode, "Error al subir", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+                
         }
+
 
 
         public void DeleteImageByUrl(string imageUrl)
@@ -172,15 +193,9 @@ namespace CapaPresentacion
 
         private void btnGrabar_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(imagePath))
-            {
-                uploadImage(imagePath);
-            }
-            else
-            {
-                MessageBox.Show("No se ha seleccionado ninguna imagen.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            uploadImage(imagePath);
         }
+
         private void EliminarImagenPictureBox()
         {
             if (ImgCli.Image != null)
@@ -191,7 +206,7 @@ namespace CapaPresentacion
                 // Restablece la ruta de la imagen a vacía después de eliminarla
                 imagePath = string.Empty;
 
-                MessageBox.Show("Imagen eliminada del formulario.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Imagen eliminada.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -228,9 +243,5 @@ namespace CapaPresentacion
             DeleteImageByUrl(ImageUrl);
         }
 
-        private void frmImagen_FormClosed(object sender, FormClosedEventArgs e)
-        {
-
-        }
     }
 }

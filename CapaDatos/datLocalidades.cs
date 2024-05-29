@@ -18,6 +18,69 @@ namespace CapaDatos
         {
             get { return datLocalidades._instancia; }
         }
+        public List<string> CargarUrbanizaciones()
+        {
+            List<string> urbanizaciones = new List<string>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT Nombre_Urbanizacion FROM Urbanizaciones";
+                SqlCommand command = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        string nombreUrbanizacion = reader["Nombre_Urbanizacion"].ToString();
+                        urbanizaciones.Add(nombreUrbanizacion);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al cargar urbanizaciones: " + ex.Message);
+                }
+            }
+
+            return urbanizaciones;
+        }
+
+        public List<string> CargarSectores()
+        {
+            List<string> sectores = new List<string>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT Nombre_Sector FROM Sectores";
+
+                try
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(query, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        string nombreSector = reader["Nombre_Sector"].ToString();
+                        sectores.Add(nombreSector);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al cargar sectores: " + ex.Message);
+                }
+            }
+
+            return sectores;
+        }
+
+
+
+
         #endregion
         // Método estático para obtener las localidades desde la base de datos
         public static DataTable ObtenerLocalidades()
@@ -61,31 +124,6 @@ namespace CapaDatos
             return dtLocalidades;
         }
 
-
-        public static DataTable ObtenerDetallesLocalidadPorNombre(string nombreLocalidad)
-        {
-            DataTable dtDetallesLocalidad = new DataTable();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = "SELECT Detalles_Localidades.* " +
-                               "FROM Localidades " +
-                               "INNER JOIN Detalles_Localidades " +
-                               "ON Localidades.ID_Detalle_Localidad = Detalles_Localidades.ID_Detalle_Localidad " +
-                               "WHERE Localidades.Nombre_Localidad = @NombreLocalidad";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@NombreLocalidad", nombreLocalidad);
-
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    dtDetallesLocalidad.Load(reader);
-                }
-            }
-
-            return dtDetallesLocalidad;
-        }
         public static DataTable ObtenerDetallesLocalidadPorNombreYDireccion(string nombreLocalidad, string direccion)
         {
             DataTable dtDetallesLocalidad = new DataTable();
@@ -93,24 +131,23 @@ namespace CapaDatos
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"
-                    SELECT 
-                    d.Descripcion,
-                    d.Direccion,
-                    d.Referencias,
-                    d.Urbanizacion,
-                    d.Jiron,
-                    d.Manzana,
-                    d.Latitud,
-                    d.Longitud,
-                    d.url_Localidad
-                FROM 
-                    Localidades l
-                INNER JOIN 
-                    Detalles_Localidades d ON l.ID_Detalle_Localidad = d.ID_Detalle_Localidad
-                WHERE 
-                    l.Nombre_Localidad = @NombreLocalidad 
-                    AND d.Direccion = @Direccion
-                    ";
+            SELECT 
+                d.Descripcion,
+                d.Direccion,
+                d.Referencias,
+                d.Urbanizacion,
+                d.Sector, -- Cambio de Jiron a Sector
+                d.Latitud,
+                d.Longitud,
+                d.url_Localidad
+            FROM 
+                Localidades l
+            INNER JOIN 
+                Detalles_Localidades d ON l.ID_Detalle_Localidad = d.ID_Detalle_Localidad
+            WHERE 
+                l.Nombre_Localidad = @NombreLocalidad 
+                AND d.Direccion = @Direccion
+        ";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -125,37 +162,38 @@ namespace CapaDatos
 
             return dtDetallesLocalidad;
         }
-        // Método para insertar detalles de localidades y devolver el ID generado
-        public static int InsertarDetallesLocalidades(string descripcion, string referencias, string urbanizacion, string manzana, string jiron, string direccion, decimal latitud, decimal longitud, string url)
+
+        public static int InsertarDetallesLocalidades(string descripcion, string referencias, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud, string url = null)
         {
-            int newId = -1; // Inicializar con -1
+            int newId = -1;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"
-            INSERT INTO Detalles_Localidades (Descripcion, Referencias, Urbanizacion, Manzana, Jiron, Direccion, Latitud, Longitud, url_Localidad)
-            VALUES (@Descripcion, @Referencias, @Urbanizacion, @Manzana, @Jiron, @Direccion, @Latitud, @Longitud, @Url);
-            SELECT SCOPE_IDENTITY();"; // Obtener el ID autogenerado
+                INSERT INTO Detalles_Localidades (Descripcion, Referencias, Urbanizacion, Sector, Direccion, Latitud, Longitud, url_Localidad)
+                VALUES (@Descripcion, @Referencias, @Urbanizacion, @Sector, @Direccion, @Latitud, @Longitud, @Url);
+                SELECT SCOPE_IDENTITY();";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Descripcion", descripcion);
                     command.Parameters.AddWithValue("@Referencias", referencias);
                     command.Parameters.AddWithValue("@Urbanizacion", urbanizacion);
-                    command.Parameters.AddWithValue("@Manzana", manzana);
-                    command.Parameters.AddWithValue("@Jiron", jiron);
+                    command.Parameters.AddWithValue("@Sector", sector);
                     command.Parameters.AddWithValue("@Direccion", direccion);
                     command.Parameters.AddWithValue("@Latitud", latitud);
                     command.Parameters.AddWithValue("@Longitud", longitud);
-                    command.Parameters.AddWithValue("@Url", url);
+                    command.Parameters.AddWithValue("@Url", (object)url ?? DBNull.Value);
 
                     connection.Open();
+                    // Utilizamos SCOPE_IDENTITY() para obtener el ID generado automáticamente
                     newId = Convert.ToInt32(command.ExecuteScalar());
                 }
             }
 
             return newId;
         }
+
 
         public static void InsertarLocalidad(string nombreLocalidad, int idDetalleLocalidad)
         {
@@ -258,6 +296,72 @@ namespace CapaDatos
                 }
             }
         }
+        public static void ActualizarDetallesLocalidades(int idDetalleLocalidad, string nombreLocalidad, string descripcion, string referencias, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+        UPDATE Detalles_Localidades 
+        SET Descripcion = @Descripcion, Referencias = @Referencias, Urbanizacion = @Urbanizacion, 
+            Sector = @Sector, Direccion = @Direccion, Latitud = @Latitud, Longitud = @Longitud
+        WHERE ID_Detalle_Localidad = @IdDetalleLocalidad";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Descripcion", descripcion);
+                    command.Parameters.AddWithValue("@Referencias", referencias);
+                    command.Parameters.AddWithValue("@Urbanizacion", urbanizacion);
+                    command.Parameters.AddWithValue("@Sector", sector);
+                    command.Parameters.AddWithValue("@Direccion", direccion);
+                    command.Parameters.AddWithValue("@Latitud", latitud);
+                    command.Parameters.AddWithValue("@Longitud", longitud);
+                    command.Parameters.AddWithValue("@IdDetalleLocalidad", idDetalleLocalidad);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+
+                // Actualizar el nombre en la tabla Localidades
+                string queryNombre = @"
+        UPDATE Localidades 
+        SET Nombre_Localidad = @NombreLocalidad
+        WHERE ID_Detalle_Localidad = @IdDetalleLocalidad";
+
+                using (SqlCommand commandNombre = new SqlCommand(queryNombre, connection))
+                {
+                    commandNombre.Parameters.AddWithValue("@NombreLocalidad", nombreLocalidad);
+                    commandNombre.Parameters.AddWithValue("@IdDetalleLocalidad", idDetalleLocalidad);
+
+                    commandNombre.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void ActualizarUrlImagen(int idDetalleLocalidad, int idLocalidad, string url)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+                UPDATE Detalles_Localidades 
+                SET url_Localidad = @Url
+                WHERE ID_Detalle_Localidad = @IdDetalleLocalidad;
+
+                UPDATE Localidades
+                SET ID_Detalle_Localidad = @IdDetalleLocalidad
+                WHERE ID_Localidad = @IdLocalidad";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Url", (object)url ?? DBNull.Value); // Pasar DBNull.Value si el url es null
+                    command.Parameters.AddWithValue("@IdDetalleLocalidad", idDetalleLocalidad);
+                    command.Parameters.AddWithValue("@IdLocalidad", idLocalidad);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
 
 
     }

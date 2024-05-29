@@ -16,16 +16,18 @@ namespace CapaLogica
         {
             get { return logLocalidades._instancia; }
         }
-        public DataTable ObtenerLocalidades()
+        public List<string> ObtenerUrbanizaciones()
         {
-            return datLocalidades.ObtenerLocalidades();
+            // Utiliza la instancia de datLocalidades para cargar las urbanizaciones
+            return datLocalidades.Instancia.CargarUrbanizaciones();
         }
 
-        // Nuevo método para obtener detalles de una localidad por su nombre
-        public DataTable ObtenerDetallesLocalidadPorNombre(string nombreLocalidad)
+        public List<string> ObtenerSectores()
         {
-            return datLocalidades.ObtenerDetallesLocalidadPorNombre(nombreLocalidad);
+            // Utiliza la instancia de datLocalidades para cargar las sectores
+            return datLocalidades.Instancia.CargarSectores();
         }
+
         public DataTable ObtenerLocalidadesParaPanel()
         {
             return datLocalidades.ObtenerLocalidadesConDetalles();
@@ -35,10 +37,10 @@ namespace CapaLogica
             return datLocalidades.ObtenerDetallesLocalidadPorNombreYDireccion(nombreLocalidad, direccion);
         }
         // Nuevo método para insertar una localidad con sus detalles
-        public void InsertarDetallesLocalidadesYLocalidades(string nombreLocalidad, string descripcion, string referencias, string urbanizacion, string manzana, string jiron, string direccion, decimal latitud, decimal longitud, string url)
+        public void InsertarDetallesLocalidadesYLocalidades(string nombreLocalidad, string descripcion, string referencias, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud, string url)
         {
             // Insertar detalles de localidades y obtener el ID generado
-            int idDetalleLocalidad = datLocalidades.InsertarDetallesLocalidades(descripcion, referencias, urbanizacion, manzana, jiron, direccion, latitud, longitud, url);
+            int idDetalleLocalidad = datLocalidades.InsertarDetallesLocalidades(descripcion, referencias, urbanizacion, sector, direccion, latitud, longitud, url); ;
 
             // Insertar una nueva entrada en la tabla Localidades
             datLocalidades.InsertarLocalidad(nombreLocalidad, idDetalleLocalidad);
@@ -55,7 +57,24 @@ namespace CapaLogica
         {
             datLocalidades.Instancia.EliminarLocalidadYDetalle(idLocalidad, idDetalleLocalidad);
         }
+        public void ActualizarDetallesLocalidades(int idDetalleLocalidad, string nombreLocalidad, string descripcion, string referencias, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud)
+        {
+            // Llama al método en la capa de datos para actualizar los detalles de localidades
+            datLocalidades.ActualizarDetallesLocalidades(idDetalleLocalidad, nombreLocalidad, descripcion, referencias, urbanizacion, sector, direccion, latitud, longitud);
+        }
 
+        public void ActualizarUrlImagen(int idDetalleLocalidad, int idLocalidad, string url)
+        {
+            try
+            {
+                // Llama al método en la capa de datos para actualizar la URL de la imagen y el ID de detalle de localidad
+                datLocalidades.ActualizarUrlImagen(idDetalleLocalidad, idLocalidad, url);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar URL de imagen: " + ex.Message);
+            }
+        }
 
     }
 }

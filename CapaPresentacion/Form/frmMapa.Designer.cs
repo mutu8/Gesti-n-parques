@@ -49,17 +49,15 @@
             this.label5 = new System.Windows.Forms.Label();
             this.txtReferencia = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.txtUrbanizacion = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtManzana = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.txtJiron = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtDireccion = new System.Windows.Forms.TextBox();
             this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.btnBusqueda = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
+            this.cboUrb = new System.Windows.Forms.ComboBox();
+            this.cboSector = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackZoom)).BeginInit();
             this.SuspendLayout();
             // 
@@ -101,7 +99,7 @@
             // txtlatitud
             // 
             this.txtlatitud.Enabled = false;
-            this.txtlatitud.Location = new System.Drawing.Point(582, 363);
+            this.txtlatitud.Location = new System.Drawing.Point(582, 330);
             this.txtlatitud.Name = "txtlatitud";
             this.txtlatitud.Size = new System.Drawing.Size(241, 20);
             this.txtlatitud.TabIndex = 4;
@@ -109,7 +107,7 @@
             // txtlongitud
             // 
             this.txtlongitud.Enabled = false;
-            this.txtlongitud.Location = new System.Drawing.Point(582, 402);
+            this.txtlongitud.Location = new System.Drawing.Point(582, 369);
             this.txtlongitud.Name = "txtlongitud";
             this.txtlongitud.Size = new System.Drawing.Size(241, 20);
             this.txtlongitud.TabIndex = 5;
@@ -128,7 +126,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Location = new System.Drawing.Point(579, 347);
+            this.label2.Location = new System.Drawing.Point(579, 314);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(39, 13);
             this.label2.TabIndex = 7;
@@ -138,7 +136,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Location = new System.Drawing.Point(579, 386);
+            this.label3.Location = new System.Drawing.Point(579, 353);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(48, 13);
             this.label3.TabIndex = 8;
@@ -209,7 +207,7 @@
             // 
             // txtBusqueda
             // 
-            this.txtBusqueda.Location = new System.Drawing.Point(582, 449);
+            this.txtBusqueda.Location = new System.Drawing.Point(585, 463);
             this.txtBusqueda.Name = "txtBusqueda";
             this.txtBusqueda.Size = new System.Drawing.Size(208, 20);
             this.txtBusqueda.TabIndex = 18;
@@ -218,7 +216,7 @@
             // 
             this.lblBusqueda.AutoSize = true;
             this.lblBusqueda.BackColor = System.Drawing.Color.Transparent;
-            this.lblBusqueda.Location = new System.Drawing.Point(579, 433);
+            this.lblBusqueda.Location = new System.Drawing.Point(582, 447);
             this.lblBusqueda.Name = "lblBusqueda";
             this.lblBusqueda.Size = new System.Drawing.Size(55, 13);
             this.lblBusqueda.TabIndex = 19;
@@ -228,7 +226,7 @@
             // 
             this.btnAgregar.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.btnAgregar.ForeColor = System.Drawing.Color.White;
-            this.btnAgregar.Location = new System.Drawing.Point(693, 475);
+            this.btnAgregar.Location = new System.Drawing.Point(684, 498);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(67, 29);
             this.btnAgregar.TabIndex = 20;
@@ -263,46 +261,15 @@
             this.label6.TabIndex = 32;
             this.label6.Text = "Urbanización";
             // 
-            // txtUrbanizacion
-            // 
-            this.txtUrbanizacion.Location = new System.Drawing.Point(582, 243);
-            this.txtUrbanizacion.Name = "txtUrbanizacion";
-            this.txtUrbanizacion.Size = new System.Drawing.Size(241, 20);
-            this.txtUrbanizacion.TabIndex = 31;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.Transparent;
-            this.label7.Location = new System.Drawing.Point(579, 308);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(51, 13);
-            this.label7.TabIndex = 34;
-            this.label7.Text = "Manzana";
-            // 
-            // txtManzana
-            // 
-            this.txtManzana.Location = new System.Drawing.Point(582, 324);
-            this.txtManzana.Name = "txtManzana";
-            this.txtManzana.Size = new System.Drawing.Size(241, 20);
-            this.txtManzana.TabIndex = 33;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Location = new System.Drawing.Point(582, 269);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(29, 13);
+            this.label8.Size = new System.Drawing.Size(38, 13);
             this.label8.TabIndex = 36;
-            this.label8.Text = "Jirón";
-            // 
-            // txtJiron
-            // 
-            this.txtJiron.Location = new System.Drawing.Point(582, 285);
-            this.txtJiron.Name = "txtJiron";
-            this.txtJiron.Size = new System.Drawing.Size(241, 20);
-            this.txtJiron.TabIndex = 35;
+            this.label8.Text = "Sector";
             // 
             // label9
             // 
@@ -342,7 +309,7 @@
             this.btnBusqueda.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnBusqueda.FlatAppearance.BorderSize = 0;
             this.btnBusqueda.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBusqueda.Location = new System.Drawing.Point(799, 446);
+            this.btnBusqueda.Location = new System.Drawing.Point(802, 460);
             this.btnBusqueda.Name = "btnBusqueda";
             this.btnBusqueda.Size = new System.Drawing.Size(24, 23);
             this.btnBusqueda.TabIndex = 28;
@@ -366,23 +333,39 @@
             this.txtNombre.Size = new System.Drawing.Size(241, 20);
             this.txtNombre.TabIndex = 40;
             // 
+            // cboUrb
+            // 
+            this.cboUrb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboUrb.FormattingEnabled = true;
+            this.cboUrb.Location = new System.Drawing.Point(582, 243);
+            this.cboUrb.Name = "cboUrb";
+            this.cboUrb.Size = new System.Drawing.Size(238, 21);
+            this.cboUrb.TabIndex = 42;
+            // 
+            // cboSector
+            // 
+            this.cboSector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSector.FormattingEnabled = true;
+            this.cboSector.Location = new System.Drawing.Point(582, 285);
+            this.cboSector.Name = "cboSector";
+            this.cboSector.Size = new System.Drawing.Size(238, 21);
+            this.cboSector.TabIndex = 43;
+            // 
             // frmMapa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(842, 544);
+            this.Controls.Add(this.cboSector);
+            this.Controls.Add(this.cboUrb);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.materialFloatingActionButton1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.txtDireccion);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.txtJiron);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.txtManzana);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.txtUrbanizacion);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtReferencia);
             this.Controls.Add(this.btnBusqueda);
@@ -434,16 +417,14 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtReferencia;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtUrbanizacion;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox txtManzana;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtJiron;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtDireccion;
         private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton1;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtNombre;
+        private System.Windows.Forms.ComboBox cboUrb;
+        private System.Windows.Forms.ComboBox cboSector;
     }
 }
 
