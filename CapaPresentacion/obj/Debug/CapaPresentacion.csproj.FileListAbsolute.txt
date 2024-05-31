@@ -52,3 +52,4 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresenta
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmImagen.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CloudinaryDotNet.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CloudinaryDotNet.xml
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmPersonal.resources

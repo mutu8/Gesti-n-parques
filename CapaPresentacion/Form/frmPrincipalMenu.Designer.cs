@@ -30,14 +30,14 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
             this.panel5 = new System.Windows.Forms.Panel();
+            this.BarraControl = new System.Windows.Forms.Panel();
+            this.panelCentral = new System.Windows.Forms.Panel();
             this.btnMaximizar = new System.Windows.Forms.Button();
             this.btnCerrar = new System.Windows.Forms.Button();
             this.btnMinimizar = new System.Windows.Forms.Button();
-            this.BarraControl = new System.Windows.Forms.Panel();
-            this.panelCentral = new System.Windows.Forms.Panel();
             this.BarraIzquierda = new CapaPresentacion.ClasesForm.Gradient_SidebarPanel();
             this.panelOpciones = new System.Windows.Forms.Panel();
-            this.btnVisitas = new CapaPresentacion.ClasesForm.ucMenu();
+            this.btnPersonal = new CapaPresentacion.ClasesForm.ucMenu();
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
             this.btnPuntos = new CapaPresentacion.ClasesForm.ucMenu();
             this.panelBS = new System.Windows.Forms.Panel();
@@ -61,6 +61,28 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(117, 41);
             this.panel5.TabIndex = 0;
+            // 
+            // BarraControl
+            // 
+            this.BarraControl.BackColor = System.Drawing.Color.Black;
+            this.BarraControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.BarraControl.Controls.Add(this.panel5);
+            this.BarraControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BarraControl.Location = new System.Drawing.Point(0, 0);
+            this.BarraControl.Name = "BarraControl";
+            this.BarraControl.Size = new System.Drawing.Size(1201, 41);
+            this.BarraControl.TabIndex = 6;
+            this.BarraControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseDown);
+            this.BarraControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseMove);
+            this.BarraControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseUp);
+            // 
+            // panelCentral
+            // 
+            this.panelCentral.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelCentral.Location = new System.Drawing.Point(95, 41);
+            this.panelCentral.Name = "panelCentral";
+            this.panelCentral.Size = new System.Drawing.Size(1106, 798);
+            this.panelCentral.TabIndex = 16;
             // 
             // btnMaximizar
             // 
@@ -105,28 +127,6 @@
             this.btnMinimizar.UseVisualStyleBackColor = false;
             this.btnMinimizar.Click += new System.EventHandler(this.btnMinimizar_Click);
             // 
-            // BarraControl
-            // 
-            this.BarraControl.BackColor = System.Drawing.Color.Black;
-            this.BarraControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.BarraControl.Controls.Add(this.panel5);
-            this.BarraControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BarraControl.Location = new System.Drawing.Point(0, 0);
-            this.BarraControl.Name = "BarraControl";
-            this.BarraControl.Size = new System.Drawing.Size(1201, 41);
-            this.BarraControl.TabIndex = 6;
-            this.BarraControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseDown);
-            this.BarraControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseMove);
-            this.BarraControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseUp);
-            // 
-            // panelCentral
-            // 
-            this.panelCentral.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelCentral.Location = new System.Drawing.Point(95, 41);
-            this.panelCentral.Name = "panelCentral";
-            this.panelCentral.Size = new System.Drawing.Size(1106, 798);
-            this.panelCentral.TabIndex = 16;
-            // 
             // BarraIzquierda
             // 
             this.BarraIzquierda.Controls.Add(this.panelOpciones);
@@ -143,7 +143,7 @@
             // panelOpciones
             // 
             this.panelOpciones.BackColor = System.Drawing.Color.Transparent;
-            this.panelOpciones.Controls.Add(this.btnVisitas);
+            this.panelOpciones.Controls.Add(this.btnPersonal);
             this.panelOpciones.Controls.Add(this.materialDivider1);
             this.panelOpciones.Controls.Add(this.btnPuntos);
             this.panelOpciones.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -152,19 +152,19 @@
             this.panelOpciones.Size = new System.Drawing.Size(95, 398);
             this.panelOpciones.TabIndex = 10;
             // 
-            // btnVisitas
+            // btnPersonal
             // 
-            this.btnVisitas.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.btnVisitas.BackColor = System.Drawing.Color.Transparent;
-            this.btnVisitas.BorderColor = System.Drawing.Color.Transparent;
-            this.btnVisitas.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnVisitas.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnVisitas.Icon = global::CapaPresentacion.Properties.Resources.visitor__1_;
-            this.btnVisitas.Location = new System.Drawing.Point(0, 107);
-            this.btnVisitas.Menu = "Visitas";
-            this.btnVisitas.Name = "btnVisitas";
-            this.btnVisitas.Size = new System.Drawing.Size(95, 95);
-            this.btnVisitas.TabIndex = 2;
+            this.btnPersonal.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.btnPersonal.BackColor = System.Drawing.Color.Transparent;
+            this.btnPersonal.BorderColor = System.Drawing.Color.Transparent;
+            this.btnPersonal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPersonal.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnPersonal.Icon = global::CapaPresentacion.Properties.Resources.user_avatar;
+            this.btnPersonal.Location = new System.Drawing.Point(0, 107);
+            this.btnPersonal.Menu = "Personal";
+            this.btnPersonal.Name = "btnPersonal";
+            this.btnPersonal.Size = new System.Drawing.Size(95, 87);
+            this.btnPersonal.TabIndex = 2;
             // 
             // materialDivider1
             // 
@@ -266,7 +266,7 @@
         private System.Windows.Forms.Panel BarraControl;
         private System.Windows.Forms.Panel panelCentral;
         private ClasesForm.ucMenu btnHome;
-        private ClasesForm.ucMenu btnVisitas;
+        private ClasesForm.ucMenu btnPersonal;
         private MaterialSkin.Controls.MaterialDivider materialDivider1;
     }
 }

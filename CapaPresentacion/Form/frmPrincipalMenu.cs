@@ -32,7 +32,7 @@ namespace CapaPresentacion
         public Home()   
         {
             InitializeComponent();
-            menuButtons = new List<ucMenu>() {btnHome, btnPuntos, btnVisitas};
+            menuButtons = new List<ucMenu>() {btnHome, btnPuntos, btnPersonal};
             ClickMenu(menuButtons);
         }
 
@@ -66,33 +66,47 @@ namespace CapaPresentacion
             switch (_menuButton.Name)
             {
                 case "btnHome":
-
                     activeMenu(btnHome, btnPuntos);
-                    activeMenu(btnHome, btnVisitas);
-                    // Ocultar los controles necesarios y cargar el formulario secundario
-                    OcultarControles(panelCentral);
+                    activeMenu(btnHome, btnPersonal);
+                    // Limpiar los controles del panel central
+                    LimpiarControles(panelCentral);
+                    // Aquí puedes agregar los controles necesarios para "Home"
                     break;
 
                 case "btnPuntos":
-                    
                     activeMenu(btnPuntos, btnHome);
-                    activeMenu(btnPuntos, btnVisitas);
+                    activeMenu(btnPuntos, btnPersonal);
                     // Crear una instancia del formulario secundario que deseas cargar
                     frmLocalidades f = new frmLocalidades();
 
-                    // Ocultar los controles necesarios
-                    OcultarControles(panelCentral);
-                    //Cargar el formulario secundario
-                    LoadFormPanel(f);
-                    MostrarControles(panelCentral);
+                    // Limpiar los controles del panel central
+                    LimpiarControles(panelCentral);
+                    // Cargar el formulario secundario en el panel central
+                    f.TopLevel = false;
+                    f.FormBorderStyle = FormBorderStyle.None;
+                    f.Dock = DockStyle.Fill;
+                    panelCentral.Controls.Add(f);
+                    f.Show();
                     break;
 
-                case "btnVisitas":
-                    activeMenu(btnVisitas, btnHome);
-                    activeMenu(btnVisitas, btnPuntos);
+                case "btnPersonal":
+                    activeMenu(btnPersonal, btnHome);
+                    activeMenu(btnPersonal, btnPuntos);
+                    // Crear una instancia del formulario secundario que deseas cargar
+                    frmPersonal ff = new frmPersonal();
+
+                    // Limpiar los controles del panel central
+                    LimpiarControles(panelCentral);
+                    // Cargar el formulario secundario en el panel central
+                    ff.TopLevel = false;
+                    ff.FormBorderStyle = FormBorderStyle.None;
+                    ff.Dock = DockStyle.Fill;
+                    panelCentral.Controls.Add(ff);
+                    ff.Show();
                     break;
             }
         }
+
         private void activeMenu(ucMenu _active, params ucMenu[] _inactive)
         {
             _active.BorderColor = Color.White;
@@ -146,53 +160,24 @@ namespace CapaPresentacion
                 Location = new Point(nuevaPosicion.X - mousePosicion.X, nuevaPosicion.Y - mousePosicion.Y);
             }
         }
-     
-        private void CargarImagenDesdeUrl(string url, PictureBox pictureBox)
-        {
-            using (WebClient clienteWeb = new WebClient())
-            {
-                try
-                {
-                    // Descargar la imagen como un arreglo de bytes
-                    byte[] bytesImagen = clienteWeb.DownloadData(url);
+    
 
-                    // Convertir el arreglo de bytes en una imagen
-                    using (MemoryStream stream = new MemoryStream(bytesImagen))
-                    {
-                        Image imagen = Image.FromStream(stream);
-
-                        // Establecer la imagen en el PictureBox
-                        pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                        pictureBox.Image = imagen;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al cargar la imagen: " + ex.Message);
-                }
-            }
-        }
-        private void OcultarControles(params Control[] controles)
+        private void LimpiarControles(Control container)
         {
-            if (!ExistenControlesEnEstado(controles, false))
+            // Verificar si existen controles en el estado visible especificado
+            if (!ExistenControlesEnEstado(container.Controls.OfType<Control>().ToArray(), false))
             {
-                foreach (Control control in controles)
+                // Eliminar y liberar todos los controles hijos del contenedor
+                while (container.Controls.Count > 0)
                 {
-                    control.Hide();
+                    var control = container.Controls[0];
+                    container.Controls.Remove(control);
+                    control.Dispose();
                 }
             }
         }
 
-        private void MostrarControles(params Control[] controles)
-        {
-            if (!ExistenControlesEnEstado(controles, true))
-            {
-                foreach (Control control in controles)
-                {
-                    control.Show();
-                }
-            }
-        }
+
         private bool ExistenControlesEnEstado(Control[] controles, bool estado)
         {
             foreach (Control control in controles)
@@ -204,6 +189,7 @@ namespace CapaPresentacion
             }
             return false;
         }
+
 
         private void btnPuntos_Load(object sender, EventArgs e)
         {

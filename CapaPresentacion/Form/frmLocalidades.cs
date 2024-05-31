@@ -21,6 +21,15 @@ namespace CapaPresentacion
     {
         private bool frmMapaAbierto = false;
         private frmMapa frmMapaInstancia;
+
+        // Diccionario para almacenar las instancias de los UserControl
+        private Dictionary<string, UserControlTarget> userControlsCache = new Dictionary<string, UserControlTarget>();
+
+        // Propiedades de Paginación
+        private int currentPage = 1;
+        private int itemsPerPage = 9; // Ajusta según sea necesario
+        private List<DataRow> allLocalidadesData; // Almacenar todos los datos
+
         public frmLocalidades()
         {
             InitializeComponent();
@@ -30,6 +39,16 @@ namespace CapaPresentacion
         public FlowLayoutPanel PanelLocalidades
         {
             get { return flowLayoutPanel1; }
+        }
+
+        // Método para obtener o crear UserControl
+        private UserControlTarget GetOrCreateUserControl(string key, Func<UserControlTarget> createControl)
+        {
+            if (!userControlsCache.ContainsKey(key))
+            {
+                userControlsCache[key] = createControl();
+            }
+            return userControlsCache[key];
         }
 
         private void btnMapa_MouseClick(object sender, MouseEventArgs e)
@@ -57,39 +76,47 @@ namespace CapaPresentacion
             }
         }
 
-        public void CargarLocalidadesEnPanel()
+        public void CargarLocalidadesEnPanel(int pageNumber)
         {
+            // No necesitamos obtener los datos de nuevo, ya los tenemos en allLocalidadesData
 
-            DataTable localidadesData = logLocalidades.Instancia.ObtenerLocalidadesParaPanel();
+            int startIndex = (pageNumber - 1) * itemsPerPage;
+            int endIndex = Math.Min(startIndex + itemsPerPage, allLocalidadesData.Count);
 
-            foreach (DataRow row in localidadesData.Rows)
+            flowLayoutPanel1.SuspendLayout();
+            flowLayoutPanel1.Controls.Clear();
+
+            for (int i = startIndex; i < endIndex; i++)
             {
+                DataRow row = allLocalidadesData[i];
                 string nombreLocalidad = row["Nombre_Localidad"].ToString();
                 string direccion = row["Direccion"].ToString();
                 string url = row["url_Localidad"].ToString();
 
-                UserControlTarget userControl = new UserControlTarget();
-                userControl.SetLocalidadData(nombreLocalidad, direccion, url);
-                userControl.Anchor = AnchorStyles.Right | AnchorStyles.Left; // Alinear a la derecha e izquierda
-                userControl.Margin = new Padding(10); // Espacio de relleno en el lado derecho e izquierdo
+                // Generar una clave única (igual que antes)
+                string key = $"{nombreLocalidad}-{direccion}";
+
+                // Obtener o crear el UserControl (igual que antes)
+                UserControlTarget userControl = GetOrCreateUserControl(key, () => {
+                    var control = new UserControlTarget();
+                    control.SetLocalidadData(nombreLocalidad, direccion, url);
+                    return control;
+                });
+
+                userControl.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+                userControl.Margin = new Padding(5);
                 flowLayoutPanel1.Controls.Add(userControl);
             }
 
-        }
-        public void RecargarPanel()
-        {
-            // Suspender el diseño del panel antes de realizar múltiples cambios
-            flowLayoutPanel1.SuspendLayout();
-
-            // Limpiar el panel antes de recargar nuevos controles
-            flowLayoutPanel1.Controls.Clear();
-
-            // Cargar localidades en el panel
-            CargarLocalidadesEnPanel();
-
-            // Reanudar el diseño del panel después de realizar los cambios
             flowLayoutPanel1.ResumeLayout();
         }
+
+
+        public void RecargarPanel()
+        {
+            CargarLocalidadesEnPanel(currentPage); // Recargar la página actual
+        }
+
 
 
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)
@@ -125,8 +152,30 @@ namespace CapaPresentacion
 
         private void frmLocalidades_Load(object sender, EventArgs e)
         {
-            CargarLocalidadesEnPanel();
+            allLocalidadesData = logLocalidades.Instancia.ObtenerLocalidadesParaPanel().AsEnumerable().ToList();
+            CargarLocalidadesEnPanel(currentPage); // Cargar la página inicial
         }
+
+        private void btnRight_Click(object sender, EventArgs e)
+        {
+            int totalPages = (int)Math.Ceiling((double)allLocalidadesData.Count / itemsPerPage);
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                RecargarPanel();
+            }
+        }
+
+        private void btnLeft_Click(object sender, EventArgs e)
+        {
+            if (currentPage > 1)
+            {
+                currentPage--;
+                RecargarPanel();
+            }
+        }
+
+    
     }
 }
 

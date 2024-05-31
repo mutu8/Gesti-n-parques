@@ -35,6 +35,13 @@ CREATE TABLE Visitas (
     FOREIGN KEY (ID_Localidad) REFERENCES Localidades(ID_Localidad)
 );
 
+CREATE TABLE Empleados (
+    ID_Empleado INT IDENTITY(1,1) PRIMARY KEY,
+    Nombres NVARCHAR(100) NOT NULL,
+    Apellidos NVARCHAR(100) NOT NULL,
+    esApoyo BIT NOT NULL -- 1 para Administrador, 0 para Empleado regular
+);
+
 CREATE TABLE Urbanizaciones (
     ID_Urbanizacion INT IDENTITY(1,1) PRIMARY KEY,
     Nombre_Urbanizacion NVARCHAR(100) NOT NULL
