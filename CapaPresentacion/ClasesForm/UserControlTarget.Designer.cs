@@ -30,16 +30,17 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlTarget));
             this.label1 = new System.Windows.Forms.Label();
-            this.txtNombre = new System.Windows.Forms.TextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.txtDireccion = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.materialFloatingActionButton4 = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.materialFloatingActionButton3 = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.materialFloatingActionButton2 = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.materialFloatingActionButton3 = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.txtNombre = new System.Windows.Forms.TextBox();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -49,30 +50,11 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label1.Location = new System.Drawing.Point(166, 45);
+            this.label1.Location = new System.Drawing.Point(154, 45);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 15);
             this.label1.TabIndex = 7;
             this.label1.Text = "Nombre:";
-            // 
-            // txtNombre
-            // 
-            this.txtNombre.BackColor = System.Drawing.Color.White;
-            this.txtNombre.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtNombre.Enabled = false;
-            this.txtNombre.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNombre.Location = new System.Drawing.Point(248, 43);
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(215, 19);
-            this.txtNombre.TabIndex = 9;
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.panel2.Location = new System.Drawing.Point(248, 59);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(215, 1);
-            this.panel2.TabIndex = 10;
             // 
             // txtDireccion
             // 
@@ -80,17 +62,18 @@
             this.txtDireccion.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDireccion.Enabled = false;
             this.txtDireccion.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDireccion.Location = new System.Drawing.Point(248, 82);
+            this.txtDireccion.Location = new System.Drawing.Point(236, 82);
             this.txtDireccion.Name = "txtDireccion";
-            this.txtDireccion.Size = new System.Drawing.Size(215, 19);
+            this.txtDireccion.Size = new System.Drawing.Size(230, 19);
             this.txtDireccion.TabIndex = 12;
+            this.txtDireccion.TextChanged += new System.EventHandler(this.txtDireccion_TextChanged);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.panel1.Location = new System.Drawing.Point(248, 98);
+            this.panel1.Location = new System.Drawing.Point(236, 98);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(215, 1);
+            this.panel1.Size = new System.Drawing.Size(230, 1);
             this.panel1.TabIndex = 13;
             // 
             // label2
@@ -98,7 +81,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label2.Location = new System.Drawing.Point(166, 86);
+            this.label2.Location = new System.Drawing.Point(154, 86);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 15);
             this.label2.TabIndex = 11;
@@ -107,6 +90,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Controls.Add(this.materialFloatingActionButton4);
             this.panel3.Controls.Add(this.materialFloatingActionButton3);
             this.panel3.Controls.Add(this.materialFloatingActionButton2);
             this.panel3.Controls.Add(this.materialFloatingActionButton1);
@@ -122,6 +106,34 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(480, 169);
             this.panel3.TabIndex = 14;
+            // 
+            // materialFloatingActionButton4
+            // 
+            this.materialFloatingActionButton4.Depth = 0;
+            this.materialFloatingActionButton4.Icon = ((System.Drawing.Image)(resources.GetObject("materialFloatingActionButton4.Icon")));
+            this.materialFloatingActionButton4.Location = new System.Drawing.Point(285, 117);
+            this.materialFloatingActionButton4.Mini = true;
+            this.materialFloatingActionButton4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialFloatingActionButton4.Name = "materialFloatingActionButton4";
+            this.materialFloatingActionButton4.Size = new System.Drawing.Size(40, 40);
+            this.materialFloatingActionButton4.TabIndex = 17;
+            this.materialFloatingActionButton4.Text = "materialFloatingActionButton4";
+            this.materialFloatingActionButton4.UseVisualStyleBackColor = true;
+            this.materialFloatingActionButton4.Click += new System.EventHandler(this.materialFloatingActionButton4_Click);
+            // 
+            // materialFloatingActionButton3
+            // 
+            this.materialFloatingActionButton3.Depth = 0;
+            this.materialFloatingActionButton3.Icon = ((System.Drawing.Image)(resources.GetObject("materialFloatingActionButton3.Icon")));
+            this.materialFloatingActionButton3.Location = new System.Drawing.Point(423, 117);
+            this.materialFloatingActionButton3.Mini = true;
+            this.materialFloatingActionButton3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialFloatingActionButton3.Name = "materialFloatingActionButton3";
+            this.materialFloatingActionButton3.Size = new System.Drawing.Size(40, 40);
+            this.materialFloatingActionButton3.TabIndex = 16;
+            this.materialFloatingActionButton3.Text = "materialFloatingActionButton3";
+            this.materialFloatingActionButton3.UseVisualStyleBackColor = true;
+            this.materialFloatingActionButton3.Click += new System.EventHandler(this.materialFloatingActionButton3_Click);
             // 
             // materialFloatingActionButton2
             // 
@@ -163,19 +175,25 @@
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
-            // materialFloatingActionButton3
+            // panel2
             // 
-            this.materialFloatingActionButton3.Depth = 0;
-            this.materialFloatingActionButton3.Icon = ((System.Drawing.Image)(resources.GetObject("materialFloatingActionButton3.Icon")));
-            this.materialFloatingActionButton3.Location = new System.Drawing.Point(423, 117);
-            this.materialFloatingActionButton3.Mini = true;
-            this.materialFloatingActionButton3.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFloatingActionButton3.Name = "materialFloatingActionButton3";
-            this.materialFloatingActionButton3.Size = new System.Drawing.Size(40, 40);
-            this.materialFloatingActionButton3.TabIndex = 16;
-            this.materialFloatingActionButton3.Text = "materialFloatingActionButton3";
-            this.materialFloatingActionButton3.UseVisualStyleBackColor = true;
-            this.materialFloatingActionButton3.Click += new System.EventHandler(this.materialFloatingActionButton3_Click);
+            this.panel2.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.panel2.Location = new System.Drawing.Point(236, 59);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(230, 1);
+            this.panel2.TabIndex = 10;
+            // 
+            // txtNombre
+            // 
+            this.txtNombre.BackColor = System.Drawing.Color.White;
+            this.txtNombre.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtNombre.Enabled = false;
+            this.txtNombre.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNombre.Location = new System.Drawing.Point(236, 44);
+            this.txtNombre.Name = "txtNombre";
+            this.txtNombre.Size = new System.Drawing.Size(230, 19);
+            this.txtNombre.TabIndex = 9;
+            this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
             // 
             // UserControlTarget
             // 
@@ -195,8 +213,6 @@
 
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtNombre;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox txtDireccion;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
@@ -204,5 +220,8 @@
         private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton1;
         private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton2;
         private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton3;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TextBox txtNombre;
+        private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton4;
     }
 }

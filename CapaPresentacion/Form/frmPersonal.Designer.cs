@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.panelVisitas = new System.Windows.Forms.Panel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panelVisitas.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,18 +43,7 @@
             this.panelVisitas.Name = "panelVisitas";
             this.panelVisitas.Size = new System.Drawing.Size(1255, 770);
             this.panelVisitas.TabIndex = 0;
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.BackColor = System.Drawing.Color.DimGray;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(53, 89);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1148, 592);
-            this.flowLayoutPanel1.TabIndex = 25;
+            this.panelVisitas.Paint += new System.Windows.Forms.PaintEventHandler(this.panelVisitas_Paint);
             // 
             // materialFloatingActionButton1
             // 
@@ -69,6 +58,19 @@
             this.materialFloatingActionButton1.TabIndex = 34;
             this.materialFloatingActionButton1.Text = "materialFloatingActionButton1";
             this.materialFloatingActionButton1.UseVisualStyleBackColor = true;
+            this.materialFloatingActionButton1.Click += new System.EventHandler(this.materialFloatingActionButton1_Click);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(53, 89);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1148, 592);
+            this.flowLayoutPanel1.TabIndex = 25;
             // 
             // frmPersonal
             // 
@@ -79,6 +81,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmPersonal";
             this.Text = "frmVisitas";
+            this.Load += new System.EventHandler(this.frmPersonal_Load);
             this.panelVisitas.ResumeLayout(false);
             this.ResumeLayout(false);
 

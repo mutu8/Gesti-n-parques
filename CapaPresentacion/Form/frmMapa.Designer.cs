@@ -58,6 +58,8 @@
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.cboUrb = new System.Windows.Forms.ComboBox();
             this.cboSector = new System.Windows.Forms.ComboBox();
+            this.cboEncargado = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackZoom)).BeginInit();
             this.SuspendLayout();
             // 
@@ -351,12 +353,34 @@
             this.cboSector.Size = new System.Drawing.Size(238, 21);
             this.cboSector.TabIndex = 43;
             // 
+            // cboEncargado
+            // 
+            this.cboEncargado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboEncargado.FormattingEnabled = true;
+            this.cboEncargado.Location = new System.Drawing.Point(582, 413);
+            this.cboEncargado.Name = "cboEncargado";
+            this.cboEncargado.Size = new System.Drawing.Size(238, 21);
+            this.cboEncargado.TabIndex = 45;
+            this.cboEncargado.SelectedIndexChanged += new System.EventHandler(this.cboEncargado_SelectedIndexChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.Transparent;
+            this.label7.Location = new System.Drawing.Point(579, 397);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(59, 13);
+            this.label7.TabIndex = 44;
+            this.label7.Text = "Encargado";
+            // 
             // frmMapa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(842, 544);
+            this.Controls.Add(this.cboEncargado);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.cboSector);
             this.Controls.Add(this.cboUrb);
             this.Controls.Add(this.label10);
@@ -425,6 +449,8 @@
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.ComboBox cboUrb;
         private System.Windows.Forms.ComboBox cboSector;
+        private System.Windows.Forms.ComboBox cboEncargado;
+        private System.Windows.Forms.Label label7;
     }
 }
 

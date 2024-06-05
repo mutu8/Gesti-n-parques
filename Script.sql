@@ -5,6 +5,14 @@ USE BD_GestionAmbiental
 ALTER AUTHORIZATION ON DATABASE::BD_GestionAmbiental TO sa
 GO
 
+CREATE TABLE Empleados (
+    ID_Empleado INT IDENTITY(1,1) PRIMARY KEY,
+    Nombres NVARCHAR(100) NOT NULL,
+    Apellidos NVARCHAR(100) NOT NULL,
+    esApoyo BIT NOT NULL, -- 1 para Administrador, 0 para Empleado regular
+	url_Empleado NVARCHAR(MAX) NULL,
+);
+
 CREATE TABLE Detalles_Localidades (
     ID_Detalle_Localidad INT IDENTITY(1,1) PRIMARY KEY,
     Descripcion NVARCHAR(MAX) NULL,
@@ -15,7 +23,9 @@ CREATE TABLE Detalles_Localidades (
     Latitud DECIMAL(10, 8) NULL,
     Longitud DECIMAL(11, 8) NULL,
     url_Localidad NVARCHAR(MAX) NULL,
-);
+    ID_Empleado INT NULL, -- Nuevo campo para la relación
+    FOREIGN KEY (ID_Empleado) REFERENCES Empleados(ID_Empleado) 
+); 
 
 -- Crear tabla Localidades
 CREATE TABLE Localidades (
@@ -25,109 +35,15 @@ CREATE TABLE Localidades (
     FOREIGN KEY (ID_Detalle_Localidad) REFERENCES Detalles_Localidades(ID_Detalle_Localidad)
 );
 
--- Crear tabla Visitas
 CREATE TABLE Visitas (
     ID_Visita INT IDENTITY(1,1) PRIMARY KEY,
     Fecha_Visita DATE,
-    Nota NVARCHAR(MAX) NULL,
-    Estado BIT, -- Puede ser 0 (Pendiente) o 1 (Completado)
+    Estado BIT, 
     ID_Localidad INT,
-    FOREIGN KEY (ID_Localidad) REFERENCES Localidades(ID_Localidad)
+    ID_Empleado INT, -- Nueva columna para el empleado encargado
+    FOREIGN KEY (ID_Localidad) REFERENCES Detalles_Localidades(ID_Detalle_Localidad),
+    FOREIGN KEY (ID_Empleado) REFERENCES Empleados(ID_Empleado) -- Nueva clave foránea
 );
-
-CREATE TABLE Empleados (
-    ID_Empleado INT IDENTITY(1,1) PRIMARY KEY,
-    Nombres NVARCHAR(100) NOT NULL,
-    Apellidos NVARCHAR(100) NOT NULL,
-    esApoyo BIT NOT NULL -- 1 para Administrador, 0 para Empleado regular
-);
-
-CREATE TABLE Urbanizaciones (
-    ID_Urbanizacion INT IDENTITY(1,1) PRIMARY KEY,
-    Nombre_Urbanizacion NVARCHAR(100) NOT NULL
-);
-
-CREATE TABLE Sectores (
-    ID_Sector INT IDENTITY(1,1) PRIMARY KEY,
-    Nombre_Sector NVARCHAR(100) NOT NULL
-);
-
-INSERT INTO Urbanizaciones (Nombre_Urbanizacion) VALUES
-('Centro Histórico'),
-('San Andrés'),
-('El Recreo'),
-('Mansiche'),
-('Las Capullanas'),
-('Covicorti'),
-('Primavera'),
-('Huerta Grande'),
-('Los Cedros'),
-('La Intendencia'),
-('Santa María'),
-('Las Casuarinas'),
-('La Arboleda'),
-('Pay Pay'),
-('Los Granados'),
-('Los Portales'),
-('Andrés Rázuri'),
-('Los Rosales de San Andrés'),
-('Galeno'),
-('La Esmeralda'),
-('Santo Dominguito'),
-('Torres Araujo'),
-('Santa Isabel'),
-('Monserrate'),
-('San Salvador'),
-('Trupal'),
-('Santa Inés'),
-('Las Quintanas'),
-('Miraflores'),
-('Mochica'),
-('Aranjuez'),
-('Chicago'),
-('Los Pinos'),
-('San Eloy'),
-('Santa Teresa de Ávila'),
-('Chimú'),
-('Huerta Bella'),
-('Vista Bella'),
-('La Noria'),
-('UPAO'),
-('San Isidro'),
-('Libertad'),
-('La Merced'),
-('La Perla'),
-('El Alambre'),
-('20 de abril'),
-('San Fernando'),
-('Los Naranjos'),
-('Los Jardines'),
-('El Molino'),
-('Palermo'),
-('El Sol'),
-('Vista Hermosa'),
-('Ingeniería'),
-('Daniel Hoyle'),
-('La Rinconada'),
-('Jorge Chávez'),
-('El Bosque'),
-('Independencia'),
-('San Luis'),
-('San Vicente');
-
-INSERT INTO Sectores (Nombre_Sector) VALUES
-('Liberación Social'),
-('San Andrés V Etapa'),
-('Las Flores'),
-('San Andrés - Costado de Paseo de Aguas'),
-('California'),
-('Huaman'),
-('Las Hortenzias'),
-('Las Flores - El Golf'),
-('Palmeras y Palmas del Golf'),
-('San Vicente'),
-('Vista Alegre'),
-('Golf - Primera Etapa');
 
 SELECT Localidades.ID_Localidad, Detalles_Localidades.*
 FROM Localidades
@@ -137,6 +53,8 @@ SELECT * FROM Detalles_Localidades
 SELECT * FROM Localidades
 SELECT * FROM Urbanizaciones
 SELECT * FROM Sectores
+SELECT * FROM Empleados
+SELECT * FROM Visitas
 
 INSERT INTO Detalles_Localidades (Descripcion, Urbanizacion, Sector, Direccion) VALUES
 ('Parque', 'Centro Histórico', 'Liberación Social', 'Liberación Social'),

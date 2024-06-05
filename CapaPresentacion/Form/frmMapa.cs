@@ -16,7 +16,7 @@ using CapaLogica;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using CapaEntidad;
-using static DevExpress.Utils.Drawing.Helpers.NativeMethods;
+
 
 namespace CapaPresentación.Formularios
 {
@@ -28,7 +28,8 @@ namespace CapaPresentación.Formularios
 
         private double _latInicial = -8.103034453133846;
         private double _lngInicial = -79.01766201952019;
-
+        
+        frmLocalidades frm = new frmLocalidades();
         public double LatInicial
         {
             get { return _latInicial; }
@@ -51,7 +52,8 @@ namespace CapaPresentación.Formularios
         public decimal Latitud { get; set; }
         public decimal Longitud { get; set; }
         public string ImageUrl { get; set; }
- 
+        public string Empleado { get; set; }
+        public int idEmpleado {  get; set; }
         public frmMapa()
         {
             InitializeComponent();
@@ -65,26 +67,83 @@ namespace CapaPresentación.Formularios
 
         private void CargarComboBoxUrbanizaciones()
         {
-            List<string> urbanizaciones = logLocalidades.Instancia.ObtenerUrbanizaciones();
-
-            cboUrb.Items.Clear();
-            foreach (string urbanizacion in urbanizaciones)
+            // Lista completa de urbanizaciones
+            List<string> urbanizaciones = new List<string>
             {
-                cboUrb.Items.Add(urbanizacion);
+                "Centro Histórico", "San Andrés", "El Recreo", "Mansiche", "Las Capullanas", "Covicorti", "Primavera",
+                "Huerta Grande", "Los Cedros", "La Intendencia", "Santa María", "Las Casuarinas", "La Arboleda", "Pay Pay",
+                "Los Granados", "Los Portales", "Andrés Rázuri", "Los Rosales de San Andrés", "Galeno", "La Esmeralda",
+                "Santo Dominguito", "Torres Araujo", "Santa Isabel", "Monserrate", "San Salvador", "Trupal", "Santa Inés",
+                "Las Quintanas", "Miraflores", "Mochica", "Aranjuez", "Chicago", "Los Pinos", "San Eloy", "Santa Teresa de Ávila",
+                "Chimú", "Huerta Bella", "Vista Bella", "La Noria", "UPAO", "San Isidro", "Libertad", "La Merced", "La Perla",
+                "El Alambre", "20 de abril", "San Fernando", "Los Naranjos", "Los Jardines", "El Molino", "Palermo", "El Sol",
+                "Vista Hermosa", "Ingeniería", "Daniel Hoyle", "La Rinconada", "Jorge Chávez", "El Bosque", "Independencia",
+                "San Luis", "San Vicente"
+            };
+
+            // Limpiar el ComboBox
+            cboUrb.Items.Clear();
+
+            // Cargar los datos
+            cboUrb.Items.AddRange(urbanizaciones.ToArray());
+        }
+        public void CargarEmpleadosEnComboBox(ComboBox comboBox)
+        {
+            try
+            {
+                DataTable dtEmpleados = logEmleados.Instancia.ObtenerTodosLosEmpleados();
+
+                if (dtEmpleados != null && dtEmpleados.Rows.Count > 0)
+                {
+                    // Agregar una nueva columna para el nombre completo
+                    dtEmpleados.Columns.Add("NombreCompleto", typeof(string));
+
+                    foreach (DataRow row in dtEmpleados.Rows)
+                    {
+                        string nombres = row["Nombres"] != DBNull.Value ? row["Nombres"].ToString().Trim() : string.Empty;
+                        string apellidos = row["Apellidos"] != DBNull.Value ? row["Apellidos"].ToString().Trim() : string.Empty;
+                        row["NombreCompleto"] = $"{nombres} {apellidos}".Trim();
+                    }
+
+                    comboBox.DisplayMember = "NombreCompleto"; // Mostrar el nombre completo
+                    comboBox.ValueMember = "ID_Empleado";     // Valor asociado (ID del empleado)
+                    comboBox.DataSource = dtEmpleados;
+                }
+                comboBox.SelectedIndex = -1; // Opcional: seleccionar ningún elemento al inicio
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar los empleados: " + ex.Message);
+                // Puedes agregar un registro de error aquí si lo deseas
             }
         }
 
         private void CargarComboBoxSectores()
         {
-            List<string> sectores = logLocalidades.Instancia.ObtenerSectores();
+            List<string> sectores = new List<string>
+            {
+                "Liberación Social",
+                "San Andrés V Etapa",
+                "Las Flores",
+                "San Andrés - Costado de Paseo de Aguas",
+                "California",
+                "Huaman",
+                "Las Hortenzias",
+                "Las Flores - El Golf",
+                "Palmeras y Palmas del Golf",
+                "San Vicente",
+                "Vista Alegre",
+                "Golf - Primera Etapa"
+            };
 
             cboSector.Items.Clear();
-            foreach (string sector in sectores)
-            {
-                cboSector.Items.Add(sector);
-            }
+            cboSector.Items.AddRange(sectores.ToArray());
         }
 
+        private int conversorNombreEmpleado()
+        {
+            return logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(cboEncargado.Text);
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -111,6 +170,7 @@ namespace CapaPresentación.Formularios
             gMapControl1.Overlays.Add(markerOverlay);
 
             btnAgregar.Text = textoBoton;
+            CargarEmpleadosEnComboBox(cboEncargado);
 
             // Mostrar los valores pasados
             txtNombre.Text = Nombre_Localidad;
@@ -121,6 +181,7 @@ namespace CapaPresentación.Formularios
             cboSector.SelectedItem = Sector;
             txtlatitud.Text = Latitud.ToString();
             txtlongitud.Text = Longitud.ToString();
+            cboEncargado.Text = logEmleados.Instancia.ObtenerNombrePorID(idEmpleado); ;
         }
 
         private async void gMapControl1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -242,6 +303,7 @@ namespace CapaPresentación.Formularios
                     direccion,
                     latitud,
                     longitud,
+                    conversorNombreEmpleado(),
                     urlImagen);
 
                 MessageBox.Show("Agregado correctamente!!");
@@ -263,9 +325,8 @@ namespace CapaPresentación.Formularios
             string sector = cboSector.Text;
             decimal latitud = Convert.ToDecimal(txtlatitud.Text);
             decimal longitud = Convert.ToDecimal(txtlongitud.Text);
+            int idEmpleado = conversorNombreEmpleado();
             
-            // La acción específica para el botón "Agregar" se realizará dentro del case correspondiente
-                
             switch (btnAgregar.Text)   
             {
                 case "Agregar":
@@ -287,12 +348,14 @@ namespace CapaPresentación.Formularios
 
                             // Insertar detalles con el URL de la imagen obtenido
                             InsertarDetallesConImagen(nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, url);
+                            frm.RecargarPanel();
                         };
                     }
                     else if (result == DialogResult.No)
                     {
                         // Si el usuario no quiere agregar una imagen, insertar los detalles sin abrir el formulario de imagen
                         InsertarDetallesConImagen(nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, null); // Pasar null como URL de imagen
+                        frmLocalidades f = new frmLocalidades();
                     }
 
                     break;
@@ -302,12 +365,13 @@ namespace CapaPresentación.Formularios
                     try
                     {
                         // Obtener el ID de la localidad y el ID del detalle de localidad
-                        (int idLocalidad, int idDetalleLocalidad) = logLocalidades.Instancia.ObtenerId(nombre, direccion);
-
-                        // Actualizar los detalles de localidades en la base de datos
-                        logLocalidades.Instancia.ActualizarDetallesLocalidades(idDetalleLocalidad, nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud);
+                        (int idLocalidad, int idDetalleLocalidad) = logLocalidades.Instancia.ObtenerId(Nombre_Localidad, Direccion);
+                        
+                        //Actualizar los detalles de localidades en la base de datos
+                        logLocalidades.Instancia.ActualizarDetallesLocalidades(idDetalleLocalidad, nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, idEmpleado);
 
                         MessageBox.Show("ACTUALIZADO CORRECTAMENTE!!");
+                        frmLocalidades f = new frmLocalidades();
                     }
                     catch (Exception ex)
                     {
@@ -345,12 +409,18 @@ namespace CapaPresentación.Formularios
             {
                 // Guardar la imagen en la ubicación seleccionada por el usuario
                 imagenMapa.Save(saveDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                frm.RecargarPanel();
             }
         }
 
         private void gMapControl1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void cboEncargado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
         }
     }
 }

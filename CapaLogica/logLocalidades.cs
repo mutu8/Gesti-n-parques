@@ -37,10 +37,10 @@ namespace CapaLogica
             return datLocalidades.ObtenerDetallesLocalidadPorNombreYDireccion(nombreLocalidad, direccion);
         }
         // Nuevo método para insertar una localidad con sus detalles
-        public void InsertarDetallesLocalidadesYLocalidades(string nombreLocalidad, string descripcion, string referencias, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud, string url)
+        public void InsertarDetallesLocalidadesYLocalidades(string nombreLocalidad, string descripcion, string referencias, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud, int idEmpleado, string url)
         {
             // Insertar detalles de localidades y obtener el ID generado
-            int idDetalleLocalidad = datLocalidades.InsertarDetallesLocalidades(descripcion, referencias, urbanizacion, sector, direccion, latitud, longitud, url); ;
+            int idDetalleLocalidad = datLocalidades.InsertarDetallesLocalidades(descripcion, referencias, urbanizacion, sector, direccion, latitud, longitud, idEmpleado, url); ;
 
             // Insertar una nueva entrada en la tabla Localidades
             datLocalidades.InsertarLocalidad(nombreLocalidad, idDetalleLocalidad);
@@ -52,15 +52,21 @@ namespace CapaLogica
 
             return (idLocalidad, idDetalleLocalidad);
         }
+        public int ObtenerIdLocalidad(string nombreLocalidad, string direccion)
+        {
+            // Llama al método que devuelve el ID de la localidad
+            int idLocalidad = datLocalidades.Instancia.ObtenerIdLocalidad(nombreLocalidad, direccion);
 
+            return idLocalidad; // Devuelve solo el idLocalidad
+        }
         public void EliminarLocalidadYDetalle(int idLocalidad, int idDetalleLocalidad)
         {
             datLocalidades.Instancia.EliminarLocalidadYDetalle(idLocalidad, idDetalleLocalidad);
         }
-        public void ActualizarDetallesLocalidades(int idDetalleLocalidad, string nombreLocalidad, string descripcion, string referencias, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud)
+        public void ActualizarDetallesLocalidades(int idDetalleLocalidad, string nombreLocalidad, string descripcion, string referencias, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud, int idEmpleado)
         {
             // Llama al método en la capa de datos para actualizar los detalles de localidades
-            datLocalidades.ActualizarDetallesLocalidades(idDetalleLocalidad, nombreLocalidad, descripcion, referencias, urbanizacion, sector, direccion, latitud, longitud);
+            datLocalidades.ActualizarDetallesLocalidades(idDetalleLocalidad, nombreLocalidad, descripcion, referencias, urbanizacion, sector, direccion, latitud, longitud, idEmpleado);
         }
 
         public void ActualizarUrlImagen(int idDetalleLocalidad, int idLocalidad, string url)

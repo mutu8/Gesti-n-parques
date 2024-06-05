@@ -25,6 +25,7 @@ namespace CapaPresentacion
         }
         private bool frmImagenAbierto = false;
         private frmImagen frmImagenInstancia;
+        private frmVisitas frmVisitasnInstancia;
         private bool frmMapaAbierto = false;
         private frmMapa frmMapaInstancia;
         // Propiedad para el nombre de la localidad
@@ -48,7 +49,21 @@ namespace CapaPresentacion
             Direccion = direccion;
             CargarImagenDesdeUrl(imageUrl, pictureBox1);
         }
+        private void AjustarFuente(TextBox textbox)
+        {
+            // Obtener el tamaño del texto con la fuente actual
+            using (Graphics g = textbox.CreateGraphics())
+            {
+                SizeF textSize = g.MeasureString(textbox.Text, textbox.Font);
 
+                // Ajustar la fuente si el texto es más ancho que el textbox
+                while (textSize.Width > textbox.Width - 10) // Deja un margen de 10 píxeles
+                {
+                    textbox.Font = new Font(textbox.Font.FontFamily, textbox.Font.Size - 1);
+                    textSize = g.MeasureString(textbox.Text, textbox.Font);
+                }
+            }
+        }
         private void CargarImagenDesdeUrl(string url, PictureBox pictureBox)
         {
             if (string.IsNullOrEmpty(url))
@@ -105,12 +120,14 @@ namespace CapaPresentacion
                     frmMapa.Latitud = row["Latitud"] != DBNull.Value ? Convert.ToDecimal(row["Latitud"]) : 0;
                     frmMapa.Longitud = row["Longitud"] != DBNull.Value ? Convert.ToDecimal(row["Longitud"]) : 0;
                     frmMapa.ImageUrl = row["url_Localidad"] != DBNull.Value ? row["url_Localidad"].ToString() : string.Empty;
+                    frmMapa.idEmpleado = row["ID_Empleado"] != DBNull.Value ? Convert.ToInt32(row["ID_Empleado"]) : 0; // Obtener el ID del empleado como entero
 
                     if (frmMapa.Latitud != 0 && frmMapa.Longitud != 0)
                     {
                         frmMapa.LatInicial = (double)frmMapa.Latitud;
                         frmMapa.LngInicial = (double)frmMapa.Longitud;
                     }
+                    
                 }
                 else
                 {
@@ -174,10 +191,11 @@ namespace CapaPresentacion
             // Obtener el nombre de la localidad y la dirección de donde sea que los obtengas
             string nombreLocalidad = txtNombre.Text; // Debes proporcionar la implementación de esta función
             string direccion = txtDireccion.Text; // Debes proporcionar la implementación de esta función
+            frmLocalidades f = new frmLocalidades();
 
             // Llamar al método para obtener ambos IDs
             var ids = logLocalidades.Instancia.ObtenerId(nombreLocalidad, direccion);
-
+            
             // Acceder a los IDs obtenidos
             int idLocalidad = ids.Item1;
             int idDetalleLocalidad = ids.Item2;
@@ -186,11 +204,48 @@ namespace CapaPresentacion
             if (idLocalidad != -1 && idDetalleLocalidad != -1)
             {
                 logLocalidades.Instancia.EliminarLocalidadYDetalle(idLocalidad, idDetalleLocalidad);
+                f.RecargarPanel();
                 MessageBox.Show("ELIMINICACIÓN COMPLETA");
             }
             else
             {
                 MessageBox.Show("La localidad no se encuentra en la base de datos.");
+            }
+        }
+
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+            AjustarFuente(txtNombre);
+        }
+
+        private void txtDireccion_TextChanged(object sender, EventArgs e)
+        {
+            AjustarFuente(txtDireccion);
+        }
+
+        private void materialFloatingActionButton4_Click(object sender, EventArgs e)
+        {
+            int id = logLocalidades.Instancia.ObtenerIdLocalidad(txtNombre.Text, txtDireccion.Text);
+            var frm = new frmVisitas();
+            frm.idLocalidad = id;
+
+            // Verificar si ya existe una instancia abierta de frmVisitas
+            if (Application.OpenForms.OfType<frmVisitas>().Any())
+            {
+                MessageBox.Show("El formulario de Visitas ya está abierto.");
+                return; // Salir del método sin abrir una nueva instancia
+            }
+
+            // Si no hay instancias abiertas, proceder a abrir el formulario
+            if (FormUtil.TryOpenForm(() =>
+            {                
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                // ... (resto del código para cargar datos y configurar eventos) ...
+
+                return frm;
+            }))
+            {
+                // El formulario se abrió exitosamente
             }
         }
 

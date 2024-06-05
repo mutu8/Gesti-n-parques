@@ -45,7 +45,9 @@
     <Compile Include="frmUtil.cs" />
     <Compile Include="logConexion.cs" />
     <Compile Include="logConversion.cs" />
+    <Compile Include="logEmleados.cs" />
     <Compile Include="logLocalidades.cs" />
+    <Compile Include="logVisitas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
