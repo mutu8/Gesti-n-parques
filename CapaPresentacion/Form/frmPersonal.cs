@@ -19,6 +19,12 @@ namespace CapaPresentacion
         private bool frmDatosAbierto = false;
         private frmDatosPersonal frmDatosInstancia;
 
+        private List<UserControlEmpleado> allUserControlsEmpleados = new List<UserControlEmpleado>(); // Lista para almacenar todos los UserControls
+
+        // Propiedades de Paginación
+        private int currentPage = 1;
+        private int itemsPerPage = 9; // Ajusta según sea necesario
+
         public frmPersonal()
         {
             InitializeComponent();
@@ -31,36 +37,47 @@ namespace CapaPresentacion
         {
             CargarUserControlsEmpleados(); // Recargar la página actual
         }
-        private void CargarUserControlsEmpleados()
+        private void CargarUserControlsEmpleados(int pageNumber = 1)
         {
             try
             {
-                // 1. Obtener los datos de los empleados (desde logEmpleados)
-                DataTable dtEmpleados = logEmleados.Instancia.ObtenerTodosLosEmpleados();
-
-                // 2. Limpiar el FlowLayoutPanel (si es necesario)
-                flowLayoutPanel1.Controls.Clear();
-
-                // 3. Crear y agregar UserControls por cada empleado
-                foreach (DataRow row in dtEmpleados.Rows)
+                if (allUserControlsEmpleados.Count == 0)
                 {
-                    UserControlEmpleado nuevoEmpleado = new UserControlEmpleado();
+                    // 1. Obtener los datos de los empleados y crear los UserControls si no existen
+                    DataTable dtEmpleados = logEmleados.Instancia.ObtenerTodosLosEmpleados();
 
-                    // Configurar las propiedades del UserControl con los datos del empleado
-                    nuevoEmpleado.Nombre = row["Nombres"].ToString() + " " + row["Apellidos"].ToString();
+                    if (dtEmpleados == null || dtEmpleados.Rows.Count == 0)
+                    {
+                        MessageBox.Show("Error: No hay datos de empleados disponibles.");
+                        return;
+                    }
 
-                    // Usar CargoInverso para obtener el string del cargo
-                    bool esApoyo = (bool)row["esApoyo"];
-                    nuevoEmpleado.Rol = CargoInverso(esApoyo); // Asignar el resultado de CargoInverso
+                    foreach (DataRow row in dtEmpleados.Rows)
+                    {
+                        UserControlEmpleado nuevoEmpleado = new UserControlEmpleado();
+                        nuevoEmpleado.Nombre = row["Nombres"].ToString() + " " + row["Apellidos"].ToString();
+                        nuevoEmpleado.Rol = CargoInverso((bool)row["esApoyo"]);
+                        // ... (Otras propiedades que tenga tu UserControl, como ID, foto, etc.)
+                        nuevoEmpleado.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+                        nuevoEmpleado.Margin = new Padding(5);
 
-                    // ... (Otras propiedades que tenga tu UserControl, como ID, foto, etc.)
-
-                    nuevoEmpleado.Anchor = AnchorStyles.Right | AnchorStyles.Left;
-                    nuevoEmpleado.Margin = new Padding(5);
-
-                    // Agregar el UserControl al FlowLayoutPanel
-                    flowLayoutPanel1.Controls.Add(nuevoEmpleado);
+                        allUserControlsEmpleados.Add(nuevoEmpleado); // Agregar a la lista
+                    }
                 }
+
+                int startIndex = (pageNumber - 1) * itemsPerPage;
+                int endIndex = Math.Min(startIndex + itemsPerPage, allUserControlsEmpleados.Count);
+
+                flowLayoutPanel1.SuspendLayout();
+                flowLayoutPanel1.Controls.Clear(); // Limpiar el FlowLayoutPanel
+
+                // 2. Agregar los UserControls correspondientes a la página actual
+                for (int i = startIndex; i < endIndex; i++)
+                {
+                    flowLayoutPanel1.Controls.Add(allUserControlsEmpleados[i]);
+                }
+
+                flowLayoutPanel1.ResumeLayout();
             }
             catch (Exception ex)
             {
@@ -108,5 +125,27 @@ namespace CapaPresentacion
         {
             CargarUserControlsEmpleados();
         }
+
+        private void btnRight_Click(object sender, EventArgs e)
+        {
+            // Calcular el número total de páginas
+            int totalPages = (int)Math.Ceiling((double)allUserControlsEmpleados.Count / itemsPerPage);
+
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                CargarUserControlsEmpleados(currentPage); // Cargar la siguiente página
+            }
+        }
+
+        private void btnLeft_Click(object sender, EventArgs e)
+        {
+            if (currentPage > 1)
+            {
+                currentPage--;
+                CargarUserControlsEmpleados(currentPage); // Cargar la página anterior
+            }
+        }
+
     }
 }

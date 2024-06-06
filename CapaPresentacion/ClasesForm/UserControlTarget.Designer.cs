@@ -34,10 +34,10 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.materialFloatingActionButton4 = new MaterialSkin.Controls.MaterialFloatingActionButton();
-            this.materialFloatingActionButton3 = new MaterialSkin.Controls.MaterialFloatingActionButton();
-            this.materialFloatingActionButton2 = new MaterialSkin.Controls.MaterialFloatingActionButton();
-            this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.btnVisitas = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.btnEliminar = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.btnImagen = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.btnAjustes = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.txtNombre = new System.Windows.Forms.TextBox();
@@ -90,10 +90,10 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.materialFloatingActionButton4);
-            this.panel3.Controls.Add(this.materialFloatingActionButton3);
-            this.panel3.Controls.Add(this.materialFloatingActionButton2);
-            this.panel3.Controls.Add(this.materialFloatingActionButton1);
+            this.panel3.Controls.Add(this.btnVisitas);
+            this.panel3.Controls.Add(this.btnEliminar);
+            this.panel3.Controls.Add(this.btnImagen);
+            this.panel3.Controls.Add(this.btnAjustes);
             this.panel3.Controls.Add(this.pictureBox1);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.panel1);
@@ -107,61 +107,61 @@
             this.panel3.Size = new System.Drawing.Size(480, 169);
             this.panel3.TabIndex = 14;
             // 
-            // materialFloatingActionButton4
+            // btnVisitas
             // 
-            this.materialFloatingActionButton4.Depth = 0;
-            this.materialFloatingActionButton4.Icon = ((System.Drawing.Image)(resources.GetObject("materialFloatingActionButton4.Icon")));
-            this.materialFloatingActionButton4.Location = new System.Drawing.Point(285, 117);
-            this.materialFloatingActionButton4.Mini = true;
-            this.materialFloatingActionButton4.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFloatingActionButton4.Name = "materialFloatingActionButton4";
-            this.materialFloatingActionButton4.Size = new System.Drawing.Size(40, 40);
-            this.materialFloatingActionButton4.TabIndex = 17;
-            this.materialFloatingActionButton4.Text = "materialFloatingActionButton4";
-            this.materialFloatingActionButton4.UseVisualStyleBackColor = true;
-            this.materialFloatingActionButton4.Click += new System.EventHandler(this.materialFloatingActionButton4_Click);
+            this.btnVisitas.Depth = 0;
+            this.btnVisitas.Icon = ((System.Drawing.Image)(resources.GetObject("btnVisitas.Icon")));
+            this.btnVisitas.Location = new System.Drawing.Point(285, 117);
+            this.btnVisitas.Mini = true;
+            this.btnVisitas.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnVisitas.Name = "btnVisitas";
+            this.btnVisitas.Size = new System.Drawing.Size(40, 40);
+            this.btnVisitas.TabIndex = 17;
+            this.btnVisitas.Text = "materialFloatingActionButton4";
+            this.btnVisitas.UseVisualStyleBackColor = true;
+            this.btnVisitas.Click += new System.EventHandler(this.materialFloatingActionButton4_Click);
             // 
-            // materialFloatingActionButton3
+            // btnEliminar
             // 
-            this.materialFloatingActionButton3.Depth = 0;
-            this.materialFloatingActionButton3.Icon = ((System.Drawing.Image)(resources.GetObject("materialFloatingActionButton3.Icon")));
-            this.materialFloatingActionButton3.Location = new System.Drawing.Point(423, 117);
-            this.materialFloatingActionButton3.Mini = true;
-            this.materialFloatingActionButton3.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFloatingActionButton3.Name = "materialFloatingActionButton3";
-            this.materialFloatingActionButton3.Size = new System.Drawing.Size(40, 40);
-            this.materialFloatingActionButton3.TabIndex = 16;
-            this.materialFloatingActionButton3.Text = "materialFloatingActionButton3";
-            this.materialFloatingActionButton3.UseVisualStyleBackColor = true;
-            this.materialFloatingActionButton3.Click += new System.EventHandler(this.materialFloatingActionButton3_Click);
+            this.btnEliminar.Depth = 0;
+            this.btnEliminar.Icon = ((System.Drawing.Image)(resources.GetObject("btnEliminar.Icon")));
+            this.btnEliminar.Location = new System.Drawing.Point(423, 117);
+            this.btnEliminar.Mini = true;
+            this.btnEliminar.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(40, 40);
+            this.btnEliminar.TabIndex = 16;
+            this.btnEliminar.Text = "materialFloatingActionButton3";
+            this.btnEliminar.UseVisualStyleBackColor = true;
+            this.btnEliminar.Click += new System.EventHandler(this.materialFloatingActionButton3_Click);
             // 
-            // materialFloatingActionButton2
+            // btnImagen
             // 
-            this.materialFloatingActionButton2.Depth = 0;
-            this.materialFloatingActionButton2.Icon = ((System.Drawing.Image)(resources.GetObject("materialFloatingActionButton2.Icon")));
-            this.materialFloatingActionButton2.Location = new System.Drawing.Point(331, 117);
-            this.materialFloatingActionButton2.Mini = true;
-            this.materialFloatingActionButton2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFloatingActionButton2.Name = "materialFloatingActionButton2";
-            this.materialFloatingActionButton2.Size = new System.Drawing.Size(40, 40);
-            this.materialFloatingActionButton2.TabIndex = 15;
-            this.materialFloatingActionButton2.Text = "materialFloatingActionButton2";
-            this.materialFloatingActionButton2.UseVisualStyleBackColor = true;
-            this.materialFloatingActionButton2.Click += new System.EventHandler(this.materialFloatingActionButton2_Click);
+            this.btnImagen.Depth = 0;
+            this.btnImagen.Icon = ((System.Drawing.Image)(resources.GetObject("btnImagen.Icon")));
+            this.btnImagen.Location = new System.Drawing.Point(331, 117);
+            this.btnImagen.Mini = true;
+            this.btnImagen.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnImagen.Name = "btnImagen";
+            this.btnImagen.Size = new System.Drawing.Size(40, 40);
+            this.btnImagen.TabIndex = 15;
+            this.btnImagen.Text = "materialFloatingActionButton2";
+            this.btnImagen.UseVisualStyleBackColor = true;
+            this.btnImagen.Click += new System.EventHandler(this.materialFloatingActionButton2_Click);
             // 
-            // materialFloatingActionButton1
+            // btnAjustes
             // 
-            this.materialFloatingActionButton1.Depth = 0;
-            this.materialFloatingActionButton1.Icon = ((System.Drawing.Image)(resources.GetObject("materialFloatingActionButton1.Icon")));
-            this.materialFloatingActionButton1.Location = new System.Drawing.Point(377, 117);
-            this.materialFloatingActionButton1.Mini = true;
-            this.materialFloatingActionButton1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFloatingActionButton1.Name = "materialFloatingActionButton1";
-            this.materialFloatingActionButton1.Size = new System.Drawing.Size(40, 40);
-            this.materialFloatingActionButton1.TabIndex = 14;
-            this.materialFloatingActionButton1.Text = "materialFloatingActionButton1";
-            this.materialFloatingActionButton1.UseVisualStyleBackColor = true;
-            this.materialFloatingActionButton1.Click += new System.EventHandler(this.materialFloatingActionButton1_Click);
+            this.btnAjustes.Depth = 0;
+            this.btnAjustes.Icon = ((System.Drawing.Image)(resources.GetObject("btnAjustes.Icon")));
+            this.btnAjustes.Location = new System.Drawing.Point(377, 117);
+            this.btnAjustes.Mini = true;
+            this.btnAjustes.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnAjustes.Name = "btnAjustes";
+            this.btnAjustes.Size = new System.Drawing.Size(40, 40);
+            this.btnAjustes.TabIndex = 14;
+            this.btnAjustes.Text = "materialFloatingActionButton1";
+            this.btnAjustes.UseVisualStyleBackColor = true;
+            this.btnAjustes.Click += new System.EventHandler(this.materialFloatingActionButton1_Click);
             // 
             // pictureBox1
             // 
@@ -202,6 +202,7 @@
             this.Controls.Add(this.panel3);
             this.Name = "UserControlTarget";
             this.Size = new System.Drawing.Size(480, 169);
+            this.Load += new System.EventHandler(this.UserControlTarget_Load);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -217,11 +218,11 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel3;
-        private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton1;
-        private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton2;
-        private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton3;
+        private MaterialSkin.Controls.MaterialFloatingActionButton btnAjustes;
+        private MaterialSkin.Controls.MaterialFloatingActionButton btnImagen;
+        private MaterialSkin.Controls.MaterialFloatingActionButton btnEliminar;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox txtNombre;
-        private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton4;
+        private MaterialSkin.Controls.MaterialFloatingActionButton btnVisitas;
     }
 }

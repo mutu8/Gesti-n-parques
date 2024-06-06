@@ -53,6 +53,7 @@
             // 
             this.materialFloatingActionButton1.AnimateShowHideButton = true;
             this.materialFloatingActionButton1.Depth = 0;
+            this.materialFloatingActionButton1.ForeColor = System.Drawing.Color.Transparent;
             this.materialFloatingActionButton1.Icon = global::CapaPresentacion.Properties.Resources.plus_pequeno;
             this.materialFloatingActionButton1.Location = new System.Drawing.Point(61, 77);
             this.materialFloatingActionButton1.Mini = true;
@@ -69,6 +70,7 @@
             this.btnLeft.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnLeft.AnimateShowHideButton = true;
             this.btnLeft.Depth = 0;
+            this.btnLeft.ForeColor = System.Drawing.Color.Transparent;
             this.btnLeft.Icon = global::CapaPresentacion.Properties.Resources.left_chevron;
             this.btnLeft.Location = new System.Drawing.Point(1121, 77);
             this.btnLeft.Mini = true;
@@ -91,12 +93,14 @@
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1148, 592);
             this.flowLayoutPanel1.TabIndex = 24;
+            this.flowLayoutPanel1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.flowLayoutPanel1_Scroll);
             // 
             // btnRight
             // 
             this.btnRight.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnRight.AnimateShowHideButton = true;
             this.btnRight.Depth = 0;
+            this.btnRight.ForeColor = System.Drawing.Color.Transparent;
             this.btnRight.Icon = global::CapaPresentacion.Properties.Resources.right_arrow_angle;
             this.btnRight.Location = new System.Drawing.Point(1167, 77);
             this.btnRight.Mini = true;

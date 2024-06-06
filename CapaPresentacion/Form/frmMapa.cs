@@ -42,6 +42,7 @@ namespace CapaPresentación.Formularios
             set { _lngInicial = value; }
         }
 
+        public frmLocalidades InstanciFrmL;
         public string textoBoton { get; set; }
         public string Nombre_Localidad { get; set; }
         public string Descripcion { get; set; }
@@ -421,6 +422,11 @@ namespace CapaPresentación.Formularios
         private void cboEncargado_SelectedIndexChanged(object sender, EventArgs e)
         {
            
+        }
+
+        private void frmMapa_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            InstanciFrmL.EstadoBloqueado(true);
         }
     }
 }

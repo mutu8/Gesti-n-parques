@@ -18,6 +18,7 @@ namespace CapaPresentacion
     {
         public int idLocalidad { get; set; }
 
+        public frmLocalidades InstanciFrmL;
         public frmVisitas()
         {
             InitializeComponent();
@@ -40,6 +41,8 @@ namespace CapaPresentacion
 
             frmMapa frm = new frmMapa();
             frm.CargarEmpleadosEnComboBox(cboEncargado);
+
+            cboEncargado.Text=logVisitas.Instancia.ObtenerNombreCompletoEmpleadoPorIdLocalidad(idLocalidad);
         }
         public static void PersonalizarDataGridView(DataGridView dgv, Form form)
         {
@@ -213,7 +216,6 @@ namespace CapaPresentacion
                 // 1. Validar ID de la visita
                 if (!int.TryParse(lblID.Text, out int idVisita))
                 {
-                    MessageBox.Show("El ID de la visita no es válido.");
                     return;
                 }
 
@@ -262,6 +264,11 @@ namespace CapaPresentacion
                 MessageBox.Show("Error inesperado al actualizar la visita: " + ex.Message);
                 // Puedes registrar el error en un archivo de registro aquí
             }
+        }
+
+        private void frmVisitas_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            InstanciFrmL.EstadoBloqueado(true);
         }
     }
 }

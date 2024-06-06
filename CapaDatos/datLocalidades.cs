@@ -178,10 +178,24 @@ namespace CapaDatos
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                // Construimos la consulta dinámicamente para incluir o no el parámetro @IDEmpleado
                 string query = @"
-            INSERT INTO Detalles_Localidades (Descripcion, Referencias, Urbanizacion, Sector, Direccion, Latitud, Longitud, url_Localidad, ID_Empleado)
-            VALUES (@Descripcion, @Referencias, @Urbanizacion, @Sector, @Direccion, @Latitud, @Longitud, @Url, @IDEmpleado);
-            SELECT SCOPE_IDENTITY();";
+                INSERT INTO Detalles_Localidades (Descripcion, Referencias, Urbanizacion, Sector, Direccion, Latitud, Longitud, url_Localidad";
+
+                if (idEmpleado != 0) // Solo incluimos ID_Empleado si es mayor a cero
+                {
+                    query += ", ID_Empleado";
+                }
+
+                query += @")
+                VALUES (@Descripcion, @Referencias, @Urbanizacion, @Sector, @Direccion, @Latitud, @Longitud, @Url";
+
+                if (idEmpleado > 0)
+                {
+                    query += ", @IDEmpleado";
+                }
+
+                query += "); SELECT SCOPE_IDENTITY();";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -192,8 +206,12 @@ namespace CapaDatos
                     command.Parameters.AddWithValue("@Direccion", direccion);
                     command.Parameters.AddWithValue("@Latitud", latitud);
                     command.Parameters.AddWithValue("@Longitud", longitud);
-                    command.Parameters.AddWithValue("@Url", url ?? (object)DBNull.Value); // Manejo seguro de nulls
-                    command.Parameters.AddWithValue("@IDEmpleado", idEmpleado); // Nuevo parámetro
+                    command.Parameters.AddWithValue("@Url", url ?? (object)DBNull.Value);
+
+                    if (idEmpleado > 0) // Solo agregamos el parámetro si es mayor a cero
+                    {
+                        command.Parameters.AddWithValue("@IDEmpleado", idEmpleado);
+                    }
 
                     try
                     {
@@ -202,14 +220,14 @@ namespace CapaDatos
                     }
                     catch (SqlException ex)
                     {
-                        // Manejo de errores de SQL Server (puedes registrar el error o mostrar un mensaje al usuario)
                         Console.WriteLine("Error al insertar detalles de localidad: " + ex.Message);
-                        throw; // Opcionalmente, relanzar la excepción para que el método llamante también la maneje.
+                        throw;
                     }
                 }
             }
             return newId;
         }
+
 
         public static void InsertarLocalidad(string nombreLocalidad, int idDetalleLocalidad)
         {
@@ -324,26 +342,36 @@ namespace CapaDatos
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // Consulta para eliminar la localidad (referencia principal)
+                // Consultas para eliminar registros dependientes
+                string queryEliminarVisitas = "DELETE FROM Visitas WHERE ID_Localidad = @ID_Detalle_Localidad";
+
+                // Consulta para eliminar la localidad
                 string queryLocalidad = "DELETE FROM Localidades WHERE ID_Localidad = @ID_Localidad";
 
                 // Consulta para eliminar el detalle de la localidad
                 string queryDetalle = "DELETE FROM Detalles_Localidades WHERE ID_Detalle_Localidad = @ID_Detalle_Localidad";
 
-                // Iniciar una transacción para garantizar que ambas consultas se ejecuten como una unidad atómica
+                // Iniciar una transacción para garantizar que todas las consultas se ejecuten como una unidad atómica
                 connection.Open();
                 SqlTransaction transaction = connection.BeginTransaction();
 
                 try
                 {
-                    // Primero eliminar la localidad (referencia principal)
+                    // Primero, eliminar las visitas asociadas a la localidad
+                    using (SqlCommand command = new SqlCommand(queryEliminarVisitas, connection, transaction))
+                    {
+                        command.Parameters.AddWithValue("@ID_Detalle_Localidad", idDetalleLocalidad);
+                        command.ExecuteNonQuery();
+                    }
+
+                    // Luego, eliminar la localidad
                     using (SqlCommand command = new SqlCommand(queryLocalidad, connection, transaction))
                     {
                         command.Parameters.AddWithValue("@ID_Localidad", idLocalidad);
                         command.ExecuteNonQuery();
                     }
 
-                    // Luego, eliminar el detalle de la localidad
+                    // Finalmente, eliminar el detalle de la localidad
                     using (SqlCommand command = new SqlCommand(queryDetalle, connection, transaction))
                     {
                         command.Parameters.AddWithValue("@ID_Detalle_Localidad", idDetalleLocalidad);
@@ -358,11 +386,11 @@ namespace CapaDatos
                     // En caso de una excepción, hacer un rollback de la transacción
                     transaction.Rollback();
                     // Manejar la excepción apropiadamente (p. ej. registrándola, lanzándola nuevamente, mostrando un mensaje de error, etc.)
-                    // Aquí puedes agregar código para manejar la excepción según los requisitos de tu aplicación
                     throw new Exception("Error al eliminar la localidad y su detalle asociado", ex);
                 }
             }
         }
+
         public static void ActualizarDetallesLocalidades(int idDetalleLocalidad, string nombreLocalidad, string descripcion, string referencias, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud, int idEmpleado)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -371,9 +399,17 @@ namespace CapaDatos
                 string queryDetalles = @"
             UPDATE Detalles_Localidades 
             SET Descripcion = @Descripcion, Referencias = @Referencias, Urbanizacion = @Urbanizacion, 
-                Sector = @Sector, Direccion = @Direccion, Latitud = @Latitud, Longitud = @Longitud,
-                ID_Empleado = @IDEmpleado -- Actualizar el ID del Empleado
-            WHERE ID_Detalle_Localidad = @IdDetalleLocalidad";
+            Sector = @Sector, Direccion = @Direccion, Latitud = @Latitud, Longitud = @Longitud";
+
+                // Solo incluimos la actualización de ID_Empleado si no es null ni cero
+                if (idEmpleado > 0)
+                {
+                    queryDetalles += ", ID_Empleado = @IDEmpleado";
+                }
+
+                queryDetalles += " WHERE ID_Detalle_Localidad = @IdDetalleLocalidad";
+
+
 
                 using (SqlCommand commandDetalles = new SqlCommand(queryDetalles, connection))
                 {
@@ -443,7 +479,38 @@ namespace CapaDatos
             }
         }
 
-       
+        public bool TieneVisitasPendientes(int idLocalidad)
+        {
+            using (var conexion = new SqlConnection(connectionString))
+            {
+                conexion.Open();
+
+                string consulta = @"
+            SELECT CASE 
+                       WHEN EXISTS (
+                           SELECT 1 
+                           FROM Visitas 
+                           WHERE ID_Localidad = @idLocalidad 
+                             AND Estado = @EstadoPendiente
+                       ) THEN CAST(1 AS BIT) 
+                       ELSE CAST(0 AS BIT) 
+                   END AS TieneVisitasPendientes"; // Corrección: alias TieneVisitasPendientes
+
+                using (var comando = new SqlCommand(consulta, conexion))
+                {
+                    comando.Parameters.AddWithValue("@idLocalidad", idLocalidad);
+                    comando.Parameters.AddWithValue("@EstadoPendiente", false);
+
+                    // Corrección: Leer el resultado como booleano directamente
+                    bool tieneVisitasPendientes = (bool)comando.ExecuteScalar();
+
+                    return tieneVisitasPendientes;
+                }
+            }
+        }
+
+
+
 
 
     }

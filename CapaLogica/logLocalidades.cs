@@ -81,6 +81,11 @@ namespace CapaLogica
                 MessageBox.Show("Error al actualizar URL de imagen: " + ex.Message);
             }
         }
+        
+        public bool tieneVisitasPendientes(int idLocalidad) 
+        {
+            return datLocalidades.Instancia.TieneVisitasPendientes(idLocalidad);
+        }
 
     }
 }

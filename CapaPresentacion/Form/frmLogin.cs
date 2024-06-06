@@ -62,7 +62,7 @@ namespace CapaPresentación.Formularios
         private void button1_Click_1(object sender, EventArgs e)
         {
             this.Hide();
-            Home frm = new Home();
+            frmPrincipal frm = new frmPrincipal();
             frm.Show();
         }
 

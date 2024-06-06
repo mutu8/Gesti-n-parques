@@ -29,6 +29,7 @@ namespace CapaPresentacion
         private int currentPage = 1;
         private int itemsPerPage = 9; // Ajusta según sea necesario
         private List<DataRow> allLocalidadesData; // Almacenar todos los datos
+       
 
         public frmLocalidades()
         {
@@ -39,6 +40,13 @@ namespace CapaPresentacion
         public FlowLayoutPanel PanelLocalidades
         {
             get { return flowLayoutPanel1; }
+            set { flowLayoutPanel1 = value; }
+        }
+
+        public void EstadoBloqueado(bool bloquear)
+        {
+            PanelLocalidades.Enabled = bloquear;
+            materialFloatingActionButton1.Enabled = bloquear;
         }
 
         // Método para obtener o crear UserControl
@@ -78,37 +86,73 @@ namespace CapaPresentacion
 
         public void CargarLocalidadesEnPanel(int pageNumber)
         {
-            // No necesitamos obtener los datos de nuevo, ya los tenemos en allLocalidadesData
-
-            int startIndex = (pageNumber - 1) * itemsPerPage;
-            int endIndex = Math.Min(startIndex + itemsPerPage, allLocalidadesData.Count);
-
-            flowLayoutPanel1.SuspendLayout();
-            flowLayoutPanel1.Controls.Clear();
-
-            for (int i = startIndex; i < endIndex; i++)
+            try
             {
-                DataRow row = allLocalidadesData[i];
-                string nombreLocalidad = row["Nombre_Localidad"].ToString();
-                string direccion = row["Direccion"].ToString();
-                string url = row["url_Localidad"].ToString();
+                if (allLocalidadesData == null || allLocalidadesData.Count == 0)
+                {
+                    return; // Salir del método si no hay datos
+                }
 
-                // Generar una clave única (igual que antes)
-                string key = $"{nombreLocalidad}-{direccion}";
+                int startIndex = (pageNumber - 1) * itemsPerPage;
+                int endIndex = Math.Min(startIndex + itemsPerPage, allLocalidadesData.Count);
 
-                // Obtener o crear el UserControl (igual que antes)
-                UserControlTarget userControl = GetOrCreateUserControl(key, () => {
-                    var control = new UserControlTarget();
-                    control.SetLocalidadData(nombreLocalidad, direccion, url);
-                    return control;
-                });
+                flowLayoutPanel1.SuspendLayout();
 
-                userControl.Anchor = AnchorStyles.Right | AnchorStyles.Left;
-                userControl.Margin = new Padding(5);
-                flowLayoutPanel1.Controls.Add(userControl);
+                // 1. Eliminar UserControls que ya no están en la página actual
+                for (int i = flowLayoutPanel1.Controls.Count - 1; i >= 0; i--)
+                {
+                    UserControlTarget control = (UserControlTarget)flowLayoutPanel1.Controls[i];
+                    string key = control.NombreLocalidad + "-" + control.Direccion;
+
+                    // Verificar si la clave está dentro del rango de la página actual
+                    int controlIndex = allLocalidadesData.FindIndex(row =>
+                        row["Nombre_Localidad"].ToString() == control.NombreLocalidad &&
+                        row["Direccion"].ToString() == control.Direccion
+                    );
+
+                    if (controlIndex < startIndex || controlIndex >= endIndex)
+                    {
+                        flowLayoutPanel1.Controls.RemoveAt(i);
+                        userControlsCache.Remove(key);
+                        control.Dispose();
+                    }
+                }
+
+                // 2. Agregar nuevos UserControls para la página actual
+                for (int i = startIndex; i < endIndex; i++)
+                {
+                    DataRow row = allLocalidadesData[i];
+
+                    // Verificar si los valores son NULL antes de usarlos
+                    string nombreLocalidad = row["Nombre_Localidad"]?.ToString() ?? string.Empty; // Valor predeterminado si es NULL
+                    string direccion = row["Direccion"]?.ToString() ?? string.Empty;           // Valor predeterminado si es NULL
+                    string url = row["url_Localidad"]?.ToString() ?? string.Empty;            // Valor predeterminado si es NULL
+
+                    string key = $"{nombreLocalidad}-{direccion}";
+
+                    if (!flowLayoutPanel1.Controls.ContainsKey(key))
+                    {
+                        UserControlTarget userControl = GetOrCreateUserControl(key, () =>
+                        {
+                            var control = new UserControlTarget(this);
+                            control.SetLocalidadData(nombreLocalidad, direccion, url);
+                            return control;
+                        });
+
+                        userControl.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+                        userControl.Margin = new Padding(5);
+                        flowLayoutPanel1.Controls.Add(userControl);
+                    }
+                }
+
+                flowLayoutPanel1.ResumeLayout();
             }
-
-            flowLayoutPanel1.ResumeLayout();
+            catch (Exception ex)
+            {
+                // Manejar cualquier otra excepción que pueda ocurrir
+                MessageBox.Show("Error al cargar las localidades: " + ex.Message);
+                // Puedes registrar el error en un archivo de registro o realizar otras acciones apropiadas
+            }
         }
 
 
@@ -117,15 +161,17 @@ namespace CapaPresentacion
             CargarLocalidadesEnPanel(currentPage); // Recargar la página actual
         }
 
-
-
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)
         {
+            
             if (!frmMapaAbierto)
             {
                 // Si no está abierto, crear una instancia y mostrar el formulario secundario
                 frmMapaInstancia = new frmMapa();
                 frmMapaInstancia.textoBoton = "Agregar";
+                frmMapaInstancia.InstanciFrmL = this;
+
+                EstadoBloqueado(false);
 
                 // Centrar el formulario en la pantalla antes de mostrarlo
                 frmMapaInstancia.StartPosition = FormStartPosition.CenterScreen;
@@ -175,7 +221,17 @@ namespace CapaPresentacion
             }
         }
 
-    
+        private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
+        {
+            // Calcular la página actual en función de la posición de desplazamiento
+            int newPage = currentPage;
+
+            if (newPage != currentPage)
+            {
+                currentPage = newPage;
+                CargarLocalidadesEnPanel(currentPage);
+            }
+        }
     }
 }
 

@@ -17,10 +17,11 @@ using System.IO;
 using System.Net;
 using CapaPresentacion;
 using static CapaLogica.FormUtil;
+using CapaPresentación.Formularios;
 
 namespace CapaPresentacion
 {
-    public partial class Home : Form
+    public partial class frmPrincipal : Form
     {
         private bool mousePresionado;
         private Point mousePosicion;
@@ -29,7 +30,7 @@ namespace CapaPresentacion
         List<ucMenu> menuButtons;
         MaterialSkinManager materialSkinManager;
         private string connectionString = logConexion.Instancia.ObtenerConexion();
-        public Home()   
+        public frmPrincipal()   
         {
             InitializeComponent();
             menuButtons = new List<ucMenu>() {btnHome, btnPuntos, btnPersonal};
@@ -58,10 +59,67 @@ namespace CapaPresentacion
         {
             Application.Exit();
         }
+        private void CerrarOtrosFormularios()
+        {
+            // Obtener una lista de todos los formularios abiertos
+            FormCollection formulariosAbiertos = Application.OpenForms;
+
+            // Crear una lista para almacenar los formularios que se van a cerrar
+            List<Form> formulariosACerrar = new List<Form>();
+
+            // Iterar sobre los formularios abiertos y agregar a la lista los que se van a cerrar
+            foreach (Form formulario in formulariosAbiertos)
+            {
+                if (formulario != this && formulario.Name != "frmPrincipal")
+                {
+                    formulariosACerrar.Add(formulario);
+                }
+            }
+
+            // Cerrar los formularios en la lista
+            foreach (Form formulario in formulariosACerrar)
+            {
+                formulario.Close();
+            }
+        }
 
         private void Menu_menuClick(object sender, EventArgs e)
         {
             ucMenu _menuButton = (ucMenu)sender;
+
+            // Crear una copia de la colección de formularios abiertos
+            Form[] formulariosAbiertos = Application.OpenForms.Cast<Form>().ToArray();
+
+            // Verificar si hay formularios a cerrar
+            bool hayFormulariosACerrar = false;
+            foreach (Form formulario in formulariosAbiertos)
+            {
+                if (formulario != this && (formulario is frmImagen || formulario is frmDatosPersonal || formulario is frmMapa || formulario is frmVisitas))
+                {
+                    hayFormulariosACerrar = true;
+                    break; // Salir del bucle si se encuentra al menos un formulario a cerrar
+                }
+            }
+
+            if (hayFormulariosACerrar)
+            {
+                // Preguntar al usuario si desea continuar
+                DialogResult resultado = MessageBox.Show("Hay formularios abiertos. ¿Desea continuar y cerrarlos?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (resultado == DialogResult.No)
+                {
+                    return; // No hacer nada si el usuario elige "No"
+                }
+            }
+
+            // Cerrar formularios específicos si están abiertos
+            foreach (Form formulario in formulariosAbiertos)
+            {
+                if (formulario != this && (formulario is frmImagen || formulario is frmDatosPersonal || formulario is frmMapa || formulario is frmVisitas))
+                {
+                    formulario.Close();
+                }
+            }
 
             switch (_menuButton.Name)
             {
@@ -194,6 +252,15 @@ namespace CapaPresentacion
         private void btnPuntos_Load(object sender, EventArgs e)
         {
 
+        }
+        private frmLogin loginForm; // Variable para almacenar la instancia de frmLogin
+
+        private void Home_Load(object sender, EventArgs e)
+        {
+            if (loginForm != null && !loginForm.Visible)
+            {
+                loginForm.Close();
+            }
         }
     }
 }

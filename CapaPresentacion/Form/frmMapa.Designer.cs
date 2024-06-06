@@ -412,6 +412,7 @@
             this.Name = "frmMapa";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Sizable = false;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMapa_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trackZoom)).EndInit();
             this.ResumeLayout(false);

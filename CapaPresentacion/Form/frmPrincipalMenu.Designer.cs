@@ -1,6 +1,6 @@
 ﻿namespace CapaPresentacion
 {
-    partial class Home
+    partial class frmPrincipal
     {
         /// <summary>
         /// Required designer variable.
@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPrincipal));
             this.panel5 = new System.Windows.Forms.Panel();
-            this.BarraControl = new System.Windows.Forms.Panel();
-            this.panelCentral = new System.Windows.Forms.Panel();
             this.btnMaximizar = new System.Windows.Forms.Button();
             this.btnCerrar = new System.Windows.Forms.Button();
             this.btnMinimizar = new System.Windows.Forms.Button();
+            this.BarraControl = new System.Windows.Forms.Panel();
+            this.panelCentral = new System.Windows.Forms.Panel();
             this.BarraIzquierda = new CapaPresentacion.ClasesForm.Gradient_SidebarPanel();
             this.panelOpciones = new System.Windows.Forms.Panel();
             this.btnPersonal = new CapaPresentacion.ClasesForm.ucMenu();
@@ -61,28 +61,6 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(117, 41);
             this.panel5.TabIndex = 0;
-            // 
-            // BarraControl
-            // 
-            this.BarraControl.BackColor = System.Drawing.Color.Black;
-            this.BarraControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.BarraControl.Controls.Add(this.panel5);
-            this.BarraControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BarraControl.Location = new System.Drawing.Point(0, 0);
-            this.BarraControl.Name = "BarraControl";
-            this.BarraControl.Size = new System.Drawing.Size(1201, 41);
-            this.BarraControl.TabIndex = 6;
-            this.BarraControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseDown);
-            this.BarraControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseMove);
-            this.BarraControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseUp);
-            // 
-            // panelCentral
-            // 
-            this.panelCentral.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelCentral.Location = new System.Drawing.Point(95, 41);
-            this.panelCentral.Name = "panelCentral";
-            this.panelCentral.Size = new System.Drawing.Size(1106, 798);
-            this.panelCentral.TabIndex = 16;
             // 
             // btnMaximizar
             // 
@@ -126,6 +104,28 @@
             this.btnMinimizar.TabIndex = 0;
             this.btnMinimizar.UseVisualStyleBackColor = false;
             this.btnMinimizar.Click += new System.EventHandler(this.btnMinimizar_Click);
+            // 
+            // BarraControl
+            // 
+            this.BarraControl.BackColor = System.Drawing.Color.Black;
+            this.BarraControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.BarraControl.Controls.Add(this.panel5);
+            this.BarraControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BarraControl.Location = new System.Drawing.Point(0, 0);
+            this.BarraControl.Name = "BarraControl";
+            this.BarraControl.Size = new System.Drawing.Size(1201, 41);
+            this.BarraControl.TabIndex = 6;
+            this.BarraControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseDown);
+            this.BarraControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseMove);
+            this.BarraControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BarraControl_MouseUp);
+            // 
+            // panelCentral
+            // 
+            this.panelCentral.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelCentral.Location = new System.Drawing.Point(95, 41);
+            this.panelCentral.Name = "panelCentral";
+            this.panelCentral.Size = new System.Drawing.Size(1106, 798);
+            this.panelCentral.TabIndex = 16;
             // 
             // BarraIzquierda
             // 
@@ -226,7 +226,7 @@
             this.panelBI.Size = new System.Drawing.Size(95, 200);
             this.panelBI.TabIndex = 9;
             // 
-            // Home
+            // frmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -240,10 +240,11 @@
             this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Home";
+            this.Name = "frmPrincipal";
             this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.Home_Load);
             this.panel5.ResumeLayout(false);
             this.BarraControl.ResumeLayout(false);
             this.BarraIzquierda.ResumeLayout(false);

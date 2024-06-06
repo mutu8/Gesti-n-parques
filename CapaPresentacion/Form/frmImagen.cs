@@ -21,6 +21,8 @@ namespace CapaPresentacion
         private static Cloudinary cloudinary;
         private string imagePath; // Variable para almacenar la ruta de la imagen seleccionada
 
+        public frmLocalidades InstanciFrmL;
+
         public double idLocalidad
         {
             get { return idLocalidad; }
@@ -243,5 +245,9 @@ namespace CapaPresentacion
             DeleteImageByUrl(ImageUrl);
         }
 
+        private void frmImagen_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            InstanciFrmL.EstadoBloqueado(true);
+        }
     }
 }

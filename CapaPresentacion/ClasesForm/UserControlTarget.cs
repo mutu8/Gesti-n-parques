@@ -18,16 +18,19 @@ namespace CapaPresentacion
 {
     public partial class UserControlTarget : UserControl
     {
-        public UserControlTarget()
-        {
-            InitializeComponent();
-
-        }
         private bool frmImagenAbierto = false;
         private frmImagen frmImagenInstancia;
         private frmVisitas frmVisitasnInstancia;
         private bool frmMapaAbierto = false;
         private frmMapa frmMapaInstancia;
+
+        public frmLocalidades InstanciFrmL;
+        public UserControlTarget(frmLocalidades frm)
+        {
+            InitializeComponent();
+            this.InstanciFrmL = frm;
+        }
+
         // Propiedad para el nombre de la localidad
         public string NombreLocalidad
         {
@@ -41,6 +44,7 @@ namespace CapaPresentacion
             get => txtDireccion.Text;
             set => txtDireccion.Text = value;
         }
+
 
         // Método para establecer los datos de la localidad
         public void SetLocalidadData(string nombre, string direccion, string imageUrl) 
@@ -99,11 +103,16 @@ namespace CapaPresentacion
 
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)
         {
+            
             // Intentar abrir el formulario frmMapa usando la función general
             if (FormUtil.TryOpenForm(() =>
             {
                 var frmMapa = new frmMapa();
                 frmMapa.textoBoton = "Guardar";
+
+                frmMapa.InstanciFrmL = InstanciFrmL;
+
+                InstanciFrmL.EstadoBloqueado(false);
 
                 // Obtener datos de la localidad usando la capa de lógica
                 DataTable dtDetallesLocalidad = logLocalidades.ObtenerDetallesLocalidadPorNombreYDireccion(txtNombre.Text, txtDireccion.Text);
@@ -122,7 +131,7 @@ namespace CapaPresentacion
                     frmMapa.ImageUrl = row["url_Localidad"] != DBNull.Value ? row["url_Localidad"].ToString() : string.Empty;
                     frmMapa.idEmpleado = row["ID_Empleado"] != DBNull.Value ? Convert.ToInt32(row["ID_Empleado"]) : 0; // Obtener el ID del empleado como entero
 
-                    if (frmMapa.Latitud != 0 && frmMapa.Longitud != 0)
+                    if (frmMapa.Latitud != 0 && frmMapa.Longitud != 0)  
                     {
                         frmMapa.LatInicial = (double)frmMapa.Latitud;
                         frmMapa.LngInicial = (double)frmMapa.Longitud;
@@ -145,10 +154,14 @@ namespace CapaPresentacion
 
         private void materialFloatingActionButton2_Click(object sender, EventArgs e)
         {
+            
             // Intentar abrir el formulario frmImagen usando la función general
             if (FormUtil.TryOpenForm(() =>
             {
                 var frmImagenInstancia = new frmImagen();
+                frmImagenInstancia.InstanciFrmL = InstanciFrmL;
+
+                InstanciFrmL.EstadoBloqueado(false);
 
                 // Obtener datos de la localidad usando la capa de lógica
                 DataTable dtDetallesLocalidad = logLocalidades.ObtenerDetallesLocalidadPorNombreYDireccion(txtNombre.Text, txtDireccion.Text);
@@ -185,7 +198,6 @@ namespace CapaPresentacion
             }
         }
 
-
         private void materialFloatingActionButton3_Click(object sender, EventArgs e)
         {
             // Obtener el nombre de la localidad y la dirección de donde sea que los obtengas
@@ -200,16 +212,31 @@ namespace CapaPresentacion
             int idLocalidad = ids.Item1;
             int idDetalleLocalidad = ids.Item2;
 
-            // Hacer lo que necesites con los IDs obtenidos
-            if (idLocalidad != -1 && idDetalleLocalidad != -1)
+            if (logLocalidades.Instancia.tieneVisitasPendientes(idLocalidad)) 
             {
-                logLocalidades.Instancia.EliminarLocalidadYDetalle(idLocalidad, idDetalleLocalidad);
-                f.RecargarPanel();
-                MessageBox.Show("ELIMINICACIÓN COMPLETA");
+                MessageBox.Show("TIENE VISITAS PENDIENTES");
+                return;
             }
             else
             {
-                MessageBox.Show("La localidad no se encuentra en la base de datos.");
+                // Obtener confirmación del usuario
+                DialogResult resultado = MessageBox.Show("¿Estás seguro de que deseas eliminar la localidad y el detalle?",
+                                                          "Confirmar eliminación",
+                                                          MessageBoxButtons.YesNo,
+                                                          MessageBoxIcon.Question);
+
+                if (resultado == DialogResult.Yes)
+                {
+                    // El usuario confirmó la eliminación
+                    logLocalidades.Instancia.EliminarLocalidadYDetalle(idLocalidad, idDetalleLocalidad);
+                    f.RecargarPanel();
+                    MessageBox.Show("ELIMINACIÓN COMPLETA");
+                }
+                else
+                {
+                    // El usuario canceló la eliminación
+                    MessageBox.Show("Eliminación cancelada.");
+                }
             }
         }
 
@@ -228,6 +255,9 @@ namespace CapaPresentacion
             int id = logLocalidades.Instancia.ObtenerIdLocalidad(txtNombre.Text, txtDireccion.Text);
             var frm = new frmVisitas();
             frm.idLocalidad = id;
+            frm.InstanciFrmL = InstanciFrmL;
+
+            InstanciFrmL.EstadoBloqueado(false);
 
             // Verificar si ya existe una instancia abierta de frmVisitas
             if (Application.OpenForms.OfType<frmVisitas>().Any())
@@ -240,15 +270,18 @@ namespace CapaPresentacion
             if (FormUtil.TryOpenForm(() =>
             {                
                 frm.StartPosition = FormStartPosition.CenterScreen;
-                // ... (resto del código para cargar datos y configurar eventos) ...
-
+             
                 return frm;
             }))
             {
-                // El formulario se abrió exitosamente
+         
             }
         }
 
+        private void UserControlTarget_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

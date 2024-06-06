@@ -18,6 +18,88 @@ namespace CapaDatos
             get { return datVisitas._instancia; }
         }
 
+        // Método para obtener el ID del empleado por ID de la localidad
+        private int ObtenerIdEmpleadoPorIdLocalidad(int idLocalidad)
+        {
+            int idEmpleado = -1; // Valor por defecto en caso de no encontrar ningún resultado
+
+            string query = @"
+            SELECT dl.ID_Empleado 
+            FROM Localidades l
+            JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
+            WHERE l.ID_Localidad = @ID_Localidad";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ID_Localidad", idLocalidad);
+
+                    try
+                    {
+                        connection.Open();
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            idEmpleado = Convert.ToInt32(result);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejar la excepción apropiadamente (p. ej. registrándola, lanzándola nuevamente, mostrando un mensaje de error, etc.)
+                        throw new Exception("Error al obtener el ID del empleado por ID de la localidad", ex);
+                    }
+                }
+            }
+
+            return idEmpleado;
+        }
+
+        // Método para obtener el nombre completo del empleado por ID
+        public string ObtenerNombreCompletoEmpleado(int idEmpleado)
+        {
+            string nombreCompleto = string.Empty;
+
+            string query = "SELECT Nombres + ' ' + Apellidos AS NombreCompleto FROM Empleados WHERE ID_Empleado = @ID_Empleado";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ID_Empleado", idEmpleado);
+
+                    try
+                    {
+                        connection.Open();
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            nombreCompleto = result.ToString();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejar la excepción apropiadamente (p. ej. registrándola, lanzándola nuevamente, mostrando un mensaje de error, etc.)
+                        throw new Exception("Error al obtener el nombre completo del empleado", ex);
+                    }
+                }
+            }
+
+            return nombreCompleto;
+        }
+
+        // Método para obtener el nombre completo del empleado por ID de la localidad
+        public string ObtenerNombreCompletoEmpleadoPorIdLocalidad(int idLocalidad)
+        {
+            int idEmpleado = ObtenerIdEmpleadoPorIdLocalidad(idLocalidad);
+            if (idEmpleado == -1)
+            {
+                throw new Exception("No se encontró ningún empleado asignado a esta localidad.");
+            }
+
+            return ObtenerNombreCompletoEmpleado(idEmpleado);
+        }
+
         public DataTable ListarVisitas(int idLocalidad) // Recibe el ID de la localidad como parámetro
         {
             DataTable dt = new DataTable();

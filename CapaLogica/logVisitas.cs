@@ -32,5 +32,18 @@ namespace CapaLogica
         {
             return datVisitas.Instancia.ObtenerEstadoVisita(idVisita);
         }
+
+        public string ObtenerNombreCompletoEmpleadoPorIdLocalidad(int idLocalidad)
+        {
+            try
+            {
+                return datVisitas.Instancia.ObtenerNombreCompletoEmpleadoPorIdLocalidad(idLocalidad);
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción apropiadamente (p. ej. registrándola, lanzándola nuevamente, mostrando un mensaje de error, etc.)
+                throw new Exception("Error al obtener el nombre completo del empleado por ID de la localidad desde logVisitas", ex);
+            }
+        }
     }
 }

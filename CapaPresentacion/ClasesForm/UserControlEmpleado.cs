@@ -82,6 +82,9 @@ namespace CapaPresentacion
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
+            frmPrincipal f = new frmPrincipal();
+            f.Enabled = false;
+
             if (FormUtil.TryOpenForm(() =>
             {
                 var frmDetallesEmpleado = new frmDatosPersonal();

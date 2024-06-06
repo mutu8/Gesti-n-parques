@@ -19,7 +19,6 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresenta
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.exe
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.pdb
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.ClasesForm.ucMenu.resources
-C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.Home.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\MaterialSkin.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPres.61CA7C38.Up2Date
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaEntidad.dll
@@ -42,3 +41,4 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresenta
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmDatosPersonal.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.UserControlEmpleado.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmVisitas.resources
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmPrincipal.resources

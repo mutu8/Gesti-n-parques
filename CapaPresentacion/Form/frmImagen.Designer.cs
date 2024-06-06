@@ -96,6 +96,7 @@
             this.Controls.Add(this.btnGuardar);
             this.Name = "frmImagen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmImagen_FormClosed);
             this.Load += new System.EventHandler(this.frmImagen_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ImgCli)).EndInit();
             this.ResumeLayout(false);

@@ -10,7 +10,6 @@ CREATE TABLE Empleados (
     Nombres NVARCHAR(100) NOT NULL,
     Apellidos NVARCHAR(100) NOT NULL,
     esApoyo BIT NOT NULL, -- 1 para Administrador, 0 para Empleado regular
-	url_Empleado NVARCHAR(MAX) NULL,
 );
 
 CREATE TABLE Detalles_Localidades (
@@ -55,6 +54,21 @@ SELECT * FROM Urbanizaciones
 SELECT * FROM Sectores
 SELECT * FROM Empleados
 SELECT * FROM Visitas
+
+--Empleados Regulares (esApoyo = 0)
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Juan', 'Pérez', 0);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('María', 'Gómez', 0);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Carlos', 'López', 0);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Ana', 'Martínez', 0);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Luis', 'Rodríguez', 0);
+
+-- Administradores (esApoyo = 1)
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Pedro', 'Sánchez', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Laura', 'Fernández', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Javier', 'García', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Sofía', 'González', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Miguel', 'Hernández', 1);
+
 
 INSERT INTO Detalles_Localidades (Descripcion, Urbanizacion, Sector, Direccion) VALUES
 ('Parque', 'Centro Histórico', 'Liberación Social', 'Liberación Social'),
