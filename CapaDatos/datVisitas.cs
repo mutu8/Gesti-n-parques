@@ -19,15 +19,15 @@ namespace CapaDatos
         }
 
         // Método para obtener el ID del empleado por ID de la localidad
-        private int ObtenerIdEmpleadoPorIdLocalidad(int idLocalidad)
+        private int? ObtenerIdEmpleadoPorIdLocalidad(int idLocalidad)
         {
-            int idEmpleado = -1; // Valor por defecto en caso de no encontrar ningún resultado
+            int? idEmpleado = null; // Valor por defecto en caso de no encontrar ningún resultado
 
             string query = @"
-            SELECT dl.ID_Empleado 
-            FROM Localidades l
-            JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
-            WHERE l.ID_Localidad = @ID_Localidad";
+    SELECT dl.ID_Empleado 
+    FROM Localidades l
+    JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
+    WHERE l.ID_Localidad = @ID_Localidad";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -39,21 +39,24 @@ namespace CapaDatos
                     {
                         connection.Open();
                         object result = command.ExecuteScalar();
-                        if (result != null)
+                        if (result != null && result != DBNull.Value)
                         {
                             idEmpleado = Convert.ToInt32(result);
                         }
                     }
                     catch (Exception ex)
                     {
-                        // Manejar la excepción apropiadamente (p. ej. registrándola, lanzándola nuevamente, mostrando un mensaje de error, etc.)
-                        throw new Exception("Error al obtener el ID del empleado por ID de la localidad", ex);
+                        // Manejar la excepción apropiadamente
+                        throw new Exception($"Error al obtener el ID del empleado por ID de la localidad ({idLocalidad}): {ex.Message}", ex);
                     }
                 }
             }
 
             return idEmpleado;
         }
+
+
+
 
         // Método para obtener el nombre completo del empleado por ID
         public string ObtenerNombreCompletoEmpleado(int idEmpleado)
@@ -75,6 +78,8 @@ namespace CapaDatos
                         if (result != null)
                         {
                             nombreCompleto = result.ToString();
+
+                            Console.WriteLine(nombreCompleto);
                         }
                     }
                     catch (Exception ex)
@@ -89,16 +94,28 @@ namespace CapaDatos
         }
 
         // Método para obtener el nombre completo del empleado por ID de la localidad
+        // Método para obtener el nombre completo del empleado por ID de la localidad
         public string ObtenerNombreCompletoEmpleadoPorIdLocalidad(int idLocalidad)
         {
-            int idEmpleado = ObtenerIdEmpleadoPorIdLocalidad(idLocalidad);
-            if (idEmpleado == -1)
+            try
             {
-                throw new Exception("No se encontró ningún empleado asignado a esta localidad.");
-            }
+                int? idEmpleado = ObtenerIdEmpleadoPorIdLocalidad(idLocalidad);
+                if (!idEmpleado.HasValue)
+                {
+                    return string.Empty; // Devolver un espacio en blanco si no hay empleado asignado
+                }
 
-            return ObtenerNombreCompletoEmpleado(idEmpleado);
+                return ObtenerNombreCompletoEmpleado(idEmpleado.Value);
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción apropiadamente
+                throw new Exception($"Error al obtener el nombre completo del empleado por ID de la localidad ({idLocalidad}): {ex.Message}", ex);
+            }
         }
+
+
+
 
         public DataTable ListarVisitas(int idLocalidad) // Recibe el ID de la localidad como parámetro
         {

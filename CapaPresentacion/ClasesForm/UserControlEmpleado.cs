@@ -21,8 +21,9 @@ namespace CapaPresentacion
         private bool frmEmpleadoAbierto = false;
         private frmDatosPersonal frmDatosPersonalInstancia;
 
-        frmPersonal frm = new frmPersonal();    
 
+        public frmPersonal InstanciFrmE;
+  
         public string Nombre
         {
             get => txtNombre.Text;
@@ -35,9 +36,10 @@ namespace CapaPresentacion
             get => txtRol.Text;
             set => txtRol.Text = value;
         }
-        public UserControlEmpleado()
+        public UserControlEmpleado(frmPersonal frm)
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            this.InstanciFrmE = frm;
         }
 
         // Método para establecer los datos de la localidad
@@ -82,13 +84,11 @@ namespace CapaPresentacion
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            frmPrincipal f = new frmPrincipal();
-            f.Enabled = false;
 
             if (FormUtil.TryOpenForm(() =>
             {
                 var frmDetallesEmpleado = new frmDatosPersonal();
-                
+                frmDetallesEmpleado.InstanciFrmE = InstanciFrmE;
                 // 1. Obtener el ID del empleado seleccionado (asumiendo que tienes un control para seleccionarlo)
                 // Puedes usar un DataGridView, ListBox, etc. para obtener el ID
                 int empleadoId = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(Nombre); // Implementa esta función
@@ -105,14 +105,13 @@ namespace CapaPresentacion
                     frmDetallesEmpleado.Apellido = row["Apellidos"].ToString();
                     frmDetallesEmpleado.Rol = frmDetallesEmpleado.CargoInverso((bool)row["esApoyo"]);
                     frmDetallesEmpleado.textoBoton = "Guardar";
-
-                    frm.RecargarPanel();
                 }
                 else
                 {
                     MessageBox.Show("No se encontraron detalles para el empleado seleccionado.");
                 }
 
+                InstanciFrmE.EstadoBloqueado(false);
                 frmDetallesEmpleado.StartPosition = FormStartPosition.CenterScreen;
                 return frmDetallesEmpleado;
             }))
@@ -134,7 +133,6 @@ namespace CapaPresentacion
             if (logEmleados.Instancia.EliminarEmpleado(empleadoId, out mensajeError))
             {
                 MessageBox.Show("Empleado eliminado correctamente.");
-                frm.RecargarPanel();
             }
             else
             {

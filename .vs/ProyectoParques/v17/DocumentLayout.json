@@ -1,24 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Steven\\Downloads\\Proyectos\\ProyectoParques\\ProyectoParques\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|c:\\users\\steven\\downloads\\proyectos\\proyectoparques\\proyectoparques\\capapresentacion\\form\\frmvisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|solutionrelative:capapresentacion\\form\\frmvisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|c:\\users\\steven\\downloads\\proyectos\\proyectoparques\\proyectoparques\\capapresentacion\\form\\frmvisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|solutionrelative:capapresentacion\\form\\frmvisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64A87072-C9E6-487A-B351-2309B1237129}|CapaDatos\\CapaDatos.csproj|c:\\users\\steven\\downloads\\proyectos\\proyectoparques\\proyectoparques\\capadatos\\datvisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64A87072-C9E6-487A-B351-2309B1237129}|CapaDatos\\CapaDatos.csproj|solutionrelative:capadatos\\datvisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{961FA866-99CA-4CC3-BF6A-1A77BB97FC3C}|CapaLogica\\CapaLogica.csproj|c:\\users\\steven\\downloads\\proyectos\\proyectoparques\\proyectoparques\\capalogica\\logvisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{961FA866-99CA-4CC3-BF6A-1A77BB97FC3C}|CapaLogica\\CapaLogica.csproj|solutionrelative:capalogica\\logvisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -26,62 +9,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "logVisitas.cs",
-              "DocumentMoniker": "C:\\Users\\Steven\\Downloads\\Proyectos\\ProyectoParques\\ProyectoParques\\CapaLogica\\logVisitas.cs",
-              "RelativeDocumentMoniker": "CapaLogica\\logVisitas.cs",
-              "ToolTip": "C:\\Users\\Steven\\Downloads\\Proyectos\\ProyectoParques\\ProyectoParques\\CapaLogica\\logVisitas.cs",
-              "RelativeToolTip": "CapaLogica\\logVisitas.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACIAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-06T06:38:19.947Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "datVisitas.cs",
-              "DocumentMoniker": "C:\\Users\\Steven\\Downloads\\Proyectos\\ProyectoParques\\ProyectoParques\\CapaDatos\\datVisitas.cs",
-              "RelativeDocumentMoniker": "CapaDatos\\datVisitas.cs",
-              "ToolTip": "C:\\Users\\Steven\\Downloads\\Proyectos\\ProyectoParques\\ProyectoParques\\CapaDatos\\datVisitas.cs",
-              "RelativeToolTip": "CapaDatos\\datVisitas.cs",
-              "ViewState": "AQIAACkAAAAAAAAAAAAqwGQAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-06T06:36:56.68Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "frmVisitas.cs",
-              "DocumentMoniker": "C:\\Users\\Steven\\Downloads\\Proyectos\\ProyectoParques\\ProyectoParques\\CapaPresentacion\\Form\\frmVisitas.cs",
-              "RelativeDocumentMoniker": "CapaPresentacion\\Form\\frmVisitas.cs",
-              "ToolTip": "C:\\Users\\Steven\\Downloads\\Proyectos\\ProyectoParques\\ProyectoParques\\CapaPresentacion\\Form\\frmVisitas.cs",
-              "RelativeToolTip": "CapaPresentacion\\Form\\frmVisitas.cs",
-              "ViewState": "AQIAABEAAAAAAAAAAAAQwBsAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-06T06:36:18.418Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "frmVisitas.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\Steven\\Downloads\\Proyectos\\ProyectoParques\\ProyectoParques\\CapaPresentacion\\Form\\frmVisitas.cs",
-              "RelativeDocumentMoniker": "CapaPresentacion\\Form\\frmVisitas.cs",
-              "ToolTip": "C:\\Users\\Steven\\Downloads\\Proyectos\\ProyectoParques\\ProyectoParques\\CapaPresentacion\\Form\\frmVisitas.cs [Dise\u00F1o]",
-              "RelativeToolTip": "CapaPresentacion\\Form\\frmVisitas.cs [Dise\u00F1o]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-06T06:36:16.616Z",
-              "EditorCaption": " [Dise\u00F1o]"
             }
           ]
         }

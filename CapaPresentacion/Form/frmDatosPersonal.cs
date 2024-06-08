@@ -18,7 +18,7 @@ namespace CapaPresentacion
         public string textoBoton { get; set; } // Ya lo tienes
         private readonly logEmleados _logEmpleados;
 
-        frmPersonal frm = new frmPersonal();
+        public frmPersonal InstanciFrmE;
 
         // Nuevas propiedades con get y set
         public string Nombre
@@ -135,5 +135,10 @@ namespace CapaPresentacion
                 }
             }
         }
-}
+
+        private void frmDatosPersonal_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            InstanciFrmE.EstadoBloqueado(true);
+        }
+    }
 }

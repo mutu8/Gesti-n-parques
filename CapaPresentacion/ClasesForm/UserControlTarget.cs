@@ -51,7 +51,6 @@ namespace CapaPresentacion
         {
             NombreLocalidad = nombre;
             Direccion = direccion;
-            CargarImagenDesdeUrl(imageUrl, pictureBox1);
         }
         private void AjustarFuente(TextBox textbox)
         {
@@ -68,39 +67,7 @@ namespace CapaPresentacion
                 }
             }
         }
-        private void CargarImagenDesdeUrl(string url, PictureBox pictureBox)
-        {
-            if (string.IsNullOrEmpty(url))
-            {
-                // Si la URL es null o vacía, no hacemos nada y mantenemos la imagen actual del PictureBox
-                return;
-            }
-
-            using (WebClient clienteWeb = new WebClient())
-            {
-                try
-                {
-                    // Descargar la imagen como un arreglo de bytes
-                    byte[] bytesImagen = clienteWeb.DownloadData(url);
-
-                    // Convertir el arreglo de bytes en una imagen
-                    using (MemoryStream stream = new MemoryStream(bytesImagen))
-                    {
-                        Image imagen = Image.FromStream(stream);
-
-                        // Establecer la imagen en el PictureBox
-                        pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                        pictureBox.Image = imagen;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al cargar la imagen: " + ex.Message);
-                }
-            }
-        }
-
-
+        
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)
         {
             
@@ -203,7 +170,6 @@ namespace CapaPresentacion
             // Obtener el nombre de la localidad y la dirección de donde sea que los obtengas
             string nombreLocalidad = txtNombre.Text; // Debes proporcionar la implementación de esta función
             string direccion = txtDireccion.Text; // Debes proporcionar la implementación de esta función
-            frmLocalidades f = new frmLocalidades();
 
             // Llamar al método para obtener ambos IDs
             var ids = logLocalidades.Instancia.ObtenerId(nombreLocalidad, direccion);
@@ -220,7 +186,7 @@ namespace CapaPresentacion
             else
             {
                 // Obtener confirmación del usuario
-                DialogResult resultado = MessageBox.Show("¿Estás seguro de que deseas eliminar la localidad y el detalle?",
+                DialogResult resultado = MessageBox.Show("¿Estás seguro de que deseas eliminar el parque?",
                                                           "Confirmar eliminación",
                                                           MessageBoxButtons.YesNo,
                                                           MessageBoxIcon.Question);
@@ -229,13 +195,11 @@ namespace CapaPresentacion
                 {
                     // El usuario confirmó la eliminación
                     logLocalidades.Instancia.EliminarLocalidadYDetalle(idLocalidad, idDetalleLocalidad);
-                    f.RecargarPanel();
-                    MessageBox.Show("ELIMINACIÓN COMPLETA");
+                    MessageBox.Show("ELIMINACIÓN COMPLETADA");
                 }
                 else
                 {
-                    // El usuario canceló la eliminación
-                    MessageBox.Show("Eliminación cancelada.");
+         
                 }
             }
         }

@@ -161,6 +161,11 @@ namespace CapaPresentacion
             CargarLocalidadesEnPanel(currentPage); // Recargar la página actual
         }
 
+        public void test() 
+        {
+            MessageBox.Show("TEST");
+        }
+
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)
         {
             

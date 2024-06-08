@@ -44,6 +44,13 @@ CREATE TABLE Visitas (
     FOREIGN KEY (ID_Empleado) REFERENCES Empleados(ID_Empleado) -- Nueva clave foránea
 );
 
+ SELECT dl.ID_Empleado 
+ FROM Localidades l
+ JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
+ WHERE l.ID_Localidad = 3
+
+ SELECT Nombres + ' ' + Apellidos AS NombreCompleto FROM Empleados WHERE ID_Empleado = 1
+
 SELECT Localidades.ID_Localidad, Detalles_Localidades.*
 FROM Localidades
 INNER JOIN Detalles_Localidades ON Localidades.ID_Detalle_Localidad = Detalles_Localidades.ID_Detalle_Localidad;

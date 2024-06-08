@@ -29,6 +29,19 @@ namespace CapaPresentacion
         {
             InitializeComponent();
         }
+
+        // Propiedad pública para exponer el panel
+        public FlowLayoutPanel panelPersonal
+        {
+            get { return flowLayoutPanel1; }
+            set { flowLayoutPanel1 = value; }
+        }
+
+        public void EstadoBloqueado(bool bloquear)
+        {
+            panelPersonal.Enabled = bloquear;
+            materialFloatingActionButton1.Enabled = bloquear;
+        }
         private string CargoInverso(bool esApoyo)
         {
             return esApoyo ? "Apoyo" : "728";
@@ -54,7 +67,7 @@ namespace CapaPresentacion
 
                     foreach (DataRow row in dtEmpleados.Rows)
                     {
-                        UserControlEmpleado nuevoEmpleado = new UserControlEmpleado();
+                        UserControlEmpleado nuevoEmpleado = new UserControlEmpleado(this);
                         nuevoEmpleado.Nombre = row["Nombres"].ToString() + " " + row["Apellidos"].ToString();
                         nuevoEmpleado.Rol = CargoInverso((bool)row["esApoyo"]);
                         // ... (Otras propiedades que tenga tu UserControl, como ID, foto, etc.)

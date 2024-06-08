@@ -29,7 +29,7 @@ namespace CapaPresentación.Formularios
         private double _latInicial = -8.103034453133846;
         private double _lngInicial = -79.01766201952019;
         
-        frmLocalidades frm = new frmLocalidades();
+
         public double LatInicial
         {
             get { return _latInicial; }
@@ -349,16 +349,15 @@ namespace CapaPresentación.Formularios
 
                             // Insertar detalles con el URL de la imagen obtenido
                             InsertarDetallesConImagen(nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, url);
-                            frm.RecargarPanel();
                         };
                     }
                     else if (result == DialogResult.No)
                     {
                         // Si el usuario no quiere agregar una imagen, insertar los detalles sin abrir el formulario de imagen
                         InsertarDetallesConImagen(nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, null); // Pasar null como URL de imagen
-                        frmLocalidades f = new frmLocalidades();
                     }
 
+                    InstanciFrmL.test();
                     break;
 
 
@@ -372,7 +371,7 @@ namespace CapaPresentación.Formularios
                         logLocalidades.Instancia.ActualizarDetallesLocalidades(idDetalleLocalidad, nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, idEmpleado);
 
                         MessageBox.Show("ACTUALIZADO CORRECTAMENTE!!");
-                        frmLocalidades f = new frmLocalidades();
+                        InstanciFrmL.test();
                     }
                     catch (Exception ex)
                     {
@@ -410,7 +409,6 @@ namespace CapaPresentación.Formularios
             {
                 // Guardar la imagen en la ubicación seleccionada por el usuario
                 imagenMapa.Save(saveDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
-                frm.RecargarPanel();
             }
         }
 
