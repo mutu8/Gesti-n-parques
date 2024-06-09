@@ -16,6 +16,9 @@ using CapaLogica;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using CapaEntidad;
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
+
 
 
 namespace CapaPresentación.Formularios
@@ -24,7 +27,6 @@ namespace CapaPresentación.Formularios
     {
         GMarkerGoogle marker;
         GMapOverlay markerOverlay;
-        private readonly logConversion _logConversion;
 
         private double _latInicial = -8.103034453133846;
         private double _lngInicial = -79.01766201952019;
@@ -60,8 +62,6 @@ namespace CapaPresentación.Formularios
             InitializeComponent();
             this.MaximizeBox = false; // Desactivar el botón de maximizar
 
-            // Inicializar _logConversion
-            _logConversion = logConversion.Instancia;
             CargarComboBoxUrbanizaciones();
             CargarComboBoxSectores();
         }
@@ -87,6 +87,28 @@ namespace CapaPresentación.Formularios
 
             // Cargar los datos
             cboUrb.Items.AddRange(urbanizaciones.ToArray());
+        }
+      
+        private void CargarComboBoxSectores()
+        {
+            List<string> sectores = new List<string>
+            {
+                "Liberación Social",
+                "San Andrés V Etapa",
+                "Las Flores",
+                "San Andrés - Costado de Paseo de Aguas",
+                "California",
+                "Huaman",
+                "Las Hortenzias",
+                "Las Flores - El Golf",
+                "Palmeras y Palmas del Golf",
+                "San Vicente",
+                "Vista Alegre",
+                "Golf - Primera Etapa"
+            };
+
+            cboSector.Items.Clear();
+            cboSector.Items.AddRange(sectores.ToArray());
         }
         public void CargarEmpleadosEnComboBox(ComboBox comboBox)
         {
@@ -119,33 +141,11 @@ namespace CapaPresentación.Formularios
             }
         }
 
-        private void CargarComboBoxSectores()
-        {
-            List<string> sectores = new List<string>
-            {
-                "Liberación Social",
-                "San Andrés V Etapa",
-                "Las Flores",
-                "San Andrés - Costado de Paseo de Aguas",
-                "California",
-                "Huaman",
-                "Las Hortenzias",
-                "Las Flores - El Golf",
-                "Palmeras y Palmas del Golf",
-                "San Vicente",
-                "Vista Alegre",
-                "Golf - Primera Etapa"
-            };
-
-            cboSector.Items.Clear();
-            cboSector.Items.AddRange(sectores.ToArray());
-        }
-
         private int conversorNombreEmpleado()
         {
             return logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(cboEncargado.Text);
         }
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
             // Creando las dimensiones del GMAPCONTROL(herramienta)
@@ -163,6 +163,8 @@ namespace CapaPresentación.Formularios
             marker = new GMarkerGoogle(new PointLatLng(LatInicial, LngInicial), GMarkerGoogleType.blue);
             markerOverlay.Markers.Add(marker); // Agregamos al mapa
 
+            
+
             // Agregamos un tooltip de texto a los marcadores
             marker.ToolTipMode = MarkerTooltipMode.Always;
             marker.ToolTipText = string.Format("Ubicación:\n Latitud:{0}\n Longitud:{1}", LatInicial, LngInicial);
@@ -172,6 +174,8 @@ namespace CapaPresentación.Formularios
 
             btnAgregar.Text = textoBoton;
             CargarEmpleadosEnComboBox(cboEncargado);
+
+            this.Text = Nombre_Localidad;
 
             // Mostrar los valores pasados
             txtNombre.Text = Nombre_Localidad;
@@ -195,14 +199,11 @@ namespace CapaPresentación.Formularios
             txtlatitud.Text = latitud.ToString();
             txtlongitud.Text = longitud.ToString();
 
-            // Se obtiene la dirección y se muestra en el marcador
-            //string direccion = await ObtenerYMostrarDireccion(latitud, longitud);
-            //txtDireccion.Text = direccion;
 
             // Se crea el marcador para moverlo al lugar indicado por el usuario
             marker.Position = new PointLatLng(latitud, longitud);
             // También se agrega el mensaje al marcador, es decir, el ToolTip
-            marker.ToolTipText = string.Format("Ubicación:\nLatitud:{0}\nLongitud:{1}", latitud, longitud);
+            marker.ToolTipText = string.Format("Latitud:{0}\nLongitud:{1}", latitud, longitud);
         }
 
         private void btnSat_Click(object sender, EventArgs e)
@@ -230,53 +231,6 @@ namespace CapaPresentación.Formularios
             gMapControl1.Zoom = trackZoom.Value;
         }
 
-        private async Task buscarLLAsync(string cad)
-        {
-            try
-            {
-                txtBusqueda.Text = "";
-                var coordenadas = await _logConversion.ConvertirDireccionALatitudLongitud(cad); // Llamada a ConvertirDireccionALatitudLongitud de logConversion
-
-                if (coordenadas != null)
-                {
-                    double latitud = coordenadas.Item1;
-                    double longitud = coordenadas.Item2;
-
-                    // Aquí es donde debes esperar la obtención de la dirección
-                    string desc = await _logConversion.ObtenerDireccion(latitud, longitud);
-
-                    // Utilizar las coordenadas obtenidas como desees, por ejemplo, mostrarlas en TextBoxes
-                    Console.WriteLine(latitud.ToString() + longitud.ToString());
-
-                    // Se posicionan en los TextBox de latitud y longitud
-                    txtlatitud.Text = latitud.ToString();
-                    txtlongitud.Text = longitud.ToString();
-                    txtDireccion.Text = desc;
-
-                    // Mover el marcador al nuevo lugar y actualizar el mapa
-                    marker.Position = new GMap.NET.PointLatLng(latitud, longitud);
-                    marker.ToolTipText = string.Format("Ubicación:\nLatitud:{0}\nLongitud:{1}", latitud, longitud);
-
-                    // Centrar el mapa en la nueva posición del marcador
-                    gMapControl1.Position = new GMap.NET.PointLatLng(latitud, longitud);
-                }
-                else
-                {
-                    MessageBox.Show("No se pudieron obtener las coordenadas de la dirección especificada.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al buscar las coordenadas: " + ex.Message);
-            }
-        }
-
-
-        private void btnBusqueda_MouseClick(object sender, MouseEventArgs e)
-        {
-            string direccion = txtBusqueda.Text; // Obtener la dirección del TextBox
-            _ = buscarLLAsync(direccion);
-        }
 
         private void LimpiarTextBoxes()
         {
@@ -291,30 +245,38 @@ namespace CapaPresentación.Formularios
         // Método para insertar detalles de localidades y localidades
         void InsertarDetallesConImagen(string nombre, string descripcion, string referencia, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud, string urlImagen)
         {
-            // Validar que los campos obligatorios no estén vacíos
-            if (!string.IsNullOrEmpty(nombre) && !string.IsNullOrEmpty(direccion) && sector != null)
+            try
             {
-                // Insertar detalles solo si los campos obligatorios tienen valor
-                logLocalidades.Instancia.InsertarDetallesLocalidadesYLocalidades(
-                    nombre,
-                    descripcion,
-                    referencia,
-                    urbanizacion,
-                    sector,
-                    direccion,
-                    latitud,
-                    longitud,
-                    conversorNombreEmpleado(),
-                    urlImagen);
+                // Validar que los campos obligatorios no estén vacíos
+                if (!string.IsNullOrEmpty(nombre) && !string.IsNullOrEmpty(direccion) && sector != null)
+                {
+                    // Insertar detalles solo si los campos obligatorios tienen valor
+                    logLocalidades.Instancia.InsertarDetallesLocalidadesYLocalidades(
+                        nombre,
+                        descripcion,
+                        referencia,
+                        urbanizacion,
+                        sector,
+                        direccion,
+                        latitud,
+                        longitud,
+                        conversorNombreEmpleado(),
+                        urlImagen);
 
-                MessageBox.Show("Agregado correctamente!!");
-                LimpiarTextBoxes();
+                    MessageBox.Show("Agregado correctamente!!");
+                    LimpiarTextBoxes();
+                }
+                else
+                {
+                    MessageBox.Show("Por favor, complete todos los campos obligatorios.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Por favor, complete todos los campos obligatorios.");
+                MessageBox.Show("El parque ya ha sido registrado, por favor, verifique los datos");
             }
         }
+
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             // Obtener los valores de los controles antes de abrir el formulario de imagen
@@ -356,8 +318,6 @@ namespace CapaPresentación.Formularios
                         // Si el usuario no quiere agregar una imagen, insertar los detalles sin abrir el formulario de imagen
                         InsertarDetallesConImagen(nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, null); // Pasar null como URL de imagen
                     }
-
-                    InstanciFrmL.test();
                     break;
 
 
@@ -371,7 +331,6 @@ namespace CapaPresentación.Formularios
                         logLocalidades.Instancia.ActualizarDetallesLocalidades(idDetalleLocalidad, nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, idEmpleado);
 
                         MessageBox.Show("ACTUALIZADO CORRECTAMENTE!!");
-                        InstanciFrmL.test();
                     }
                     catch (Exception ex)
                     {
@@ -426,5 +385,11 @@ namespace CapaPresentación.Formularios
         {
             InstanciFrmL.EstadoBloqueado(true);
         }
+
+        private void frmMapa_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
+
     }
 }

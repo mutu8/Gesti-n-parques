@@ -180,3 +180,74 @@ INSERT INTO Localidades (Nombre_Localidad, ID_Detalle_Localidad) VALUES
 ('Parque Los Sauces', 41),
 ('Parque Hortensias del Golf', 42);
 
+
+CREATE TRIGGER TRG_UniqueEmpleado
+ON Empleados
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM Empleados e
+        JOIN inserted i ON e.Nombres = i.Nombres AND e.Apellidos = i.Apellidos
+    )
+    BEGIN
+        RAISERROR ('No se pueden insertar valores duplicados en la tabla Empleados.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+
+    INSERT INTO Empleados (Nombres, Apellidos, esApoyo)
+    SELECT Nombres, Apellidos, esApoyo
+    FROM inserted;
+END;
+
+
+CREATE OR ALTER TRIGGER TRG_UniqueVisitasPorDia
+ON Visitas
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM inserted i
+        JOIN Visitas v ON i.ID_Localidad = v.ID_Localidad AND i.Fecha_Visita = v.Fecha_Visita
+    )
+    BEGIN
+        RAISERROR ('No se pueden insertar visitas duplicadas en una misma localidad en el mismo día.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+
+    INSERT INTO Visitas (Fecha_Visita, Estado, ID_Localidad, ID_Empleado)
+    SELECT Fecha_Visita, Estado, ID_Localidad, ID_Empleado
+    FROM inserted;
+END;
+
+
+CREATE TRIGGER TRG_UniqueLocalidad
+ON Localidades
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM Localidades l
+        JOIN inserted i ON l.Nombre_Localidad = i.Nombre_Localidad
+    )
+    BEGIN
+        RAISERROR ('No se pueden insertar valores duplicados en la tabla Localidades.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+
+    INSERT INTO Localidades (Nombre_Localidad, ID_Detalle_Localidad)
+    SELECT Nombre_Localidad, ID_Detalle_Localidad
+    FROM inserted;
+END;

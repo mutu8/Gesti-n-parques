@@ -27,7 +27,11 @@ namespace CapaLogica
             // Utiliza la instancia de datLocalidades para cargar las sectores
             return datLocalidades.Instancia.CargarSectores();
         }
-
+        public string ObtenerNombreLocPorID(int idLocalidad)
+        {
+            // Utiliza la instancia de datLocalidades para cargar las sectores
+            return datLocalidades.Instancia.ObtenerNombreLocalidadPorId(idLocalidad);
+        }
         public DataTable ObtenerLocalidadesParaPanel()
         {
             return datLocalidades.ObtenerLocalidadesConDetalles();
@@ -39,12 +43,22 @@ namespace CapaLogica
         // Nuevo método para insertar una localidad con sus detalles
         public void InsertarDetallesLocalidadesYLocalidades(string nombreLocalidad, string descripcion, string referencias, string urbanizacion, string sector, string direccion, decimal latitud, decimal longitud, int idEmpleado, string url)
         {
-            // Insertar detalles de localidades y obtener el ID generado
-            int idDetalleLocalidad = datLocalidades.InsertarDetallesLocalidades(descripcion, referencias, urbanizacion, sector, direccion, latitud, longitud, idEmpleado, url); ;
+            try
+            {
+                // Insertar detalles de localidades y obtener el ID generado
+                int idDetalleLocalidad = datLocalidades.InsertarDetallesLocalidades(descripcion, referencias, urbanizacion, sector, direccion, latitud, longitud, idEmpleado, url); ;
 
-            // Insertar una nueva entrada en la tabla Localidades
-            datLocalidades.InsertarLocalidad(nombreLocalidad, idDetalleLocalidad);
+                // Insertar una nueva entrada en la tabla Localidades
+                datLocalidades.InsertarLocalidad(nombreLocalidad, idDetalleLocalidad);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones (registrar en log, notificar al usuario, etc.)
+                throw new Exception("Error" + ex);
+                // También puedes lanzar una excepción aquí si necesitas un manejo más específico o informar al usuario de manera diferente
+            }
         }
+
         public (int, int) ObtenerId(string nombreLocalidad, string direccion)
         {
             // Llama al método que devuelve ambos IDs

@@ -36,10 +36,11 @@
             this.label7 = new System.Windows.Forms.Label();
             this.btnCancelar = new MaterialSkin.Controls.MaterialButton();
             this.btnGuardar = new MaterialSkin.Controls.MaterialButton();
-            this.btnUpdate = new MaterialSkin.Controls.MaterialFloatingActionButton();
-            this.btnAgregar = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.label2 = new System.Windows.Forms.Label();
             this.lblID = new System.Windows.Forms.Label();
+            this.btnImprimier = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.btnUpdate = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.btnAgregar = new MaterialSkin.Controls.MaterialFloatingActionButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitas)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -143,6 +144,43 @@
             this.btnGuardar.UseVisualStyleBackColor = true;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Location = new System.Drawing.Point(18, 81);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(21, 13);
+            this.label2.TabIndex = 50;
+            this.label2.Text = "ID:";
+            this.label2.Visible = false;
+            // 
+            // lblID
+            // 
+            this.lblID.AutoSize = true;
+            this.lblID.BackColor = System.Drawing.Color.Transparent;
+            this.lblID.Location = new System.Drawing.Point(45, 81);
+            this.lblID.Name = "lblID";
+            this.lblID.Size = new System.Drawing.Size(37, 13);
+            this.lblID.TabIndex = 51;
+            this.lblID.Text = "_____";
+            this.lblID.Visible = false;
+            // 
+            // btnImprimier
+            // 
+            this.btnImprimier.AnimateShowHideButton = true;
+            this.btnImprimier.BackColor = System.Drawing.Color.Transparent;
+            this.btnImprimier.Depth = 0;
+            this.btnImprimier.Icon = global::CapaPresentacion.Properties.Resources.printer__1_1;
+            this.btnImprimier.Location = new System.Drawing.Point(326, 67);
+            this.btnImprimier.Mini = true;
+            this.btnImprimier.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnImprimier.Name = "btnImprimier";
+            this.btnImprimier.Size = new System.Drawing.Size(40, 40);
+            this.btnImprimier.TabIndex = 52;
+            this.btnImprimier.UseVisualStyleBackColor = false;
+            this.btnImprimier.Click += new System.EventHandler(this.btnImprimier_Click);
+            // 
             // btnUpdate
             // 
             this.btnUpdate.AnimateShowHideButton = true;
@@ -171,33 +209,12 @@
             this.btnAgregar.UseVisualStyleBackColor = true;
             this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Location = new System.Drawing.Point(18, 81);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(21, 13);
-            this.label2.TabIndex = 50;
-            this.label2.Text = "ID:";
-            this.label2.Visible = false;
-            // 
-            // lblID
-            // 
-            this.lblID.AutoSize = true;
-            this.lblID.BackColor = System.Drawing.Color.Transparent;
-            this.lblID.Location = new System.Drawing.Point(45, 81);
-            this.lblID.Name = "lblID";
-            this.lblID.Size = new System.Drawing.Size(37, 13);
-            this.lblID.TabIndex = 51;
-            this.lblID.Text = "_____";
-            this.lblID.Visible = false;
-            // 
             // frmVisitas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(482, 446);
+            this.Controls.Add(this.btnImprimier);
             this.Controls.Add(this.lblID);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnUpdate);
@@ -230,5 +247,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblID;
+        private MaterialSkin.Controls.MaterialFloatingActionButton btnImprimier;
     }
 }

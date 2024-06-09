@@ -127,9 +127,10 @@ namespace CapaPresentacion
             {
                 var frmImagenInstancia = new frmImagen();
                 frmImagenInstancia.InstanciFrmL = InstanciFrmL;
-
+                frmImagenInstancia.idLocalidad = logLocalidades.Instancia.ObtenerIdLocalidad(txtNombre.Text, txtDireccion.Text);
+                
                 InstanciFrmL.EstadoBloqueado(false);
-
+                
                 // Obtener datos de la localidad usando la capa de lógica
                 DataTable dtDetallesLocalidad = logLocalidades.ObtenerDetallesLocalidadPorNombreYDireccion(txtNombre.Text, txtDireccion.Text);
                 if (dtDetallesLocalidad.Rows.Count > 0)
@@ -195,7 +196,8 @@ namespace CapaPresentacion
                 {
                     // El usuario confirmó la eliminación
                     logLocalidades.Instancia.EliminarLocalidadYDetalle(idLocalidad, idDetalleLocalidad);
-                    MessageBox.Show("ELIMINACIÓN COMPLETADA");
+                    //MessageBox.Show("ELIMINACIÓN COMPLETADA");
+                    InstanciFrmL.RecargarPanel();
                 }
                 else
                 {

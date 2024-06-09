@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using CapaLogica;
 using CapaPresentación.Formularios;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using MaterialSkin;
 using MaterialSkin.Controls;
 
@@ -24,9 +29,10 @@ namespace CapaPresentacion
             InitializeComponent();
             this.MaximizeBox = false; // Desactivar el botón de 
             cargarVisitas();
+
         }
 
-        private void cargarVisitas() 
+        private void cargarVisitas()
         {
             DataTable dtVisitas = logVisitas.Instancia.ListarVisitas(idLocalidad);
             dgvVisitas.DataSource = dtVisitas;
@@ -34,7 +40,7 @@ namespace CapaPresentacion
 
         private void frmVisitas_Load(object sender, EventArgs e)
         {
-            
+
             cargarVisitas();
             PersonalizarDataGridView(dgvVisitas, this);
             groupBox1.Visible = false;
@@ -42,7 +48,11 @@ namespace CapaPresentacion
             frmMapa frm = new frmMapa();
             frm.CargarEmpleadosEnComboBox(cboEncargado);
 
-            cboEncargado.Text=logVisitas.Instancia.ObtenerNombreCompletoEmpleadoPorIdLocalidad(idLocalidad);
+            dateTimePicker1.MinDate = DateTime.Today;
+            dateTimePicker1.MinDate = DateTime.Today.AddDays(1);
+            cboEncargado.Text = logVisitas.Instancia.ObtenerNombreCompletoEmpleadoPorIdLocalidad(idLocalidad);
+
+            this.Text = logLocalidades.Instancia.ObtenerNombreLocPorID(idLocalidad);
         }
         public static void PersonalizarDataGridView(DataGridView dgv, Form form)
         {
@@ -61,9 +71,9 @@ namespace CapaPresentacion
             dgv.EnableHeadersVisualStyles = false;
 
             // Más personalización (opcional)
-            dgv.DefaultCellStyle.Font = new Font("Roboto", 10);
+            dgv.DefaultCellStyle.Font = new System.Drawing.Font("Roboto", 10);
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            
+
             // Alternar filas (opcional)
             dgv.RowsDefaultCellStyle.BackColor = backgroundColor;
             dgv.AlternatingRowsDefaultCellStyle.BackColor = lightPrimaryColor;
@@ -124,7 +134,7 @@ namespace CapaPresentacion
             bool estado = false; // Asumimos que tienes un CheckBox para el estado
 
             // Obtén los IDs de localidad y empleado (ajusta según tus controles)
-            
+
             if (idLocalidad == -1)
             {
                 MessageBox.Show("La localidad no existe. Por favor, selecciónela de la lista.");
@@ -145,7 +155,7 @@ namespace CapaPresentacion
             }
             else
             {
-                MessageBox.Show("Error al registrar la visita. Por favor, inténtelo de nuevo.");
+                MessageBox.Show("Ya hay una visita programada para la fecha ingresada, por favor, verifique los datos.");
             }
 
 
@@ -200,11 +210,7 @@ namespace CapaPresentacion
                     {
                         lblID.Text = idVisita.ToString();
                     }
-                    else
-                    {
-                        // Manejar el caso en que el valor es DBNull
-                        MessageBox.Show("El ID de la visita no es válido.");
-                    }
+
                 }
             }
         }
@@ -269,6 +275,120 @@ namespace CapaPresentacion
         private void frmVisitas_FormClosed(object sender, FormClosedEventArgs e)
         {
             InstanciFrmL.EstadoBloqueado(true);
+        }
+
+        private void btnImprimier_Click(object sender, EventArgs e)
+        {
+            if (dgvVisitas.Rows.Count == 0)
+            {
+                MessageBox.Show("No hay datos para exportar.");
+                return;
+            }
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Archivos PDF (*.pdf)|*.pdf";
+                saveFileDialog.FileName = this.Text+".pdf";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    Document doc = new Document();
+                    try
+                    {
+                        PdfWriter.GetInstance(doc, new FileStream(saveFileDialog.FileName, FileMode.Create));
+                        doc.Open();
+
+                        // Agregar título encima de la tabla
+                        iTextSharp.text.Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
+                        Paragraph title = new Paragraph("Reporte de Visitas", titleFont);
+                        title.Alignment = Element.ALIGN_CENTER;
+                        title.SpacingAfter = 20f; // Espacio después del título
+                        doc.Add(title);
+
+
+                        // Diseño de la tabla (sin la columna ID)
+                        PdfPTable table = new PdfPTable(dgvVisitas.Columns.Count - 1); // Una columna menos
+                        table.WidthPercentage = 100;
+                        table.SpacingBefore = 10f;
+                        table.SpacingAfter = 10f;
+                        table.DefaultCell.Padding = 5;
+                        table.DefaultCell.BorderColor = BaseColor.LIGHT_GRAY;
+
+                        // Array de encabezados (sin ID)
+                        string[] headers = { "Fecha de Visita", "Lugar de Visita", "Responsable", "Estado" };
+
+                        // Estilo de los encabezados
+                        iTextSharp.text.Font headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
+
+                        // Encabezados de columna
+                        for (int i = 1; i < dgvVisitas.Columns.Count; i++) // Empezar desde la segunda columna
+                        {
+                            PdfPCell cell = new PdfPCell(new Phrase(headers[i - 1], headerFont)); // Ajustar índice
+                            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            table.AddCell(cell);
+                        }
+
+                        // Datos (con formato de fecha, alineación y cambio en "Completa")
+                        foreach (DataGridViewRow row in dgvVisitas.Rows)
+                        {
+                            if (row.IsNewRow) continue;
+
+                            for (int i = 1; i < row.Cells.Count; i++) // Empezar desde la segunda celda
+                            {
+                                DataGridViewCell cell = row.Cells[i];
+
+                                string cellValue;
+                                if (cell.OwningColumn.Name == "Estado")
+                                {
+                                    // Corrección del valor booleano
+                                    if (bool.TryParse(cell.Value?.ToString(), out bool completa))
+                                    {
+                                        cellValue = completa ? "Completada" : "No completada";
+                                    }
+                                    else
+                                    {
+                                        cellValue = "Desconocido"; // Valor por defecto si no es booleano
+                                    }
+                                }
+                                else if (cell.Value is DateTime date)
+                                {
+                                    cellValue = date.ToString("dd/MM/yyyy");
+                                }
+                                else
+                                {
+                                    cellValue = cell.Value?.ToString() ?? "";
+                                }
+
+                                PdfPCell dataCell = new PdfPCell(new Phrase(cellValue));
+                                dataCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                                table.AddCell(dataCell);
+                            }
+                        }
+
+                        doc.Add(table);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error al generar el PDF: {ex.Message}");
+                    }
+                    finally
+                    {
+                        doc.Close(); // Cerrar el documento ANTES de abrirlo
+
+                        // Abrir el PDF
+                        try
+                        {
+                            System.Diagnostics.Process.Start(saveFileDialog.FileName);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error al abrir el PDF: {ex.Message}");
+                        }
+
+                    }
+                }
+            }
         }
     }
 }

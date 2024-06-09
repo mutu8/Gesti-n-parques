@@ -31,15 +31,11 @@
             this.panelVisitas = new System.Windows.Forms.Panel();
             this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnLeft = new MaterialSkin.Controls.MaterialFloatingActionButton();
-            this.btnRight = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.panelVisitas.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelVisitas
             // 
-            this.panelVisitas.Controls.Add(this.btnLeft);
-            this.panelVisitas.Controls.Add(this.btnRight);
             this.panelVisitas.Controls.Add(this.materialFloatingActionButton1);
             this.panelVisitas.Controls.Add(this.flowLayoutPanel1);
             this.panelVisitas.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -76,38 +72,6 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1148, 592);
             this.flowLayoutPanel1.TabIndex = 25;
             // 
-            // btnLeft
-            // 
-            this.btnLeft.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnLeft.AnimateShowHideButton = true;
-            this.btnLeft.Depth = 0;
-            this.btnLeft.Icon = global::CapaPresentacion.Properties.Resources.left_chevron;
-            this.btnLeft.Location = new System.Drawing.Point(1115, 43);
-            this.btnLeft.Mini = true;
-            this.btnLeft.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnLeft.Name = "btnLeft";
-            this.btnLeft.Size = new System.Drawing.Size(40, 40);
-            this.btnLeft.TabIndex = 36;
-            this.btnLeft.Text = "materialFloatingActionButton2";
-            this.btnLeft.UseVisualStyleBackColor = true;
-            this.btnLeft.Click += new System.EventHandler(this.btnLeft_Click);
-            // 
-            // btnRight
-            // 
-            this.btnRight.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnRight.AnimateShowHideButton = true;
-            this.btnRight.Depth = 0;
-            this.btnRight.Icon = global::CapaPresentacion.Properties.Resources.right_arrow_angle;
-            this.btnRight.Location = new System.Drawing.Point(1161, 43);
-            this.btnRight.Mini = true;
-            this.btnRight.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnRight.Name = "btnRight";
-            this.btnRight.Size = new System.Drawing.Size(40, 40);
-            this.btnRight.TabIndex = 37;
-            this.btnRight.Text = "materialFloatingActionButton2";
-            this.btnRight.UseVisualStyleBackColor = true;
-            this.btnRight.Click += new System.EventHandler(this.btnRight_Click);
-            // 
             // frmPersonal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -128,7 +92,5 @@
         private System.Windows.Forms.Panel panelVisitas;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton1;
-        private MaterialSkin.Controls.MaterialFloatingActionButton btnLeft;
-        private MaterialSkin.Controls.MaterialFloatingActionButton btnRight;
     }
 }

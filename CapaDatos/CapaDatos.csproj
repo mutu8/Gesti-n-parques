@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conexion.cs" />
-    <Compile Include="datConversion.cs" />
     <Compile Include="datEmpleados.cs" />
     <Compile Include="datLocalidades.cs" />
     <Compile Include="datVisitas.cs" />

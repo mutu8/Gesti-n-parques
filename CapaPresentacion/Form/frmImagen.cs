@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CapaLogica;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using MaterialSkin;
@@ -23,16 +24,11 @@ namespace CapaPresentacion
 
         public frmLocalidades InstanciFrmL;
 
-        public double idLocalidad
-        {
-            get { return idLocalidad; }
-            set { idLocalidad = value; }
-        }
-
         private const string CLOUD_NAME = "do1flp47t";
         private const string API_KEY = "663888233627688";
         private const string API_SECRET = "yAIwkX4Apn-uBs4uHZSzVPGxil8";
         public string ImageUrl { get; set; }
+        public int idLocalidad { get; set; }
 
         private void InitializeCloudinary()
         {
@@ -238,6 +234,7 @@ namespace CapaPresentacion
         private void frmImagen_Load(object sender, EventArgs e)
         {
             CargarImagenDesdeUrl(ImageUrl, ImgCli);
+            this.Text = logLocalidades.Instancia.ObtenerNombreLocPorID(idLocalidad);
         }
 
         private void btnEliminarNube_Click(object sender, EventArgs e)

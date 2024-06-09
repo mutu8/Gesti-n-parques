@@ -43,8 +43,6 @@
             this.trackZoom = new System.Windows.Forms.TrackBar();
             this.label4 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.txtBusqueda = new System.Windows.Forms.TextBox();
-            this.lblBusqueda = new System.Windows.Forms.Label();
             this.btnAgregar = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.txtReferencia = new System.Windows.Forms.TextBox();
@@ -53,7 +51,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.txtDireccion = new System.Windows.Forms.TextBox();
             this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
-            this.btnBusqueda = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.cboUrb = new System.Windows.Forms.ComboBox();
@@ -207,30 +204,13 @@
             this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // txtBusqueda
-            // 
-            this.txtBusqueda.Location = new System.Drawing.Point(585, 463);
-            this.txtBusqueda.Name = "txtBusqueda";
-            this.txtBusqueda.Size = new System.Drawing.Size(208, 20);
-            this.txtBusqueda.TabIndex = 18;
-            // 
-            // lblBusqueda
-            // 
-            this.lblBusqueda.AutoSize = true;
-            this.lblBusqueda.BackColor = System.Drawing.Color.Transparent;
-            this.lblBusqueda.Location = new System.Drawing.Point(582, 447);
-            this.lblBusqueda.Name = "lblBusqueda";
-            this.lblBusqueda.Size = new System.Drawing.Size(55, 13);
-            this.lblBusqueda.TabIndex = 19;
-            this.lblBusqueda.Text = "Busqueda";
-            // 
             // btnAgregar
             // 
             this.btnAgregar.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.btnAgregar.ForeColor = System.Drawing.Color.White;
-            this.btnAgregar.Location = new System.Drawing.Point(684, 498);
+            this.btnAgregar.Location = new System.Drawing.Point(667, 454);
             this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(67, 29);
+            this.btnAgregar.Size = new System.Drawing.Size(78, 29);
             this.btnAgregar.TabIndex = 20;
             this.btnAgregar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnAgregar.UseVisualStyleBackColor = false;
@@ -303,20 +283,6 @@
             this.materialFloatingActionButton1.Text = "materialFloatingActionButton1";
             this.materialFloatingActionButton1.UseVisualStyleBackColor = true;
             this.materialFloatingActionButton1.Click += new System.EventHandler(this.materialFloatingActionButton1_Click);
-            // 
-            // btnBusqueda
-            // 
-            this.btnBusqueda.BackColor = System.Drawing.SystemColors.Control;
-            this.btnBusqueda.BackgroundImage = global::CapaPresentacion.Properties.Resources.Lupa;
-            this.btnBusqueda.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBusqueda.FlatAppearance.BorderSize = 0;
-            this.btnBusqueda.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBusqueda.Location = new System.Drawing.Point(802, 460);
-            this.btnBusqueda.Name = "btnBusqueda";
-            this.btnBusqueda.Size = new System.Drawing.Size(24, 23);
-            this.btnBusqueda.TabIndex = 28;
-            this.btnBusqueda.UseVisualStyleBackColor = false;
-            this.btnBusqueda.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnBusqueda_MouseClick);
             // 
             // label10
             // 
@@ -392,10 +358,7 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtReferencia);
-            this.Controls.Add(this.btnBusqueda);
             this.Controls.Add(this.btnAgregar);
-            this.Controls.Add(this.lblBusqueda);
-            this.Controls.Add(this.txtBusqueda);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.trackZoom);
             this.Controls.Add(this.btnRelieve);
@@ -412,6 +375,7 @@
             this.Name = "frmMapa";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Sizable = false;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMapa_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMapa_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trackZoom)).EndInit();
@@ -435,10 +399,7 @@
         private System.Windows.Forms.TrackBar trackZoom;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.TextBox txtBusqueda;
-        private System.Windows.Forms.Label lblBusqueda;
         private System.Windows.Forms.Button btnAgregar;
-        private System.Windows.Forms.Button btnBusqueda;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtReferencia;
         private System.Windows.Forms.Label label6;

@@ -22,8 +22,8 @@ namespace CapaPresentacion
         private List<UserControlEmpleado> allUserControlsEmpleados = new List<UserControlEmpleado>(); // Lista para almacenar todos los UserControls
 
         // Propiedades de Paginación
-        private int currentPage = 1;
-        private int itemsPerPage = 9; // Ajusta según sea necesario
+        public int currentPage = 1;
+        public int itemsPerPage = 9; // Ajusta según sea necesario
 
         public frmPersonal()
         {
@@ -50,13 +50,13 @@ namespace CapaPresentacion
         {
             CargarUserControlsEmpleados(); // Recargar la página actual
         }
-        private void CargarUserControlsEmpleados(int pageNumber = 1)
+        public void CargarUserControlsEmpleados()
         {
             try
             {
                 if (allUserControlsEmpleados.Count == 0)
                 {
-                    // 1. Obtener los datos de los empleados y crear los UserControls si no existen
+                    // Obtener los datos de los empleados y crear los UserControls si no existen
                     DataTable dtEmpleados = logEmleados.Instancia.ObtenerTodosLosEmpleados();
 
                     if (dtEmpleados == null || dtEmpleados.Rows.Count == 0)
@@ -78,16 +78,15 @@ namespace CapaPresentacion
                     }
                 }
 
-                int startIndex = (pageNumber - 1) * itemsPerPage;
-                int endIndex = Math.Min(startIndex + itemsPerPage, allUserControlsEmpleados.Count);
+                // Limpiar el FlowLayoutPanel
+                flowLayoutPanel1.Controls.Clear();
 
                 flowLayoutPanel1.SuspendLayout();
-                flowLayoutPanel1.Controls.Clear(); // Limpiar el FlowLayoutPanel
 
-                // 2. Agregar los UserControls correspondientes a la página actual
-                for (int i = startIndex; i < endIndex; i++)
+                // Agregar todos los UserControls al FlowLayoutPanel
+                foreach (var empleado in allUserControlsEmpleados)
                 {
-                    flowLayoutPanel1.Controls.Add(allUserControlsEmpleados[i]);
+                    flowLayoutPanel1.Controls.Add(empleado);
                 }
 
                 flowLayoutPanel1.ResumeLayout();
@@ -98,6 +97,8 @@ namespace CapaPresentacion
             }
         }
 
+
+
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)
         {
             if (!frmDatosAbierto)
@@ -105,7 +106,7 @@ namespace CapaPresentacion
                 // Si no está abierto, crear una instancia y mostrar el formulario secundario
                 frmDatosInstancia = new frmDatosPersonal();
                 frmDatosInstancia.textoBoton = "Agregar";
-
+                
                 // Centrar el formulario en la pantalla antes de mostrarlo
                 frmDatosInstancia.StartPosition = FormStartPosition.CenterScreen;
 
@@ -119,6 +120,7 @@ namespace CapaPresentacion
 
                 // Mostrar el formulario secundario
                 frmDatosInstancia.Show();
+                frmDatosInstancia.InstanciFrmE = this;
                 frmDatosAbierto = true; // Actualizar la bandera
             }
             else
@@ -141,23 +143,12 @@ namespace CapaPresentacion
 
         private void btnRight_Click(object sender, EventArgs e)
         {
-            // Calcular el número total de páginas
-            int totalPages = (int)Math.Ceiling((double)allUserControlsEmpleados.Count / itemsPerPage);
-
-            if (currentPage < totalPages)
-            {
-                currentPage++;
-                CargarUserControlsEmpleados(currentPage); // Cargar la siguiente página
-            }
+           
         }
 
         private void btnLeft_Click(object sender, EventArgs e)
         {
-            if (currentPage > 1)
-            {
-                currentPage--;
-                CargarUserControlsEmpleados(currentPage); // Cargar la página anterior
-            }
+           
         }
 
     }

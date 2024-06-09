@@ -112,7 +112,7 @@ namespace CapaPresentacion
                 catch (Exception ex)
                 {
                     // Manejo de excepciones: mostrar mensaje amigable al usuario
-                    MessageBox.Show("Error al agregar el empleado: " + ex.Message);
+                    MessageBox.Show("Ya hay un regitro con datos igual en la base de datos, por favor, verifique la información");
                 }
             }
             else if (btnAccion.Text == "Guardar")
@@ -120,7 +120,6 @@ namespace CapaPresentacion
                 try
                 {   
                     
-
                     // 3. Usar logEmpleados para modificar (lógica de negocio)
                     logEmleados.Instancia.ModificarEmpleado(empleadoId, esApoyo);
 

@@ -165,6 +165,7 @@
             this.btnPersonal.Name = "btnPersonal";
             this.btnPersonal.Size = new System.Drawing.Size(95, 87);
             this.btnPersonal.TabIndex = 2;
+            this.btnPersonal.Load += new System.EventHandler(this.btnPersonal_Load);
             // 
             // materialDivider1
             // 
@@ -265,9 +266,9 @@
         private System.Windows.Forms.Button btnCerrar;
         private System.Windows.Forms.Button btnMinimizar;
         private System.Windows.Forms.Panel BarraControl;
-        private System.Windows.Forms.Panel panelCentral;
         private ClasesForm.ucMenu btnHome;
         private ClasesForm.ucMenu btnPersonal;
         private MaterialSkin.Controls.MaterialDivider materialDivider1;
+        private System.Windows.Forms.Panel panelCentral;
     }
 }

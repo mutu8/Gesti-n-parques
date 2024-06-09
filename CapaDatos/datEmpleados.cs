@@ -37,13 +37,19 @@ namespace CapaDatos
                         command.ExecuteNonQuery();
                     }
                 }
-                catch (Exception ex)
+                catch (SqlException ex)
                 {
-                    // Manejar la excepción (registrar en un log, mostrar un mensaje, etc.)
-                    throw new Exception("Error al insertar el empleado: " + ex.Message);
+                    if (ex.Number == 50000) // Número de error personalizado definido por el RAISERROR del trigger
+                    {
+                        // El trigger ha lanzado un error de inserción duplicada
+                        throw new Exception("Error"+ ex);
+                    }
+                    
                 }
+ 
             }
         }
+
         public DataTable ObtenerTodosLosEmpleados()
         {
             DataTable dtEmpleados = new DataTable();
@@ -178,14 +184,14 @@ namespace CapaDatos
             {
                 connection.Open();
 
-                // Verificar si el empleado está asignado a alguna localidad
-                if (EmpleadoTieneLocalidadesAsignadas(empleadoId, connection))
+                // Verificar si el empleado está asignado a alguna visita
+                if (EmpleadoTieneVisitasAsignadas(empleadoId, connection))
                 {
-                    mensajeError = "El empleado está asignado a una o más localidades y no puede ser eliminado.";
+                    mensajeError = "El empleado tiene visitas asignadas y no puede ser eliminado.";
                     return false; // Indicar que la eliminación no fue exitosa
                 }
 
-                // Si no está asignado, proceder con la eliminación
+                // Si no tiene visitas asignadas, proceder con la eliminación
                 string queryEliminar = "DELETE FROM Empleados WHERE ID_Empleado = @EmpleadoId";
                 using (SqlCommand commandEliminar = new SqlCommand(queryEliminar, connection))
                 {
@@ -196,6 +202,19 @@ namespace CapaDatos
 
             return true; // Indicar que la eliminación fue exitosa
         }
+
+        // Método para verificar si el empleado tiene visitas asignadas
+        private bool EmpleadoTieneVisitasAsignadas(int empleadoId, SqlConnection connection)
+        {
+            string query = "SELECT COUNT(*) FROM Visitas WHERE ID_Empleado = @EmpleadoId";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@EmpleadoId", empleadoId);
+                int count = (int)command.ExecuteScalar();
+                return count > 0; // Devolver true si hay visitas asignadas, false en caso contrario
+            }
+        }
+
 
 
     }

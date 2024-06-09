@@ -25,7 +25,7 @@ namespace CapaLogica
             catch (Exception ex)
             {
                 // Manejo de excepciones (registrar en log, notificar al usuario, etc.)
-                throw new Exception("Error en la capa de lógica al insertar empleado: " + ex.Message);
+                throw new Exception("Error" + ex);
             }
         }
 

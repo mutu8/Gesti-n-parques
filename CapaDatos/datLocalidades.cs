@@ -78,6 +78,40 @@ namespace CapaDatos
             return sectores;
         }
 
+        public string ObtenerNombreLocalidadPorId(int idLocalidad)
+        {
+            string nombreLocalidad = string.Empty;
+
+            string query = @"
+        SELECT Nombre_Localidad 
+        FROM Localidades 
+        WHERE ID_Localidad = @ID_Localidad";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ID_Localidad", idLocalidad);
+
+                    try
+                    {
+                        connection.Open();
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            nombreLocalidad = result.ToString();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejar la excepción apropiadamente
+                        throw new Exception($"Error al obtener el nombre de la localidad por su ID ({idLocalidad}): {ex.Message}", ex);
+                    }
+                }
+            }
+
+            return nombreLocalidad;
+        }
 
 
 
@@ -178,18 +212,18 @@ namespace CapaDatos
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // Construimos la consulta dinámicamente para incluir o no el parámetro @IDEmpleado
-                string query = @"
-                INSERT INTO Detalles_Localidades (Descripcion, Referencias, Urbanizacion, Sector, Direccion, Latitud, Longitud, url_Localidad";
+                // Construir la consulta INSERT dinámicamente
+                string query = "INSERT INTO Detalles_Localidades (Descripcion, Referencias, Urbanizacion, Sector, Direccion, Latitud, Longitud, url_Localidad";
 
-                if (idEmpleado != 0) // Solo incluimos ID_Empleado si es mayor a cero
+                // Agregar ID_Empleado solo si el valor es mayor que cero
+                if (idEmpleado > 0)
                 {
                     query += ", ID_Empleado";
                 }
 
-                query += @")
-                VALUES (@Descripcion, @Referencias, @Urbanizacion, @Sector, @Direccion, @Latitud, @Longitud, @Url";
+                query += ") VALUES (@Descripcion, @Referencias, @Urbanizacion, @Sector, @Direccion, @Latitud, @Longitud, @Url";
 
+                // Agregar el parámetro ID_Empleado solo si el valor es mayor que cero
                 if (idEmpleado > 0)
                 {
                     query += ", @IDEmpleado";
@@ -208,7 +242,8 @@ namespace CapaDatos
                     command.Parameters.AddWithValue("@Longitud", longitud);
                     command.Parameters.AddWithValue("@Url", url ?? (object)DBNull.Value);
 
-                    if (idEmpleado > 0) // Solo agregamos el parámetro si es mayor a cero
+                    // Agregar el parámetro ID_Empleado solo si el valor es mayor que cero
+                    if (idEmpleado > 0)
                     {
                         command.Parameters.AddWithValue("@IDEmpleado", idEmpleado);
                     }
@@ -225,28 +260,44 @@ namespace CapaDatos
                     }
                 }
             }
+
             return newId;
         }
 
 
+
         public static void InsertarLocalidad(string nombreLocalidad, int idDetalleLocalidad)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                string query = @"
-            INSERT INTO Localidades (Nombre_Localidad, ID_Detalle_Localidad)
-            VALUES (@NombreLocalidad, @ID_Detalle_Localidad)";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.Parameters.AddWithValue("@NombreLocalidad", nombreLocalidad);
-                    command.Parameters.AddWithValue("@ID_Detalle_Localidad", idDetalleLocalidad);
+                    string query = @"
+              INSERT INTO Localidades (Nombre_Localidad, ID_Detalle_Localidad)
+              VALUES (@NombreLocalidad, @ID_Detalle_Localidad)";
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@NombreLocalidad", nombreLocalidad);
+                        command.Parameters.AddWithValue("@ID_Detalle_Localidad", idDetalleLocalidad);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 50000) // Número de error personalizado definido por el RAISERROR del trigger
+                {
+                    // El trigger ha lanzado un error de inserción duplicada
+                    throw new Exception("Error" + ex);
+                }
+
+            }
         }
+
+
 
         public (int, int) ObtenerIdLocalidadYDetallePorNombreYDireccion(string nombreLocalidad, string direccion)
         {

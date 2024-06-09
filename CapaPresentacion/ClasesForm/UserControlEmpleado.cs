@@ -127,17 +127,29 @@ namespace CapaPresentacion
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            // Obtener el ID del empleado
             int empleadoId = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(txtNombre.Text);
 
-            string mensajeError;
-            if (logEmleados.Instancia.EliminarEmpleado(empleadoId, out mensajeError))
+            // Confirmar la eliminación con el usuario
+            DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este empleado?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            // Verificar la respuesta del usuario
+            if (result == DialogResult.Yes)
             {
-                MessageBox.Show("Empleado eliminado correctamente.");
+                // Realizar la eliminación del empleado
+                string mensajeError;
+                if (logEmleados.Instancia.EliminarEmpleado(empleadoId, out mensajeError))
+                {
+                    MessageBox.Show("Empleado eliminado correctamente.");
+                    //InstanciFrmE.();
+                }
+                else
+                {
+                    MessageBox.Show(mensajeError); // Mostrar el mensaje de error específico
+                }
             }
-            else
-            {
-                MessageBox.Show(mensajeError); // Mostrar el mensaje de error específico
-            }
+
         }
+
     }
 }

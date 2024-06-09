@@ -25,11 +25,7 @@ namespace CapaPresentacion
         // Diccionario para almacenar las instancias de los UserControl
         private Dictionary<string, UserControlTarget> userControlsCache = new Dictionary<string, UserControlTarget>();
 
-        // Propiedades de Paginación
-        private int currentPage = 1;
-        private int itemsPerPage = 9; // Ajusta según sea necesario
-        private List<DataRow> allLocalidadesData; // Almacenar todos los datos
-       
+        public List<DataRow> allLocalidadesData; // Almacenar todos los datos
 
         public frmLocalidades()
         {
@@ -84,7 +80,7 @@ namespace CapaPresentacion
             }
         }
 
-        public void CargarLocalidadesEnPanel(int pageNumber)
+        public void CargarLocalidadesEnPanel()
         {
             try
             {
@@ -93,56 +89,45 @@ namespace CapaPresentacion
                     return; // Salir del método si no hay datos
                 }
 
-                int startIndex = (pageNumber - 1) * itemsPerPage;
-                int endIndex = Math.Min(startIndex + itemsPerPage, allLocalidadesData.Count);
-
                 flowLayoutPanel1.SuspendLayout();
+                flowLayoutPanel1.Controls.Clear(); // Limpiar el FlowLayoutPanel
 
-                // 1. Eliminar UserControls que ya no están en la página actual
-                for (int i = flowLayoutPanel1.Controls.Count - 1; i >= 0; i--)
+                // Obtener el tamaño visible del FlowLayoutPanel
+                int visibleWidth = flowLayoutPanel1.ClientSize.Width;
+                int visibleHeight = flowLayoutPanel1.ClientSize.Height;
+
+                // Calcular el tamaño de los UserControls basándose en el tamaño visible y el número de columnas
+                int numColumns = 2; // Número de columnas
+                int controlWidth = visibleWidth / numColumns - SystemInformation.VerticalScrollBarWidth; // Ancho del UserControl ajustado para tener en cuenta la barra de desplazamiento vertical
+                int controlHeight = 200; // Altura predeterminada del UserControl
+
+                // Ajustar las propiedades de margen y flujo del FlowLayoutPanel
+                flowLayoutPanel1.Padding = new Padding(0);
+                flowLayoutPanel1.Margin = new Padding(0);
+                flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
+
+                foreach (DataRow row in allLocalidadesData)
                 {
-                    UserControlTarget control = (UserControlTarget)flowLayoutPanel1.Controls[i];
-                    string key = control.NombreLocalidad + "-" + control.Direccion;
-
-                    // Verificar si la clave está dentro del rango de la página actual
-                    int controlIndex = allLocalidadesData.FindIndex(row =>
-                        row["Nombre_Localidad"].ToString() == control.NombreLocalidad &&
-                        row["Direccion"].ToString() == control.Direccion
-                    );
-
-                    if (controlIndex < startIndex || controlIndex >= endIndex)
-                    {
-                        flowLayoutPanel1.Controls.RemoveAt(i);
-                        userControlsCache.Remove(key);
-                        control.Dispose();
-                    }
-                }
-
-                // 2. Agregar nuevos UserControls para la página actual
-                for (int i = startIndex; i < endIndex; i++)
-                {
-                    DataRow row = allLocalidadesData[i];
-
                     // Verificar si los valores son NULL antes de usarlos
-                    string nombreLocalidad = row["Nombre_Localidad"]?.ToString() ?? string.Empty; // Valor predeterminado si es NULL
-                    string direccion = row["Direccion"]?.ToString() ?? string.Empty;           // Valor predeterminado si es NULL
-                    string url = row["url_Localidad"]?.ToString() ?? string.Empty;            // Valor predeterminado si es NULL
+                    string nombreLocalidad = row.Field<string>("Nombre_Localidad") ?? string.Empty;
+                    string direccion = row.Field<string>("Direccion") ?? string.Empty;
+                    string url = row.Field<string>("url_Localidad") ?? string.Empty;
 
                     string key = $"{nombreLocalidad}-{direccion}";
 
-                    if (!flowLayoutPanel1.Controls.ContainsKey(key))
+                    // Crear o recuperar UserControl del caché
+                    UserControlTarget userControl = GetOrCreateUserControl(key, () =>
                     {
-                        UserControlTarget userControl = GetOrCreateUserControl(key, () =>
-                        {
-                            var control = new UserControlTarget(this);
-                            control.SetLocalidadData(nombreLocalidad, direccion, url);
-                            return control;
-                        });
+                        var control = new UserControlTarget(this);
+                        control.SetLocalidadData(nombreLocalidad, direccion, url);
+                        control.Width = controlWidth;
+                        control.Height = controlHeight;
+                        control.Margin = new Padding(5); // Ajustar el margen del UserControl
+                        return control;
+                    });
 
-                        userControl.Anchor = AnchorStyles.Right | AnchorStyles.Left;
-                        userControl.Margin = new Padding(5);
-                        flowLayoutPanel1.Controls.Add(userControl);
-                    }
+                    userControl.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                    flowLayoutPanel1.Controls.Add(userControl);
                 }
 
                 flowLayoutPanel1.ResumeLayout();
@@ -156,15 +141,12 @@ namespace CapaPresentacion
         }
 
 
+
         public void RecargarPanel()
         {
-            CargarLocalidadesEnPanel(currentPage); // Recargar la página actual
+            CargarLocalidadesEnPanel(); // Recargar la página actual
         }
 
-        public void test() 
-        {
-            MessageBox.Show("TEST");
-        }
 
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)
         {
@@ -204,38 +186,13 @@ namespace CapaPresentacion
         private void frmLocalidades_Load(object sender, EventArgs e)
         {
             allLocalidadesData = logLocalidades.Instancia.ObtenerLocalidadesParaPanel().AsEnumerable().ToList();
-            CargarLocalidadesEnPanel(currentPage); // Cargar la página inicial
+            CargarLocalidadesEnPanel(); // Cargar la página inicial
         }
 
-        private void btnRight_Click(object sender, EventArgs e)
-        {
-            int totalPages = (int)Math.Ceiling((double)allLocalidadesData.Count / itemsPerPage);
-            if (currentPage < totalPages)
-            {
-                currentPage++;
-                RecargarPanel();
-            }
-        }
-
-        private void btnLeft_Click(object sender, EventArgs e)
-        {
-            if (currentPage > 1)
-            {
-                currentPage--;
-                RecargarPanel();
-            }
-        }
 
         private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
         {
-            // Calcular la página actual en función de la posición de desplazamiento
-            int newPage = currentPage;
 
-            if (newPage != currentPage)
-            {
-                currentPage = newPage;
-                CargarLocalidadesEnPanel(currentPage);
-            }
         }
     }
 }

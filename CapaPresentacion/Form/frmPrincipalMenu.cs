@@ -23,6 +23,8 @@ namespace CapaPresentacion
 {
     public partial class frmPrincipal : Form
     {
+        private frmLogin loginForm; // Variable para almacenar la instancia de frmLogin
+
         private bool mousePresionado;
         private Point mousePosicion;
         bool primerClic = true;
@@ -58,29 +60,6 @@ namespace CapaPresentacion
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-        private void CerrarOtrosFormularios()
-        {
-            // Obtener una lista de todos los formularios abiertos
-            FormCollection formulariosAbiertos = Application.OpenForms;
-
-            // Crear una lista para almacenar los formularios que se van a cerrar
-            List<Form> formulariosACerrar = new List<Form>();
-
-            // Iterar sobre los formularios abiertos y agregar a la lista los que se van a cerrar
-            foreach (Form formulario in formulariosAbiertos)
-            {
-                if (formulario != this && formulario.Name != "frmPrincipal")
-                {
-                    formulariosACerrar.Add(formulario);
-                }
-            }
-
-            // Cerrar los formularios en la lista
-            foreach (Form formulario in formulariosACerrar)
-            {
-                formulario.Close();
-            }
         }
 
         private void Menu_menuClick(object sender, EventArgs e)
@@ -253,7 +232,6 @@ namespace CapaPresentacion
         {
 
         }
-        private frmLogin loginForm; // Variable para almacenar la instancia de frmLogin
 
         private void Home_Load(object sender, EventArgs e)
         {
@@ -261,6 +239,11 @@ namespace CapaPresentacion
             {
                 loginForm.Close();
             }
+        }
+
+        private void btnPersonal_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
