@@ -1,23 +1,13 @@
-﻿using System;
+﻿using CapaLogica;
+using CapaPresentacion.ClasesForm;
+using CapaPresentación.Formularios;
+using MaterialSkin;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using CapaPresentacion.ClasesForm;
-using CapaPresentacion.Properties;
-using MaterialSkin;
-using System.Reflection.Emit;
-using CapaLogica;
-using System.IO;
-using System.Net;
-using CapaPresentacion;
-using static CapaLogica.FormUtil;
-using CapaPresentación.Formularios;
 
 namespace CapaPresentacion
 {
@@ -32,10 +22,10 @@ namespace CapaPresentacion
         List<ucMenu> menuButtons;
         MaterialSkinManager materialSkinManager;
         private string connectionString = logConexion.Instancia.ObtenerConexion();
-        public frmPrincipal()   
+        public frmPrincipal()
         {
             InitializeComponent();
-            menuButtons = new List<ucMenu>() {btnHome, btnPuntos, btnPersonal};
+            menuButtons = new List<ucMenu>() { btnHome, btnPuntos, btnPersonal };
             ClickMenu(menuButtons);
         }
 
@@ -60,6 +50,17 @@ namespace CapaPresentacion
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+    
+        private void botones(ucMenu btnHabilitado, ucMenu btnDeshabilitado)
+        {
+            if(btnHabilitado.Enabled == false) 
+            {
+                btnHabilitado.Enabled = true;
+                btnDeshabilitado.Enabled = false;
+            }
+
+            btnDeshabilitado.Enabled = false;
         }
 
         private void Menu_menuClick(object sender, EventArgs e)
@@ -103,18 +104,23 @@ namespace CapaPresentacion
             switch (_menuButton.Name)
             {
                 case "btnHome":
-                    activeMenu(btnHome, btnPuntos);
-                    activeMenu(btnHome, btnPersonal);
+                    btnPersonal.Enabled = true;
+                    btnPuntos.Enabled = true;
+
+                    activeMenu(btnHome, btnPuntos, btnPersonal);
+
                     // Limpiar los controles del panel central
                     LimpiarControles(panelCentral);
-                    // Aquí puedes agregar los controles necesarios para "Home"
+
                     break;
 
                 case "btnPuntos":
-                    activeMenu(btnPuntos, btnHome);
-                    activeMenu(btnPuntos, btnPersonal);
+                    activeMenu(btnPuntos, btnHome, btnPersonal);
+
                     // Crear una instancia del formulario secundario que deseas cargar
                     frmLocalidades f = new frmLocalidades();
+
+                    botones(btnPersonal, btnPuntos);
 
                     // Limpiar los controles del panel central
                     LimpiarControles(panelCentral);
@@ -127,10 +133,11 @@ namespace CapaPresentacion
                     break;
 
                 case "btnPersonal":
-                    activeMenu(btnPersonal, btnHome);
-                    activeMenu(btnPersonal, btnPuntos);
+                    activeMenu(btnPersonal, btnHome, btnPuntos);
                     // Crear una instancia del formulario secundario que deseas cargar
                     frmPersonal ff = new frmPersonal();
+
+                    botones(btnPuntos, btnPersonal);
 
                     // Limpiar los controles del panel central
                     LimpiarControles(panelCentral);
@@ -162,7 +169,7 @@ namespace CapaPresentacion
 
         }
 
-    
+
         private void btnMaximizar_Click(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Normal)
@@ -197,7 +204,7 @@ namespace CapaPresentacion
                 Location = new Point(nuevaPosicion.X - mousePosicion.X, nuevaPosicion.Y - mousePosicion.Y);
             }
         }
-    
+
 
         private void LimpiarControles(Control container)
         {

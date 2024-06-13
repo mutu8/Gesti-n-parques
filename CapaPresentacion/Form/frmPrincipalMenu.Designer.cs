@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPrincipal));
             this.panel5 = new System.Windows.Forms.Panel();
-            this.btnMaximizar = new System.Windows.Forms.Button();
             this.btnCerrar = new System.Windows.Forms.Button();
             this.btnMinimizar = new System.Windows.Forms.Button();
             this.BarraControl = new System.Windows.Forms.Panel();
@@ -53,28 +52,13 @@
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.Transparent;
-            this.panel5.Controls.Add(this.btnMaximizar);
             this.panel5.Controls.Add(this.btnCerrar);
             this.panel5.Controls.Add(this.btnMinimizar);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel5.Location = new System.Drawing.Point(1084, 0);
+            this.panel5.Location = new System.Drawing.Point(1117, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(117, 41);
+            this.panel5.Size = new System.Drawing.Size(84, 41);
             this.panel5.TabIndex = 0;
-            // 
-            // btnMaximizar
-            // 
-            this.btnMaximizar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.btnMaximizar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMaximizar.BackgroundImage")));
-            this.btnMaximizar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnMaximizar.FlatAppearance.BorderSize = 0;
-            this.btnMaximizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMaximizar.Location = new System.Drawing.Point(46, 5);
-            this.btnMaximizar.Name = "btnMaximizar";
-            this.btnMaximizar.Size = new System.Drawing.Size(28, 28);
-            this.btnMaximizar.TabIndex = 2;
-            this.btnMaximizar.UseVisualStyleBackColor = false;
-            this.btnMaximizar.Click += new System.EventHandler(this.btnMaximizar_Click);
             // 
             // btnCerrar
             // 
@@ -83,7 +67,7 @@
             this.btnCerrar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnCerrar.FlatAppearance.BorderSize = 0;
             this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCerrar.Location = new System.Drawing.Point(84, 6);
+            this.btnCerrar.Location = new System.Drawing.Point(45, 7);
             this.btnCerrar.Name = "btnCerrar";
             this.btnCerrar.Size = new System.Drawing.Size(28, 28);
             this.btnCerrar.TabIndex = 2;
@@ -98,7 +82,7 @@
             this.btnMinimizar.FlatAppearance.BorderSize = 0;
             this.btnMinimizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMinimizar.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnMinimizar.Location = new System.Drawing.Point(8, 5);
+            this.btnMinimizar.Location = new System.Drawing.Point(9, 6);
             this.btnMinimizar.Name = "btnMinimizar";
             this.btnMinimizar.Size = new System.Drawing.Size(28, 28);
             this.btnMinimizar.TabIndex = 0;
@@ -262,7 +246,6 @@
         private System.Windows.Forms.Panel panelBI;
         private System.Windows.Forms.Panel panelOpciones;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Button btnMaximizar;
         private System.Windows.Forms.Button btnCerrar;
         private System.Windows.Forms.Button btnMinimizar;
         private System.Windows.Forms.Panel BarraControl;

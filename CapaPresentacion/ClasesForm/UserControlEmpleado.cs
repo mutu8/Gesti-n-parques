@@ -1,15 +1,9 @@
 ﻿using CapaLogica;
-using CapaPresentación.Formularios;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CapaPresentacion
@@ -23,7 +17,7 @@ namespace CapaPresentacion
 
 
         public frmPersonal InstanciFrmE;
-  
+
         public string Nombre
         {
             get => txtNombre.Text;
@@ -38,7 +32,7 @@ namespace CapaPresentacion
         }
         public UserControlEmpleado(frmPersonal frm)
         {
-            InitializeComponent(); 
+            InitializeComponent();
             this.InstanciFrmE = frm;
         }
 
@@ -141,7 +135,8 @@ namespace CapaPresentacion
                 if (logEmleados.Instancia.EliminarEmpleado(empleadoId, out mensajeError))
                 {
                     MessageBox.Show("Empleado eliminado correctamente.");
-                    //InstanciFrmE.();
+                    InstanciFrmE.seDebeActualizar = true;
+                    InstanciFrmE.CargarUserControlsEmpleados();
                 }
                 else
                 {

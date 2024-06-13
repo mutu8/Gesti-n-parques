@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using CapaLogica;
+﻿using CapaLogica;
 using CapaPresentación.Formularios;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using MaterialSkin;
 using MaterialSkin.Controls;
+using System;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 namespace CapaPresentacion
 {
@@ -288,7 +280,7 @@ namespace CapaPresentacion
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.Filter = "Archivos PDF (*.pdf)|*.pdf";
-                saveFileDialog.FileName = this.Text+".pdf";
+                saveFileDialog.FileName = this.Text + ".pdf";
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {

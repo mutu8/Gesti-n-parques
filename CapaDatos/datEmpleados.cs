@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CapaDatos
 {
@@ -42,11 +38,11 @@ namespace CapaDatos
                     if (ex.Number == 50000) // Número de error personalizado definido por el RAISERROR del trigger
                     {
                         // El trigger ha lanzado un error de inserción duplicada
-                        throw new Exception("Error"+ ex);
+                        throw new Exception("Error" + ex);
                     }
-                    
+
                 }
- 
+
             }
         }
 

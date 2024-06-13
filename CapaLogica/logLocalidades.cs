@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CapaLogica
@@ -16,16 +13,18 @@ namespace CapaLogica
         {
             get { return logLocalidades._instancia; }
         }
-        public List<string> ObtenerUrbanizaciones()
-        {
-            // Utiliza la instancia de datLocalidades para cargar las urbanizaciones
-            return datLocalidades.Instancia.CargarUrbanizaciones();
-        }
 
-        public List<string> ObtenerSectores()
+        public DataTable ObtenerTodasLasLocalidades()
         {
-            // Utiliza la instancia de datLocalidades para cargar las sectores
-            return datLocalidades.Instancia.CargarSectores();
+            try
+            {
+                return datLocalidades.Instancia.ObtenerTodasLasLocalidades();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error en la capa de lógica al obtener las localidades: " + ex.Message);
+                Console.WriteLine(ex.Message);
+            }
         }
         public string ObtenerNombreLocPorID(int idLocalidad)
         {
@@ -95,8 +94,8 @@ namespace CapaLogica
                 MessageBox.Show("Error al actualizar URL de imagen: " + ex.Message);
             }
         }
-        
-        public bool tieneVisitasPendientes(int idLocalidad) 
+
+        public bool tieneVisitasPendientes(int idLocalidad)
         {
             return datLocalidades.Instancia.TieneVisitasPendientes(idLocalidad);
         }

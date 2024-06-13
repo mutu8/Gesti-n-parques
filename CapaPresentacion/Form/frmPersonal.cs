@@ -1,14 +1,7 @@
 ﻿using CapaLogica;
-using CapaPresentación.Formularios;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Forms;
 
 
@@ -21,9 +14,7 @@ namespace CapaPresentacion
 
         private List<UserControlEmpleado> allUserControlsEmpleados = new List<UserControlEmpleado>(); // Lista para almacenar todos los UserControls
 
-        // Propiedades de Paginación
-        public int currentPage = 1;
-        public int itemsPerPage = 9; // Ajusta según sea necesario
+        public bool seDebeActualizar = false;
 
         public frmPersonal()
         {
@@ -46,17 +37,14 @@ namespace CapaPresentacion
         {
             return esApoyo ? "Apoyo" : "728";
         }
-        public void RecargarPanel()
-        {
-            CargarUserControlsEmpleados(); // Recargar la página actual
-        }
+
         public void CargarUserControlsEmpleados()
         {
             try
             {
-                if (allUserControlsEmpleados.Count == 0)
+                if (allUserControlsEmpleados.Count == 0 || seDebeActualizar)
                 {
-                    // Obtener los datos de los empleados y crear los UserControls si no existen
+                    // Obtener los datos de los empleados y crear los UserControls si no existen o si se debe actualizar
                     DataTable dtEmpleados = logEmleados.Instancia.ObtenerTodosLosEmpleados();
 
                     if (dtEmpleados == null || dtEmpleados.Rows.Count == 0)
@@ -64,6 +52,9 @@ namespace CapaPresentacion
                         MessageBox.Show("Error: No hay datos de empleados disponibles.");
                         return;
                     }
+
+                    // Limpiar la lista de UserControls antes de agregar los nuevos
+                    allUserControlsEmpleados.Clear();
 
                     foreach (DataRow row in dtEmpleados.Rows)
                     {
@@ -76,26 +67,29 @@ namespace CapaPresentacion
 
                         allUserControlsEmpleados.Add(nuevoEmpleado); // Agregar a la lista
                     }
+
+                    // Marcar que ya no es necesario actualizar
+                    seDebeActualizar = false;
                 }
 
-                // Limpiar el FlowLayoutPanel
-                flowLayoutPanel1.Controls.Clear();
+                // Limpiar y actualizar el FlowLayoutPanel proporcionado (siempre se ejecuta)
+                panelPersonal.Controls.Clear();
+                panelPersonal.SuspendLayout();
 
-                flowLayoutPanel1.SuspendLayout();
-
-                // Agregar todos los UserControls al FlowLayoutPanel
                 foreach (var empleado in allUserControlsEmpleados)
                 {
-                    flowLayoutPanel1.Controls.Add(empleado);
+                    panelPersonal.Controls.Add(empleado);
                 }
 
-                flowLayoutPanel1.ResumeLayout();
+                panelPersonal.ResumeLayout();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar los empleados: " + ex.Message);
             }
         }
+
+
 
 
 
@@ -106,29 +100,26 @@ namespace CapaPresentacion
                 // Si no está abierto, crear una instancia y mostrar el formulario secundario
                 frmDatosInstancia = new frmDatosPersonal();
                 frmDatosInstancia.textoBoton = "Agregar";
-                
+                frmDatosInstancia.InstanciFrmE = this;
                 // Centrar el formulario en la pantalla antes de mostrarlo
                 frmDatosInstancia.StartPosition = FormStartPosition.CenterScreen;
-
                 // Actualizar la bandera cuando el formulario se cierre
                 frmDatosInstancia.FormClosed += (s, args) =>
                 {
                     frmDatosAbierto = false;
-                    // Recargar el panel cuando el formulario se cierra
-                    //RecargarPanel();
                 };
-
+                EstadoBloqueado(false);
                 // Mostrar el formulario secundario
                 frmDatosInstancia.Show();
-                frmDatosInstancia.InstanciFrmE = this;
                 frmDatosAbierto = true; // Actualizar la bandera
+
             }
             else
             {
                 // Si ya está abierto, enfocar el formulario secundario
                 frmDatosInstancia.Focus();
             }
-            
+
         }
 
         private void panelVisitas_Paint(object sender, PaintEventArgs e)
@@ -143,12 +134,12 @@ namespace CapaPresentacion
 
         private void btnRight_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void btnLeft_Click(object sender, EventArgs e)
         {
-           
+
         }
 
     }

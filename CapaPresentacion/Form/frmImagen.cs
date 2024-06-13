@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using CapaLogica;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using MaterialSkin.Controls;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using CapaLogica;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using MaterialSkin;
-using MaterialSkin.Controls;
 
 namespace CapaPresentacion
 {
@@ -41,7 +35,7 @@ namespace CapaPresentacion
             InitializeComponent();
             InitializeCloudinary();
             this.MaximizeBox = false; // Desactivar el botón de maximizar
-           
+
         }
 
         private void CargarImagenDesdeUrl(string url, PictureBox pictureBox)
@@ -122,7 +116,7 @@ namespace CapaPresentacion
             {
                 MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-                
+
         }
 
 
@@ -211,7 +205,7 @@ namespace CapaPresentacion
                 MessageBox.Show("No hay ninguna imagen para eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-     
+
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {

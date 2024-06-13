@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using CapaLogica;
+using CapaPresentacion;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
-using CapaPresentacion;
-using CapaLogica;
-using MaterialSkin;
 using MaterialSkin.Controls;
-using CapaEntidad;
-using Newtonsoft.Json.Linq;
-using System.Net.Http;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Windows.Forms;
 
 
 
@@ -28,9 +20,9 @@ namespace CapaPresentación.Formularios
         GMarkerGoogle marker;
         GMapOverlay markerOverlay;
 
-        private double _latInicial = -8.103034453133846;
-        private double _lngInicial = -79.01766201952019;
-        
+        private double _latInicial = -8.1439091;
+        private double _lngInicial = -79.0561504;
+
 
         public double LatInicial
         {
@@ -55,8 +47,7 @@ namespace CapaPresentación.Formularios
         public decimal Latitud { get; set; }
         public decimal Longitud { get; set; }
         public string ImageUrl { get; set; }
-        public string Empleado { get; set; }
-        public int idEmpleado {  get; set; }
+        public int idEmpleado { get; set; }
         public frmMapa()
         {
             InitializeComponent();
@@ -88,7 +79,7 @@ namespace CapaPresentación.Formularios
             // Cargar los datos
             cboUrb.Items.AddRange(urbanizaciones.ToArray());
         }
-      
+
         private void CargarComboBoxSectores()
         {
             List<string> sectores = new List<string>
@@ -145,7 +136,7 @@ namespace CapaPresentación.Formularios
         {
             return logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(cboEncargado.Text);
         }
-        
+
         private void Form1_Load(object sender, EventArgs e)
         {
             // Creando las dimensiones del GMAPCONTROL(herramienta)
@@ -163,7 +154,7 @@ namespace CapaPresentación.Formularios
             marker = new GMarkerGoogle(new PointLatLng(LatInicial, LngInicial), GMarkerGoogleType.blue);
             markerOverlay.Markers.Add(marker); // Agregamos al mapa
 
-            
+
 
             // Agregamos un tooltip de texto a los marcadores
             marker.ToolTipMode = MarkerTooltipMode.Always;
@@ -289,8 +280,8 @@ namespace CapaPresentación.Formularios
             decimal latitud = Convert.ToDecimal(txtlatitud.Text);
             decimal longitud = Convert.ToDecimal(txtlongitud.Text);
             int idEmpleado = conversorNombreEmpleado();
-            
-            switch (btnAgregar.Text)   
+
+            switch (btnAgregar.Text)
             {
                 case "Agregar":
 
@@ -326,7 +317,7 @@ namespace CapaPresentación.Formularios
                     {
                         // Obtener el ID de la localidad y el ID del detalle de localidad
                         (int idLocalidad, int idDetalleLocalidad) = logLocalidades.Instancia.ObtenerId(Nombre_Localidad, Direccion);
-                        
+
                         //Actualizar los detalles de localidades en la base de datos
                         logLocalidades.Instancia.ActualizarDetallesLocalidades(idDetalleLocalidad, nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, idEmpleado);
 
@@ -378,7 +369,7 @@ namespace CapaPresentación.Formularios
 
         private void cboEncargado_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         private void frmMapa_FormClosed(object sender, FormClosedEventArgs e)

@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using CapaLogica;
-using MaterialSkin;
+﻿using CapaLogica;
 using MaterialSkin.Controls;
+using System;
+using System.Windows.Forms;
 
 namespace CapaPresentacion
 {
@@ -38,7 +30,7 @@ namespace CapaPresentacion
             get { return cboRol.Text; }
             set { cboRol.Text = value; }
         }
-        public bool esApoyo 
+        public bool esApoyo
         {
             get; set;
         }
@@ -62,7 +54,7 @@ namespace CapaPresentacion
         {
             btnAccion.Text = textoBoton;
 
-            if(btnAccion.Text == "Guardar") 
+            if (btnAccion.Text == "Guardar")
             {
                 txtNombre.Enabled = false;
                 txtApellidos.Enabled = false;
@@ -71,7 +63,7 @@ namespace CapaPresentacion
 
         private bool Cargo(ComboBox cbo)
         {
-            if(cbo.Text == "Apoyo") { return true; }
+            if (cbo.Text == "Apoyo") { return true; }
             else return false;
         }
 
@@ -106,8 +98,10 @@ namespace CapaPresentacion
                     MessageBox.Show("Empleado agregado correctamente.");
                     txtApellidos.Clear();
                     txtApellidos.Clear();
-                    cboRol.SelectedIndex = -1; 
+                    cboRol.SelectedIndex = -1;
 
+                    InstanciFrmE.seDebeActualizar = true;
+                    InstanciFrmE.CargarUserControlsEmpleados();
                 }
                 catch (Exception ex)
                 {
@@ -118,14 +112,16 @@ namespace CapaPresentacion
             else if (btnAccion.Text == "Guardar")
             {
                 try
-                {   
-                    
+                {
+
                     // 3. Usar logEmpleados para modificar (lógica de negocio)
                     logEmleados.Instancia.ModificarEmpleado(empleadoId, esApoyo);
 
                     // 4. Mensaje de éxito y limpiar controles
                     MessageBox.Show("Empleado modificado correctamente.");
-                    // ... (Limpiar controles si es necesario)
+
+                    InstanciFrmE.seDebeActualizar = true;
+                    InstanciFrmE.CargarUserControlsEmpleados();
 
                 }
                 catch (Exception ex)

@@ -95,6 +95,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnGuardar);
             this.Name = "frmImagen";
+            this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmImagen_FormClosed);
             this.Load += new System.EventHandler(this.frmImagen_Load);

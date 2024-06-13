@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using CapaLogica;
+using CapaPresentación.Formularios;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using MaterialSkin.Controls;
-using MaterialSkin;
-using CapaPresentación.Formularios;
-using System.IO;
-using System.Net;
-using CapaLogica;
 
 namespace CapaPresentacion
 {
@@ -47,7 +39,7 @@ namespace CapaPresentacion
 
 
         // Método para establecer los datos de la localidad
-        public void SetLocalidadData(string nombre, string direccion, string imageUrl) 
+        public void SetLocalidadData(string nombre, string direccion, string imageUrl)
         {
             NombreLocalidad = nombre;
             Direccion = direccion;
@@ -67,10 +59,10 @@ namespace CapaPresentacion
                 }
             }
         }
-        
+
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)
         {
-            
+
             // Intentar abrir el formulario frmMapa usando la función general
             if (FormUtil.TryOpenForm(() =>
             {
@@ -98,12 +90,12 @@ namespace CapaPresentacion
                     frmMapa.ImageUrl = row["url_Localidad"] != DBNull.Value ? row["url_Localidad"].ToString() : string.Empty;
                     frmMapa.idEmpleado = row["ID_Empleado"] != DBNull.Value ? Convert.ToInt32(row["ID_Empleado"]) : 0; // Obtener el ID del empleado como entero
 
-                    if (frmMapa.Latitud != 0 && frmMapa.Longitud != 0)  
+                    if (frmMapa.Latitud != 0 && frmMapa.Longitud != 0)
                     {
                         frmMapa.LatInicial = (double)frmMapa.Latitud;
                         frmMapa.LngInicial = (double)frmMapa.Longitud;
                     }
-                    
+
                 }
                 else
                 {
@@ -121,16 +113,16 @@ namespace CapaPresentacion
 
         private void materialFloatingActionButton2_Click(object sender, EventArgs e)
         {
-            
+
             // Intentar abrir el formulario frmImagen usando la función general
             if (FormUtil.TryOpenForm(() =>
             {
                 var frmImagenInstancia = new frmImagen();
                 frmImagenInstancia.InstanciFrmL = InstanciFrmL;
                 frmImagenInstancia.idLocalidad = logLocalidades.Instancia.ObtenerIdLocalidad(txtNombre.Text, txtDireccion.Text);
-                
+
                 InstanciFrmL.EstadoBloqueado(false);
-                
+
                 // Obtener datos de la localidad usando la capa de lógica
                 DataTable dtDetallesLocalidad = logLocalidades.ObtenerDetallesLocalidadPorNombreYDireccion(txtNombre.Text, txtDireccion.Text);
                 if (dtDetallesLocalidad.Rows.Count > 0)
@@ -174,12 +166,12 @@ namespace CapaPresentacion
 
             // Llamar al método para obtener ambos IDs
             var ids = logLocalidades.Instancia.ObtenerId(nombreLocalidad, direccion);
-            
+
             // Acceder a los IDs obtenidos
             int idLocalidad = ids.Item1;
             int idDetalleLocalidad = ids.Item2;
 
-            if (logLocalidades.Instancia.tieneVisitasPendientes(idLocalidad)) 
+            if (logLocalidades.Instancia.tieneVisitasPendientes(idLocalidad))
             {
                 MessageBox.Show("TIENE VISITAS PENDIENTES");
                 return;
@@ -196,12 +188,13 @@ namespace CapaPresentacion
                 {
                     // El usuario confirmó la eliminación
                     logLocalidades.Instancia.EliminarLocalidadYDetalle(idLocalidad, idDetalleLocalidad);
-                    //MessageBox.Show("ELIMINACIÓN COMPLETADA");
-                    InstanciFrmL.RecargarPanel();
+                    MessageBox.Show("ELIMINACIÓN COMPLETADA");
+                    InstanciFrmL.seDebeActualizar=true;
+                    InstanciFrmL.CargarLocalidadesEnPanel();
                 }
                 else
                 {
-         
+
                 }
             }
         }
@@ -234,13 +227,12 @@ namespace CapaPresentacion
 
             // Si no hay instancias abiertas, proceder a abrir el formulario
             if (FormUtil.TryOpenForm(() =>
-            {                
+            {
                 frm.StartPosition = FormStartPosition.CenterScreen;
-             
                 return frm;
             }))
             {
-         
+
             }
         }
 

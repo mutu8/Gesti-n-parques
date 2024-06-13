@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using CapaPresentacion;
+using System;
 using System.Runtime.InteropServices;
-using CapaPresentacion;
+using System.Windows.Forms;
 
 namespace CapaPresentación.Formularios
 {
@@ -35,7 +28,7 @@ namespace CapaPresentación.Formularios
 
         private void btnMaximizar_Click(object sender, EventArgs e)
         {
-           if(WindowState == FormWindowState.Normal)
+            if (WindowState == FormWindowState.Normal)
             {
                 WindowState = FormWindowState.Maximized;
             }
@@ -47,7 +40,7 @@ namespace CapaPresentación.Formularios
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-          Application.Exit();
+            Application.Exit();
         }
 
         private void OnMouseDown(object sender, MouseEventArgs e)
@@ -66,6 +59,6 @@ namespace CapaPresentación.Formularios
             frm.Show();
         }
 
-       
+
     }
 }

@@ -118,17 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnMaximizar.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DAAACwwBP0AiyAAAARdJREFUaEPt2UEKwkAMheGeQ9feXReeTAT1AjWRLkr4m84UsngyD77NI5020pWd
-        5nmWhqUSLJVgqQRLJVgqwXLlYu7mY/ZC12f24ve8mbOh63+wXPjDP01r6IxMax5mcwksF/7L94TOyPTk
-        auiMdIGW12YdOiPTk5ehM9IFYmimUgzNjAUqxdDMWKBSDM2MBSrF0Mx/LyABSyVYKsFSCZZKsFSCpRIs
-        lWCpBEslWCrBUgmWixiaqRRDM2OBSjE0MxaoFEMzY4FKMTTz3wu8TU/ojExPDv256x8XekJnZHpy6O91
-        /6jgHxdaQ2dkWuPPcDJ0RrqA8wt9+5bXia7P7MXv6ffefHiHpRIslWCpBEslWCrBUsc8fQHamxbxWMvx
-        igAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="btnCerrar.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL

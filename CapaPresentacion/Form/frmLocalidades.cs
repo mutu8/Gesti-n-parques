@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Forms;
-using CapaLogica;
-using CapaPresentación;
+﻿using CapaLogica;
 using CapaPresentación.Formularios;
-using MaterialSkin;
-using MaterialSkin.Controls;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace CapaPresentacion
 {
@@ -22,8 +13,9 @@ namespace CapaPresentacion
         private bool frmMapaAbierto = false;
         private frmMapa frmMapaInstancia;
 
-        // Diccionario para almacenar las instancias de los UserControl
-        private Dictionary<string, UserControlTarget> userControlsCache = new Dictionary<string, UserControlTarget>();
+        public bool seDebeActualizar = false;
+
+        private List<UserControlTarget> allUserControlsLocalidades = new List<UserControlTarget>();
 
         public List<DataRow> allLocalidadesData; // Almacenar todos los datos
 
@@ -45,15 +37,6 @@ namespace CapaPresentacion
             materialFloatingActionButton1.Enabled = bloquear;
         }
 
-        // Método para obtener o crear UserControl
-        private UserControlTarget GetOrCreateUserControl(string key, Func<UserControlTarget> createControl)
-        {
-            if (!userControlsCache.ContainsKey(key))
-            {
-                userControlsCache[key] = createControl();
-            }
-            return userControlsCache[key];
-        }
 
         private void btnMapa_MouseClick(object sender, MouseEventArgs e)
         {
@@ -80,77 +63,81 @@ namespace CapaPresentacion
             }
         }
 
+
         public void CargarLocalidadesEnPanel()
         {
             try
             {
-                if (allLocalidadesData == null || allLocalidadesData.Count == 0)
+                // 1. Verificar si es necesario actualizar (antes de cargar datos)
+                if (allUserControlsLocalidades.Count > 0 && !seDebeActualizar)
                 {
-                    return; // Salir del método si no hay datos
+                    return; // No hay cambios, salimos temprano
                 }
 
+                // 2. Obtener datos (considerar carga asíncrona si es necesario)
+                DataTable dtLocalidades = logLocalidades.Instancia.ObtenerTodasLasLocalidades();
+
+                if (dtLocalidades == null || dtLocalidades.Rows.Count == 0)
+                {
+                    MessageBox.Show("Error: No hay datos de localidades disponibles.");
+                    return;
+                }
+
+                // 3. Reutilizar o crear UserControls
+                int existingControls = allUserControlsLocalidades.Count;
+                int newControlsNeeded = dtLocalidades.Rows.Count - existingControls;
+
+                for (int i = 0; i < newControlsNeeded; i++)
+                {
+                    allUserControlsLocalidades.Add(new UserControlTarget(this));
+                }
+
+                // 4. Actualizar datos en los UserControls existentes
+                for (int i = 0; i < dtLocalidades.Rows.Count; i++)
+                {
+                    DataRow row = dtLocalidades.Rows[i];
+                    UserControlTarget userControl = allUserControlsLocalidades[i];
+
+                    userControl.NombreLocalidad = row["Nombre_Localidad"].ToString();
+                    userControl.Direccion = row["Direccion"].ToString();
+                    // userControl.Url = row["url_Localidad"].ToString(); // Si tienes la columna
+
+                    // Establecer el tamaño fijo de los UserControls (incluyendo padding)
+                    userControl.Width = 500; // Ancho sin padding
+                    userControl.Height = 169;
+                    userControl.Margin = new Padding(5); // Padding de 5 en todos los lados
+                }
+
+                // 5. Configurar el FlowLayoutPanel (una sola vez)
                 flowLayoutPanel1.SuspendLayout();
-                flowLayoutPanel1.Controls.Clear(); // Limpiar el FlowLayoutPanel
+                flowLayoutPanel1.Controls.Clear(); // Limpiar antes de agregar
 
-                // Obtener el tamaño visible del FlowLayoutPanel
-                int visibleWidth = flowLayoutPanel1.ClientSize.Width;
-                int visibleHeight = flowLayoutPanel1.ClientSize.Height;
-
-                // Calcular el tamaño de los UserControls basándose en el tamaño visible y el número de columnas
-                int numColumns = 2; // Número de columnas
-                int controlWidth = visibleWidth / numColumns - SystemInformation.VerticalScrollBarWidth; // Ancho del UserControl ajustado para tener en cuenta la barra de desplazamiento vertical
-                int controlHeight = 200; // Altura predeterminada del UserControl
-
-                // Ajustar las propiedades de margen y flujo del FlowLayoutPanel
-                flowLayoutPanel1.Padding = new Padding(0);
-                flowLayoutPanel1.Margin = new Padding(0);
-                flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
-
-                foreach (DataRow row in allLocalidadesData)
+                foreach (var userControl in allUserControlsLocalidades)
                 {
-                    // Verificar si los valores son NULL antes de usarlos
-                    string nombreLocalidad = row.Field<string>("Nombre_Localidad") ?? string.Empty;
-                    string direccion = row.Field<string>("Direccion") ?? string.Empty;
-                    string url = row.Field<string>("url_Localidad") ?? string.Empty;
-
-                    string key = $"{nombreLocalidad}-{direccion}";
-
-                    // Crear o recuperar UserControl del caché
-                    UserControlTarget userControl = GetOrCreateUserControl(key, () =>
+                    // Evitar duplicados
+                    if (!flowLayoutPanel1.Controls.Contains(userControl))
                     {
-                        var control = new UserControlTarget(this);
-                        control.SetLocalidadData(nombreLocalidad, direccion, url);
-                        control.Width = controlWidth;
-                        control.Height = controlHeight;
-                        control.Margin = new Padding(5); // Ajustar el margen del UserControl
-                        return control;
-                    });
-
-                    userControl.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                    flowLayoutPanel1.Controls.Add(userControl);
+                        flowLayoutPanel1.Controls.Add(userControl);
+                    }
                 }
 
-                flowLayoutPanel1.ResumeLayout();
+                flowLayoutPanel1.ResumeLayout(); // Reanudar el diseño
+
+                seDebeActualizar = false; // Reiniciar la bandera
             }
             catch (Exception ex)
             {
-                // Manejar cualquier otra excepción que pueda ocurrir
-                MessageBox.Show("Error al cargar las localidades: " + ex.Message);
-                // Puedes registrar el error en un archivo de registro o realizar otras acciones apropiadas
+                MessageBox.Show($"Error al cargar las localidades: {ex.Message}"); // Interpolación de cadenas
             }
         }
 
 
 
-        public void RecargarPanel()
-        {
-            CargarLocalidadesEnPanel(); // Recargar la página actual
-        }
 
 
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)
         {
-            
+
             if (!frmMapaAbierto)
             {
                 // Si no está abierto, crear una instancia y mostrar el formulario secundario
@@ -167,8 +154,6 @@ namespace CapaPresentacion
                 frmMapaInstancia.FormClosed += (s, args) =>
                 {
                     frmMapaAbierto = false;
-                    // Recargar el panel cuando el formulario se cierra
-                    RecargarPanel();
                 };
 
                 // Mostrar el formulario secundario
@@ -186,7 +171,13 @@ namespace CapaPresentacion
         private void frmLocalidades_Load(object sender, EventArgs e)
         {
             allLocalidadesData = logLocalidades.Instancia.ObtenerLocalidadesParaPanel().AsEnumerable().ToList();
-            CargarLocalidadesEnPanel(); // Cargar la página inicial
+            
+            // Verificar si el panel ya contiene elementos
+            if (PanelLocalidades.Controls.Count == 0)
+            {
+                allLocalidadesData = logLocalidades.Instancia.ObtenerLocalidadesParaPanel().AsEnumerable().ToList();
+                CargarLocalidadesEnPanel();
+            }
         }
 
 

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace CapaDatos
 {
@@ -13,7 +10,7 @@ namespace CapaDatos
         #region Singleton
         private static string connectionString = Conexion.Instancia.obtenerConexion();
         private static readonly datLocalidades _instancia = new datLocalidades();
-        
+
         public static datLocalidades Instancia
         {
             get { return datLocalidades._instancia; }
@@ -117,6 +114,28 @@ namespace CapaDatos
 
         #endregion
         // Método estático para obtener las localidades desde la base de datos
+
+        public DataTable ObtenerTodasLasLocalidades()
+        {
+            DataTable dtLocalidades = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(connectionString)) 
+            {
+                string query = @"
+            SELECT l.Nombre_Localidad, dl.Direccion 
+            FROM Localidades l
+            JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    dtLocalidades.Load(reader);
+                }
+            }
+
+            return dtLocalidades;
+        }
         public static DataTable ObtenerLocalidades()
         {
             DataTable dtLocalidades = new DataTable();
