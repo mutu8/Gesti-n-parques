@@ -37,8 +37,8 @@
             this.BarraIzquierda = new CapaPresentacion.ClasesForm.Gradient_SidebarPanel();
             this.panelOpciones = new System.Windows.Forms.Panel();
             this.btnPersonal = new CapaPresentacion.ClasesForm.ucMenu();
-            this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
             this.btnPuntos = new CapaPresentacion.ClasesForm.ucMenu();
+            this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
             this.panelBS = new System.Windows.Forms.Panel();
             this.btnHome = new CapaPresentacion.ClasesForm.ucMenu();
             this.panelBI = new System.Windows.Forms.Panel();
@@ -142,26 +142,13 @@
             this.btnPersonal.BackColor = System.Drawing.Color.Transparent;
             this.btnPersonal.BorderColor = System.Drawing.Color.Transparent;
             this.btnPersonal.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPersonal.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnPersonal.Icon = global::CapaPresentacion.Properties.Resources.user_avatar;
+            this.btnPersonal.Icon = global::CapaPresentacion.Properties.Resources.user__12_;
             this.btnPersonal.Location = new System.Drawing.Point(0, 107);
             this.btnPersonal.Menu = "Personal";
             this.btnPersonal.Name = "btnPersonal";
             this.btnPersonal.Size = new System.Drawing.Size(95, 87);
             this.btnPersonal.TabIndex = 2;
             this.btnPersonal.Load += new System.EventHandler(this.btnPersonal_Load);
-            // 
-            // materialDivider1
-            // 
-            this.materialDivider1.BackColor = System.Drawing.Color.Transparent;
-            this.materialDivider1.Depth = 0;
-            this.materialDivider1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.materialDivider1.Location = new System.Drawing.Point(0, 90);
-            this.materialDivider1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialDivider1.Name = "materialDivider1";
-            this.materialDivider1.Size = new System.Drawing.Size(95, 17);
-            this.materialDivider1.TabIndex = 0;
-            this.materialDivider1.Text = "materialDivider1";
             // 
             // btnPuntos
             // 
@@ -177,6 +164,18 @@
             this.btnPuntos.Size = new System.Drawing.Size(95, 90);
             this.btnPuntos.TabIndex = 0;
             this.btnPuntos.Load += new System.EventHandler(this.btnPuntos_Load);
+            // 
+            // materialDivider1
+            // 
+            this.materialDivider1.BackColor = System.Drawing.Color.Transparent;
+            this.materialDivider1.Depth = 0;
+            this.materialDivider1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialDivider1.Location = new System.Drawing.Point(0, 90);
+            this.materialDivider1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialDivider1.Name = "materialDivider1";
+            this.materialDivider1.Size = new System.Drawing.Size(95, 17);
+            this.materialDivider1.TabIndex = 0;
+            this.materialDivider1.Text = "materialDivider1";
             // 
             // panelBS
             // 

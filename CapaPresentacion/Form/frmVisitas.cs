@@ -41,7 +41,6 @@ namespace CapaPresentacion
             frm.CargarEmpleadosEnComboBox(cboEncargado);
 
             dateTimePicker1.MinDate = DateTime.Today;
-            dateTimePicker1.MinDate = DateTime.Today.AddDays(1);
             cboEncargado.Text = logVisitas.Instancia.ObtenerNombreCompletoEmpleadoPorIdLocalidad(idLocalidad);
 
             this.Text = logLocalidades.Instancia.ObtenerNombreLocPorID(idLocalidad);
@@ -133,6 +132,13 @@ namespace CapaPresentacion
                 return;
             }
 
+            // Validar si el ComboBox de empleado está vacío
+            if (string.IsNullOrWhiteSpace(cboEncargado.Text))
+            {
+                MessageBox.Show("Por favor, seleccione un empleado de la lista.");
+                return;
+            }
+
             int idEmpleado = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(cboEncargado.Text);
 
             // 2. Insertar la visita
@@ -150,7 +156,6 @@ namespace CapaPresentacion
                 MessageBox.Show("Ya hay una visita programada para la fecha ingresada, por favor, verifique los datos.");
             }
 
-
             // Obtener el tamaño actual del formulario
             Size tamañoActual = this.Size;
 
@@ -166,6 +171,7 @@ namespace CapaPresentacion
 
             btnAgregar.Visible = true;
         }
+
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {

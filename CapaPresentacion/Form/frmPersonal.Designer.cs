@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panelVisitas = new System.Windows.Forms.Panel();
+            this.materialTextBox1 = new MaterialSkin.Controls.MaterialTextBox();
             this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panelVisitas.SuspendLayout();
@@ -36,6 +37,7 @@
             // 
             // panelVisitas
             // 
+            this.panelVisitas.Controls.Add(this.materialTextBox1);
             this.panelVisitas.Controls.Add(this.materialFloatingActionButton1);
             this.panelVisitas.Controls.Add(this.flowLayoutPanel1);
             this.panelVisitas.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -45,12 +47,33 @@
             this.panelVisitas.TabIndex = 0;
             this.panelVisitas.Paint += new System.Windows.Forms.PaintEventHandler(this.panelVisitas_Paint);
             // 
+            // materialTextBox1
+            // 
+            this.materialTextBox1.AnimateReadOnly = false;
+            this.materialTextBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.materialTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.materialTextBox1.Depth = 0;
+            this.materialTextBox1.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialTextBox1.LeadingIcon = null;
+            this.materialTextBox1.Location = new System.Drawing.Point(109, 42);
+            this.materialTextBox1.MaxLength = 50;
+            this.materialTextBox1.MouseState = MaterialSkin.MouseState.OUT;
+            this.materialTextBox1.Multiline = false;
+            this.materialTextBox1.Name = "materialTextBox1";
+            this.materialTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
+            this.materialTextBox1.Size = new System.Drawing.Size(146, 36);
+            this.materialTextBox1.TabIndex = 35;
+            this.materialTextBox1.Text = "";
+            this.materialTextBox1.TrailingIcon = null;
+            this.materialTextBox1.UseTallSize = false;
+            this.materialTextBox1.TextChanged += new System.EventHandler(this.materialTextBox1_TextChanged);
+            // 
             // materialFloatingActionButton1
             // 
             this.materialFloatingActionButton1.AnimateShowHideButton = true;
             this.materialFloatingActionButton1.Depth = 0;
-            this.materialFloatingActionButton1.Icon = global::CapaPresentacion.Properties.Resources.plus_pequeno;
-            this.materialFloatingActionButton1.Location = new System.Drawing.Point(53, 43);
+            this.materialFloatingActionButton1.Icon = global::CapaPresentacion.Properties.Resources.plus__4_;
+            this.materialFloatingActionButton1.Location = new System.Drawing.Point(53, 38);
             this.materialFloatingActionButton1.Mini = true;
             this.materialFloatingActionButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFloatingActionButton1.Name = "materialFloatingActionButton1";
@@ -92,5 +115,6 @@
         private System.Windows.Forms.Panel panelVisitas;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton1;
+        private MaterialSkin.Controls.MaterialTextBox materialTextBox1;
     }
 }

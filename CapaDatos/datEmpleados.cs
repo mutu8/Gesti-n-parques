@@ -163,15 +163,7 @@ namespace CapaDatos
                 }
             }
         }
-        public static bool EmpleadoTieneLocalidadesAsignadas(int empleadoId, SqlConnection connection)
-        {
-            string query = "SELECT COUNT(*) FROM Detalles_Localidades WHERE ID_Empleado = @EmpleadoId";
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@EmpleadoId", empleadoId);
-                return (int)command.ExecuteScalar() > 0;
-            }
-        }
+
         public bool EliminarEmpleado(int empleadoId, out string mensajeError)
         {
             mensajeError = ""; // Inicializar el mensaje de error como vacío
@@ -209,6 +201,28 @@ namespace CapaDatos
                 int count = (int)command.ExecuteScalar();
                 return count > 0; // Devolver true si hay visitas asignadas, false en caso contrario
             }
+        }
+
+        public DataTable ObtenerEmpleadosFiltrados(string filtro)
+        {
+            DataTable dtEmpleados = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Nueva consulta que concatena Nombres y Apellidos
+                string query = @"SELECT * FROM Empleados
+                         WHERE CONCAT(Nombres, ' ', Apellidos) LIKE @Filtro";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Filtro", "%" + filtro + "%");
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    dtEmpleados.Load(reader);
+                }
+            }
+
+            return dtEmpleados;
         }
 
 

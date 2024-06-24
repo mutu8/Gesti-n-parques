@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvVisitas = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,8 +48,18 @@
             // 
             // dgvVisitas
             // 
+            this.dgvVisitas.AllowUserToAddRows = false;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvVisitas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvVisitas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvVisitas.Location = new System.Drawing.Point(21, 110);
+            this.dgvVisitas.MultiSelect = false;
             this.dgvVisitas.Name = "dgvVisitas";
             this.dgvVisitas.Size = new System.Drawing.Size(434, 304);
             this.dgvVisitas.TabIndex = 0;
@@ -171,7 +182,7 @@
             this.btnImprimier.AnimateShowHideButton = true;
             this.btnImprimier.BackColor = System.Drawing.Color.Transparent;
             this.btnImprimier.Depth = 0;
-            this.btnImprimier.Icon = global::CapaPresentacion.Properties.Resources.printer__1_1;
+            this.btnImprimier.Icon = global::CapaPresentacion.Properties.Resources.printer__3_;
             this.btnImprimier.Location = new System.Drawing.Point(326, 67);
             this.btnImprimier.Mini = true;
             this.btnImprimier.MouseState = MaterialSkin.MouseState.HOVER;
@@ -185,7 +196,7 @@
             // 
             this.btnUpdate.AnimateShowHideButton = true;
             this.btnUpdate.Depth = 0;
-            this.btnUpdate.Icon = global::CapaPresentacion.Properties.Resources.check_mark;
+            this.btnUpdate.Icon = global::CapaPresentacion.Properties.Resources.done;
             this.btnUpdate.Location = new System.Drawing.Point(369, 67);
             this.btnUpdate.Mini = true;
             this.btnUpdate.MouseState = MaterialSkin.MouseState.HOVER;
@@ -199,7 +210,7 @@
             // 
             this.btnAgregar.AnimateShowHideButton = true;
             this.btnAgregar.Depth = 0;
-            this.btnAgregar.Icon = global::CapaPresentacion.Properties.Resources.plus_pequeno;
+            this.btnAgregar.Icon = global::CapaPresentacion.Properties.Resources.plus__4_;
             this.btnAgregar.Location = new System.Drawing.Point(415, 67);
             this.btnAgregar.Mini = true;
             this.btnAgregar.MouseState = MaterialSkin.MouseState.HOVER;

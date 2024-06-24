@@ -20,10 +20,10 @@ namespace CapaDatos
             int? idEmpleado = null; // Valor por defecto en caso de no encontrar ningún resultado
 
             string query = @"
-    SELECT dl.ID_Empleado 
-    FROM Localidades l
-    JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
-    WHERE l.ID_Localidad = @ID_Localidad";
+            SELECT dl.ID_Empleado 
+            FROM Localidades l
+            JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
+            WHERE l.ID_Localidad = @ID_Localidad";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -89,7 +89,6 @@ namespace CapaDatos
             return nombreCompleto;
         }
 
-        // Método para obtener el nombre completo del empleado por ID de la localidad
         // Método para obtener el nombre completo del empleado por ID de la localidad
         public string ObtenerNombreCompletoEmpleadoPorIdLocalidad(int idLocalidad)
         {
@@ -250,5 +249,214 @@ namespace CapaDatos
                 }
             }
         }
+        public DataTable ListarVisitasParaDgv(DateTime fechaActual) // Solo recibe la fecha actual
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = @"
+                SELECT 
+                    v.Fecha_Visita,
+                    l.Nombre_Localidad,
+                    CONCAT(e.Nombres, ' ', e.Apellidos) AS NombreEmpleado,
+                    v.Estado
+                FROM Visitas v
+                INNER JOIN Detalles_Localidades dl ON v.ID_Localidad = dl.ID_Detalle_Localidad
+                INNER JOIN Localidades l ON dl.ID_Detalle_Localidad = l.ID_Detalle_Localidad
+                INNER JOIN Empleados e ON v.ID_Empleado = e.ID_Empleado
+                WHERE v.Fecha_Visita = @FechaActual"; // Filtrar solo por fecha actual
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@FechaActual", fechaActual);
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            adapter.Fill(dt);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejo de excepciones (registrar, mostrar mensaje, etc.)
+                    throw; // Re-lanzar la excepción para que sea manejada en capas superiores
+                }
+            }
+            return dt;
+        }
+
+        public DataTable ListarEmpleados()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = @"
+                        SELECT ID_Empleado, CONCAT(Nombres, ' ', Apellidos) AS NombreCompleto
+                        FROM Empleados";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(dt);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejo de excepciones
+                    throw;
+                }
+            }
+            return dt;
+        }
+
+        public DataTable ObtenerLocalidadesConEmpleados()
+        {
+            DataTable dt = new DataTable();
+
+            string query = @"
+            SELECT l.ID_Localidad
+            FROM Localidades l
+            JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
+            WHERE dl.ID_Empleado IS NOT NULL";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            adapter.Fill(dt);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Error al obtener localidades con empleados: " + ex.Message, ex);
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public DataTable ObtenerLocalidadesConEmpleados2()
+        {
+            DataTable dt = new DataTable();
+
+            string query = @"
+    SELECT l.ID_Localidad, l.Nombre_Localidad, 
+           ISNULL(CONCAT(e.Nombres, ' ', e.Apellidos), 'Sin Asignar') AS NombreEmpleado, 
+           ISNULL(e.ID_Empleado, 0) AS ID_Empleado
+    FROM Localidades l
+    LEFT JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
+    LEFT JOIN Empleados e ON dl.ID_Empleado = e.ID_Empleado";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            adapter.Fill(dt);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Error al obtener localidades con empleados: " + ex.Message, ex);
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+
+
+
+        public bool GenerarVisitasParaTodasLasLocalidadesConEmpleados(DateTime fechaVisita, bool estado)
+        {
+            DataTable dtLocalidades = ObtenerLocalidadesConEmpleados();
+            bool exitoGlobal = true;
+
+            foreach (DataRow row in dtLocalidades.Rows)
+            {
+                int idLocalidad = Convert.ToInt32(row["ID_Localidad"]);
+                int? idEmpleado = ObtenerIdEmpleadoPorIdLocalidad(idLocalidad);
+
+                // Solo intenta insertar visita si hay un idEmpleado válido
+                if (idEmpleado.HasValue)
+                {
+                    // Verificar si ya existe una visita activa para esta fecha, localidad e idEmpleado
+                    bool visitaActiva = ExisteVisitaActivaParaFechaLocalidadYEmpleado(fechaVisita, idLocalidad, idEmpleado.Value);
+
+                    if (!visitaActiva)
+                    {
+                        bool exito = InsertarVisita(fechaVisita, estado, idLocalidad, idEmpleado.Value);
+                        if (!exito)
+                        {
+                            exitoGlobal = false;
+                        }
+                    }
+                    else
+                    {
+                        // Opcional: Manejar la situación de visita existente (registrando un log, por ejemplo)
+                        Console.WriteLine($"Ya existe una visita activa para la localidad {idLocalidad} " +
+                                          $"en la fecha {fechaVisita} para el empleado {idEmpleado.Value}");
+                        // No modificar exitoGlobal en este caso
+                    }
+                }
+                // Si idEmpleado es null, simplemente continúa con la siguiente localidad
+            }
+
+            return exitoGlobal;
+        }
+
+        // Método para verificar si ya existe una visita activa para una fecha, localidad e idEmpleado específicos
+        private bool ExisteVisitaActivaParaFechaLocalidadYEmpleado(DateTime fechaVisita, int idLocalidad, int idEmpleado)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = @"
+                SELECT COUNT(*)
+                FROM Visitas
+                WHERE Fecha_Visita = @fechaVisita
+                  AND ID_Localidad = @idLocalidad
+                  AND ID_Empleado = @idEmpleado
+                  AND Estado = 1"; // Estado = 1 indica que la visita está activa
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@fechaVisita", fechaVisita);
+                        command.Parameters.AddWithValue("@idLocalidad", idLocalidad);
+                        command.Parameters.AddWithValue("@idEmpleado", idEmpleado);
+
+                        int count = (int)command.ExecuteScalar();
+                        return count > 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejo de excepciones (registrar el error, mostrar un mensaje, etc.)
+                    Console.WriteLine($"Error al verificar la existencia de visita activa para la fecha {fechaVisita}, " +
+                                      $"localidad {idLocalidad} y empleado {idEmpleado}: {ex.Message}");
+                    throw; // Re-lanzar la excepción para que sea manejada en la capa superior
+                }
+            }
+        }
+        
     }
+
 }

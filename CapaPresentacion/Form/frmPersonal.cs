@@ -1,7 +1,9 @@
 ﻿using CapaLogica;
+using MaterialSkin.Controls;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 
 
@@ -38,49 +40,44 @@ namespace CapaPresentacion
             return esApoyo ? "Apoyo" : "728";
         }
 
-        public void CargarUserControlsEmpleados()
+        public void CargarUserControlsEmpleados(string filtro = "")
         {
             try
             {
-                if (allUserControlsEmpleados.Count == 0 || seDebeActualizar)
+                DataTable dtEmpleados;
+
+                // Obtener datos de empleados (todos o filtrados)
+                if (string.IsNullOrEmpty(filtro))
                 {
-                    // Obtener los datos de los empleados y crear los UserControls si no existen o si se debe actualizar
-                    DataTable dtEmpleados = logEmleados.Instancia.ObtenerTodosLosEmpleados();
-
-                    if (dtEmpleados == null || dtEmpleados.Rows.Count == 0)
-                    {
-                        MessageBox.Show("Error: No hay datos de empleados disponibles.");
-                        return;
-                    }
-
-                    // Limpiar la lista de UserControls antes de agregar los nuevos
-                    allUserControlsEmpleados.Clear();
-
-                    foreach (DataRow row in dtEmpleados.Rows)
-                    {
-                        UserControlEmpleado nuevoEmpleado = new UserControlEmpleado(this);
-                        nuevoEmpleado.Nombre = row["Nombres"].ToString() + " " + row["Apellidos"].ToString();
-                        nuevoEmpleado.Rol = CargoInverso((bool)row["esApoyo"]);
-                        // ... (Otras propiedades que tenga tu UserControl, como ID, foto, etc.)
-                        nuevoEmpleado.Anchor = AnchorStyles.Right | AnchorStyles.Left;
-                        nuevoEmpleado.Margin = new Padding(5);
-
-                        allUserControlsEmpleados.Add(nuevoEmpleado); // Agregar a la lista
-                    }
-
-                    // Marcar que ya no es necesario actualizar
-                    seDebeActualizar = false;
+                    dtEmpleados = logEmleados.Instancia.ObtenerTodosLosEmpleados(); // Obtener todos los empleados
+                    seDebeActualizar = false; // Reiniciar la bandera después de cargar
+                }
+                else
+                {
+                    dtEmpleados = logEmleados.Instancia.ObtenerEmpleadosFiltrados(filtro); // Obtener empleados filtrados
                 }
 
-                // Limpiar y actualizar el FlowLayoutPanel proporcionado (siempre se ejecuta)
+                // Limpiar la lista de UserControls y crear nuevos basados en los datos obtenidos
+                allUserControlsEmpleados.Clear();
+                foreach (DataRow row in dtEmpleados.Rows)
+                {
+                    UserControlEmpleado nuevoEmpleado = new UserControlEmpleado(this);
+                    nuevoEmpleado.Nombre = row["Nombres"].ToString() + " " + row["Apellidos"].ToString();
+                    nuevoEmpleado.Rol = CargoInverso((bool)row["esApoyo"]);
+                    // ... (Otras propiedades que tenga tu UserControl, como ID, foto, etc.)
+                    nuevoEmpleado.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+                    nuevoEmpleado.Margin = new Padding(5);
+
+                    allUserControlsEmpleados.Add(nuevoEmpleado);
+                }
+
+                // Actualizar el FlowLayoutPanel
                 panelPersonal.Controls.Clear();
                 panelPersonal.SuspendLayout();
-
                 foreach (var empleado in allUserControlsEmpleados)
                 {
                     panelPersonal.Controls.Add(empleado);
                 }
-
                 panelPersonal.ResumeLayout();
             }
             catch (Exception ex)
@@ -88,6 +85,7 @@ namespace CapaPresentacion
                 MessageBox.Show("Error al cargar los empleados: " + ex.Message);
             }
         }
+
 
 
 
@@ -142,5 +140,10 @@ namespace CapaPresentacion
 
         }
 
+        private void materialTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = materialTextBox1.Text;
+            CargarUserControlsEmpleados(filtro); // Recargar con el filtro aplicado
+        }
     }
 }

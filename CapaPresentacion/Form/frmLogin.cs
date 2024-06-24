@@ -7,6 +7,8 @@ namespace CapaPresentación.Formularios
 {
     public partial class frmLogin : Form
     {
+        private int intentosFallidos = 0; // Contador de intentos fallidos
+
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HTCAPTION = 0x2;
         [DllImport("User32.dll")]
@@ -18,6 +20,7 @@ namespace CapaPresentación.Formularios
         {
             InitializeComponent();
             this.btnMaximizar.Visible = false;
+            this.KeyPreview = true; // Habilitar la captura de eventos de teclado en el formulario
         }
 
 
@@ -54,11 +57,37 @@ namespace CapaPresentación.Formularios
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            this.Hide();
-            frmPrincipal frm = new frmPrincipal();
-            frm.Show();
+            string usuarioIngresado = textBox1.Text;
+            string claveIngresada = textBox2.Text;
+
+            // Validar si los campos están vacíos
+            if (string.IsNullOrEmpty(usuarioIngresado) || string.IsNullOrEmpty(claveIngresada))
+            {
+                MessageBox.Show("Por favor, ingrese tanto el usuario como la contraseña.");
+                return; // Salir del método sin contar como intento fallido
+            }
+
+            // Si los campos no están vacíos, continuar con la validación de credenciales
+            if (usuarioIngresado == "admin" && claveIngresada == "12345678")
+            {
+                this.Hide();
+                frmPrincipal frm = new frmPrincipal();
+                frm.Show();
+                intentosFallidos = 0;
+            }
+            else
+            {
+                intentosFallidos++;
+                MessageBox.Show("Usuario o contraseña incorrectos. Intento " + intentosFallidos + " de 3.");
+
+                if (intentosFallidos >= 3)
+                {
+                    MessageBox.Show("Has excedido el número máximo de intentos. El sistema se cerrará.");
+                    Application.Exit();
+                }
+            }
         }
 
-
+       
     }
 }

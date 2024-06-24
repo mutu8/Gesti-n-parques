@@ -34,11 +34,11 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtRol = new System.Windows.Forms.TextBox();
             this.btnDelete = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.btnSettings = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtRol = new System.Windows.Forms.TextBox();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -99,6 +99,28 @@
             this.panel3.Size = new System.Drawing.Size(480, 169);
             this.panel3.TabIndex = 15;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label2.Location = new System.Drawing.Point(166, 86);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(28, 15);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Rol:";
+            // 
+            // txtRol
+            // 
+            this.txtRol.BackColor = System.Drawing.Color.White;
+            this.txtRol.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtRol.Enabled = false;
+            this.txtRol.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRol.Location = new System.Drawing.Point(248, 82);
+            this.txtRol.Name = "txtRol";
+            this.txtRol.Size = new System.Drawing.Size(215, 19);
+            this.txtRol.TabIndex = 12;
+            // 
             // btnDelete
             // 
             this.btnDelete.Depth = 0;
@@ -131,35 +153,13 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox1.Image = global::CapaPresentacion.Properties.Resources.user;
+            this.pictureBox1.Image = global::CapaPresentacion.Properties.Resources.user__10_;
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(134, 145);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label2.Location = new System.Drawing.Point(166, 86);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(28, 15);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Rol:";
-            // 
-            // txtRol
-            // 
-            this.txtRol.BackColor = System.Drawing.Color.White;
-            this.txtRol.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtRol.Enabled = false;
-            this.txtRol.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRol.Location = new System.Drawing.Point(248, 82);
-            this.txtRol.Name = "txtRol";
-            this.txtRol.Size = new System.Drawing.Size(215, 19);
-            this.txtRol.TabIndex = 12;
             // 
             // UserControlEmpleado
             // 

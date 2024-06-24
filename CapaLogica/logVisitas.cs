@@ -41,5 +41,26 @@ namespace CapaLogica
                 throw new Exception("Error al obtener el nombre completo del empleado por ID de la localidad desde logVisitas", ex);
             }
         }
+        public DataTable ListarVisitasParaDgv(DateTime fechaActual)
+        {
+            return datVisitas.Instancia.ListarVisitasParaDgv(fechaActual);
+        }
+
+        public DataTable ListarEmpleados()
+        {
+            return datVisitas.Instancia.ListarEmpleados();
+        }
+        public DataTable ObtenerLocalidadesConEmpleados()
+        {
+            return datVisitas.Instancia.ObtenerLocalidadesConEmpleados();
+        }
+        public DataTable ObtenerLocalidadesConEmpleados2()
+        {
+            return datVisitas.Instancia.ObtenerLocalidadesConEmpleados2();
+        }
+        public bool GenerarVisitasParaTodasLasLocalidadesConEmpleados(DateTime fechaVisita, bool estado)
+        {
+            return datVisitas.Instancia.GenerarVisitasParaTodasLasLocalidadesConEmpleados(fechaVisita, estado);
+        }
     }
 }

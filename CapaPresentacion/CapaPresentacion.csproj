@@ -177,6 +177,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form\frmHomeVisitas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmHomeVisitas.Designer.cs">
+      <DependentUpon>frmHomeVisitas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\frmLocalidades.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -252,6 +258,9 @@
     <EmbeddedResource Include="ClasesForm\UserControlTarget.resx">
       <DependentUpon>UserControlTarget.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmHomeVisitas.resx">
+      <DependentUpon>frmHomeVisitas.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\frmDatosPersonal.resx">
       <DependentUpon>frmDatosPersonal.cs</DependentUpon>
     </EmbeddedResource>
@@ -310,12 +319,6 @@
     <None Include="Resources\Azur Lane.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Lupa.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Plus.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\CapaEntidad\CapaEntidad.csproj">
       <Project>{7a42d61e-7b6b-4c57-8b6c-c0cd0e5b20b5}</Project>
       <Name>CapaEntidad</Name>
@@ -326,34 +329,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-marcador-de-mapa-90.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\marcador-de-posicion.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\marcador-de-posicion %281%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\plus-pequeno.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\mapas-y-banderas.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\mapas-y-banderass.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\visitor.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\visitor %281%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\visitor %282%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\No-Image-Placeholder.svg.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ajustes-deslizadores.png" />
@@ -365,37 +341,28 @@
     <None Include="Resources\edit-image.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Captura de pantalla 2024-05-29 003503.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\left-chevron.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\right-arrow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\right-arrow-angle.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\user-avatar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\user.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\check-mark.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\park.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\printer %281%29.png" />
+    <None Include="Resources\plus.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\printer.png" />
+    <None Include="Resources\printer %283%29.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\printer %281%291.png" />
+    <None Include="Resources\done.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user %2810%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user %2812%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\plus %284%29.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />

@@ -15,64 +15,32 @@ namespace CapaDatos
         {
             get { return datLocalidades._instancia; }
         }
-        public List<string> CargarUrbanizaciones()
+
+        #endregion
+
+        public DataTable ObtenerLocalidadesFiltradas(string filtro)
         {
-            List<string> urbanizaciones = new List<string>();
+            DataTable dtLocalidades = new DataTable();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT Nombre_Urbanizacion FROM Urbanizaciones";
-                SqlCommand command = new SqlCommand(query, connection);
+                // Consulta SQL con JOIN y filtro en Nombre_Localidad y Direccion
+                string query = @"
+            SELECT L.Nombre_Localidad, DL.Direccion 
+            FROM Localidades L
+            INNER JOIN Detalles_Localidades DL ON L.ID_Detalle_Localidad = DL.ID_Detalle_Localidad
+            WHERE L.Nombre_Localidad LIKE @Filtro OR DL.Direccion LIKE @Filtro";
 
-                try
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    command.Parameters.AddWithValue("@Filtro", "%" + filtro + "%"); // Usar LIKE para búsqueda parcial
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        string nombreUrbanizacion = reader["Nombre_Urbanizacion"].ToString();
-                        urbanizaciones.Add(nombreUrbanizacion);
-                    }
-                    reader.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error al cargar urbanizaciones: " + ex.Message);
+                    dtLocalidades.Load(reader);
                 }
             }
 
-            return urbanizaciones;
-        }
-
-        public List<string> CargarSectores()
-        {
-            List<string> sectores = new List<string>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = "SELECT Nombre_Sector FROM Sectores";
-
-                try
-                {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand(query, connection);
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        string nombreSector = reader["Nombre_Sector"].ToString();
-                        sectores.Add(nombreSector);
-                    }
-
-                    reader.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error al cargar sectores: " + ex.Message);
-                }
-            }
-
-            return sectores;
+            return dtLocalidades;
         }
 
         public string ObtenerNombreLocalidadPorId(int idLocalidad)
@@ -110,11 +78,6 @@ namespace CapaDatos
             return nombreLocalidad;
         }
 
-
-
-        #endregion
-        // Método estático para obtener las localidades desde la base de datos
-
         public DataTable ObtenerTodasLasLocalidades()
         {
             DataTable dtLocalidades = new DataTable();
@@ -136,25 +99,7 @@ namespace CapaDatos
 
             return dtLocalidades;
         }
-        public static DataTable ObtenerLocalidades()
-        {
-            DataTable dtLocalidades = new DataTable();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = "SELECT Nombre_Localidad FROM Localidades";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    dtLocalidades.Load(reader);
-                }
-            }
-
-            return dtLocalidades;
-        }
-
+      
         public static DataTable ObtenerLocalidadesConDetalles()
         {
             DataTable dtLocalidades = new DataTable();
@@ -579,7 +524,41 @@ namespace CapaDatos
             }
         }
 
+        public void ActualizarEmpleadoEnLocalidad(int idLocalidad, int idEmpleado)
+        {
+            string query = @"
+            UPDATE Detalles_Localidades
+            SET ID_Empleado = @ID_Empleado
+            WHERE ID_Detalle_Localidad = (
+                SELECT ID_Detalle_Localidad
+                FROM Localidades
+                WHERE ID_Localidad = @ID_Localidad
+            );";
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ID_Localidad", idLocalidad);
+                    command.Parameters.AddWithValue("@ID_Empleado", idEmpleado);
+
+                    try
+                    {
+                        connection.Open();
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected == 0)
+                        {
+                            throw new Exception($"No se encontró la localidad con ID {idLocalidad}.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejar la excepción apropiadamente
+                        throw new Exception($"Error al actualizar el empleado asociado a la localidad: {ex.Message}", ex);
+                    }
+                }
+            }
+        }
 
 
 

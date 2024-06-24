@@ -67,88 +67,73 @@ namespace CapaPresentacion
         {
             ucMenu _menuButton = (ucMenu)sender;
 
-            // Crear una copia de la colección de formularios abiertos
-            Form[] formulariosAbiertos = Application.OpenForms.Cast<Form>().ToArray();
-
-            // Verificar si hay formularios a cerrar
-            bool hayFormulariosACerrar = false;
-            foreach (Form formulario in formulariosAbiertos)
+            // Diccionario para mapear botones a formularios y acciones
+            var mapaAcciones = new Dictionary<string, Action>()
             {
-                if (formulario != this && (formulario is frmImagen || formulario is frmDatosPersonal || formulario is frmMapa || formulario is frmVisitas))
-                {
-                    hayFormulariosACerrar = true;
-                    break; // Salir del bucle si se encuentra al menos un formulario a cerrar
+                { "btnHome", () =>
+                    {
+                        btnPersonal.Enabled = btnPuntos.Enabled = true;
+                        btnHome.Enabled = false;
+                        activeMenu(btnHome, btnPuntos, btnPersonal);
+                        CargarFormularioEnPanel(new frmHomeVisitas());
+                    }
+                },
+                { "btnPuntos", () =>
+                    {
+                        activeMenu(btnPuntos, btnHome, btnPersonal);
+                        botones(btnPersonal, btnPuntos);
+                        btnHome.Enabled = true;
+                        CargarFormularioEnPanel(new frmLocalidades());
+                    }
+                },
+                { "btnPersonal", () =>
+                    {
+                        activeMenu(btnPersonal, btnHome, btnPuntos);
+                        botones(btnPuntos, btnPersonal);
+                        btnHome.Enabled = true;
+                        CargarFormularioEnPanel(new frmPersonal());
+                    }
                 }
-            }
+            };
 
-            if (hayFormulariosACerrar)
+            // Verificar si hay formularios a cerrar (usando LINQ para simplificar)
+            var formulariosACerrar = Application.OpenForms.Cast<Form>()
+                .Where(f => f != this && (f is frmImagen || f is frmDatosPersonal || f is frmMapa || f is frmVisitas))
+                .ToArray();
+
+            if (formulariosACerrar.Length > 0)
             {
-                // Preguntar al usuario si desea continuar
-                DialogResult resultado = MessageBox.Show("Hay formularios abiertos. ¿Desea continuar y cerrarlos?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var resultado = MessageBox.Show("Hay formularios abiertos. ¿Desea continuar y cerrarlos?",
+                                                "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (resultado == DialogResult.No)
                 {
                     return; // No hacer nada si el usuario elige "No"
                 }
-            }
 
-            // Cerrar formularios específicos si están abiertos
-            foreach (Form formulario in formulariosAbiertos)
-            {
-                if (formulario != this && (formulario is frmImagen || formulario is frmDatosPersonal || formulario is frmMapa || formulario is frmVisitas))
+                // Cerrar los formularios encontrados
+                foreach (var formulario in formulariosACerrar)
                 {
                     formulario.Close();
                 }
             }
 
-            switch (_menuButton.Name)
+            // Ejecutar la acción asociada al botón
+            if (mapaAcciones.TryGetValue(_menuButton.Name, out var accion))
             {
-                case "btnHome":
-                    btnPersonal.Enabled = true;
-                    btnPuntos.Enabled = true;
-
-                    activeMenu(btnHome, btnPuntos, btnPersonal);
-
-                    // Limpiar los controles del panel central
-                    LimpiarControles(panelCentral);
-
-                    break;
-
-                case "btnPuntos":
-                    activeMenu(btnPuntos, btnHome, btnPersonal);
-
-                    // Crear una instancia del formulario secundario que deseas cargar
-                    frmLocalidades f = new frmLocalidades();
-
-                    botones(btnPersonal, btnPuntos);
-
-                    // Limpiar los controles del panel central
-                    LimpiarControles(panelCentral);
-                    // Cargar el formulario secundario en el panel central
-                    f.TopLevel = false;
-                    f.FormBorderStyle = FormBorderStyle.None;
-                    f.Dock = DockStyle.Fill;
-                    panelCentral.Controls.Add(f);
-                    f.Show();
-                    break;
-
-                case "btnPersonal":
-                    activeMenu(btnPersonal, btnHome, btnPuntos);
-                    // Crear una instancia del formulario secundario que deseas cargar
-                    frmPersonal ff = new frmPersonal();
-
-                    botones(btnPuntos, btnPersonal);
-
-                    // Limpiar los controles del panel central
-                    LimpiarControles(panelCentral);
-                    // Cargar el formulario secundario en el panel central
-                    ff.TopLevel = false;
-                    ff.FormBorderStyle = FormBorderStyle.None;
-                    ff.Dock = DockStyle.Fill;
-                    panelCentral.Controls.Add(ff);
-                    ff.Show();
-                    break;
+                accion();
             }
+        }
+
+        // Método auxiliar para cargar formularios en el panel (sin cambios)
+        private void CargarFormularioEnPanel(Form formulario)
+        {
+            LimpiarControles(panelCentral);
+            formulario.TopLevel = false;
+            formulario.FormBorderStyle = FormBorderStyle.None;
+            formulario.Dock = DockStyle.Fill;
+            panelCentral.Controls.Add(formulario);
+            formulario.Show();
         }
 
         private void activeMenu(ucMenu _active, params ucMenu[] _inactive)
@@ -249,6 +234,11 @@ namespace CapaPresentacion
         }
 
         private void btnPersonal_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialDivider3_Click(object sender, EventArgs e)
         {
 
         }

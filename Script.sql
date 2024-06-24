@@ -44,12 +44,6 @@ CREATE TABLE Visitas (
     FOREIGN KEY (ID_Empleado) REFERENCES Empleados(ID_Empleado) -- Nueva clave foránea
 );
 
- SELECT dl.ID_Empleado 
- FROM Localidades l
- JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
- WHERE l.ID_Localidad = 3
-
- SELECT Nombres + ' ' + Apellidos AS NombreCompleto FROM Empleados WHERE ID_Empleado = 1
 
 SELECT Localidades.ID_Localidad, Detalles_Localidades.*
 FROM Localidades
@@ -62,20 +56,49 @@ SELECT * FROM Sectores
 SELECT * FROM Empleados
 SELECT * FROM Visitas
 
---Empleados Regulares (esApoyo = 0)
-INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Juan', 'Pérez', 0);
-INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('María', 'Gómez', 0);
-INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Carlos', 'López', 0);
-INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Ana', 'Martínez', 0);
-INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Luis', 'Rodríguez', 0);
-
--- Administradores (esApoyo = 1)
-INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Pedro', 'Sánchez', 1);
-INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Laura', 'Fernández', 1);
-INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Javier', 'García', 1);
-INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Sofía', 'González', 1);
-INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Miguel', 'Hernández', 1);
-
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Alcalde', 'Carrillo Humberto', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Alcantara', 'Leiva Segundo', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Ana', 'Peña Cortez', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Ana María', 'Santos', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Alberto', 'Mercado Chamorro', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Aracely', 'Valderrama Rodriguez', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Bertha', 'Nieto Polo', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Betty', 'Cabrera Rivera', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Carolina', 'Dioses', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Carolina', 'Dioses Lopez', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Carranza', 'Narro Hanako', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Carlos', 'Peralta Alvarado', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Carmen', 'Zavaleta Cosavalente', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Celedonio', 'Castillo Cisneros', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Chavil', 'Vasquez Eduardo', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Constantino', 'Sequeiros Jimenéz', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Crispin', 'Mariños Juan', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Elena', 'Polo Ruiz', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Erika', 'Guerrero', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Erika', 'Rivera Guerra', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Eusebio', 'Rodríguez Zavaleta', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Fortunato', 'Valderrama Vega', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Garcia', 'Ruiz Luis', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Iraida', 'Cespedes Cedanillas', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Javier', 'Bazan Alva', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Jhonny', 'Reyes', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('José', 'Núñez Garcia', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('José', 'Peralta Flores', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('José', 'Vallejos Praxedes', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Julia', 'Lobato Lopez', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Julcamoro', 'Morales Hilario', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Layza', 'Perfecto Antonio', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Llave', 'Sanchez Juan', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Luna', 'Victoria Romulo', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('María Anita', 'Cruz Marquina', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Mengole', 'Rodriguez Dolores', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Nelly', 'Morales Solano', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Nicasio', 'Cruz', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Pandura', 'Alegría Ofelia', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Rosalia', 'Dioses Lopez', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Santiago', 'Medina Esteves', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Segunda', 'Garcia Ruiz', 1);
+INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Trujillo', 'Torres Luis', 1);
 
 INSERT INTO Detalles_Localidades (Descripcion, Urbanizacion, Sector, Direccion) VALUES
 ('Parque', 'Centro Histórico', 'Liberación Social', 'Liberación Social'),
@@ -180,7 +203,6 @@ INSERT INTO Localidades (Nombre_Localidad, ID_Detalle_Localidad) VALUES
 ('Parque Los Sauces', 41),
 ('Parque Hortensias del Golf', 42);
 
-
 CREATE TRIGGER TRG_UniqueEmpleado
 ON Empleados
 INSTEAD OF INSERT
@@ -251,3 +273,31 @@ BEGIN
     SELECT Nombre_Localidad, ID_Detalle_Localidad
     FROM inserted;
 END;
+
+CREATE TRIGGER trgEvitarAsignacionDoble
+ON Detalles_Localidades
+FOR INSERT, UPDATE
+AS
+BEGIN
+    -- Verificar si se intenta insertar o actualizar un registro
+    -- que asigna el mismo empleado a la misma localidad
+    IF EXISTS (
+        SELECT 1
+        FROM inserted i
+        JOIN Detalles_Localidades dl ON i.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
+        WHERE EXISTS (
+            SELECT 1
+            FROM Detalles_Localidades
+            WHERE ID_Empleado = i.ID_Empleado
+            AND ID_Detalle_Localidad <> i.ID_Detalle_Localidad -- Excluir el registro actual en caso de UPDATE
+        )
+    )
+    BEGIN
+        -- Si ya existe una asignación, se cancela la operación
+        RAISERROR ('No se puede asignar el mismo empleado a más de una localidad.', 16, 1);
+        ROLLBACK TRANSACTION; -- Deshacer la transacción
+        RETURN;
+    END
+END;
+
+

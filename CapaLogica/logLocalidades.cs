@@ -23,9 +23,22 @@ namespace CapaLogica
             catch (Exception ex)
             {
                 throw new Exception("Error en la capa de lógica al obtener las localidades: " + ex.Message);
-                Console.WriteLine(ex.Message);
             }
         }
+        public DataTable ObtenerLocalidadesFiltradas(string filtro)
+        {
+            try
+            {
+                return datLocalidades.Instancia.ObtenerLocalidadesFiltradas(filtro);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones (puedes registrar el error, mostrarlo al usuario, etc.)
+                // Aquí puedes agregar un mensaje más específico si lo deseas
+                throw new Exception("Error en la capa de lógica al obtener localidades filtradas: " + ex.Message);
+            }
+        }
+
         public string ObtenerNombreLocPorID(int idLocalidad)
         {
             // Utiliza la instancia de datLocalidades para cargar las sectores
@@ -99,6 +112,16 @@ namespace CapaLogica
         {
             return datLocalidades.Instancia.TieneVisitasPendientes(idLocalidad);
         }
-
+        public void ActualizarEmpleadoEnLocalidad(int idLocalidad, int idEmpleado)
+        {
+            try
+            {
+                datLocalidades.Instancia.ActualizarEmpleadoEnLocalidad(idLocalidad, idEmpleado);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error en la capa de lógica al actualizar empleado en localidad: " + ex.Message);
+            }
+        }
     }
 }

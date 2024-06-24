@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Data.SqlClient;
+using System.IO;
+using System.Reflection;
 
 namespace CapaDatos
 {
@@ -14,10 +17,11 @@ namespace CapaDatos
 
         public Conexion()
         {
+            //Concatena el machineName en la cadena de conexión
             string machineName = Environment.MachineName;
 
-            // Concatena el machineName en la cadena de conexión
-            connectionString = "Server=mssql-175137-0.cloudclusters.net,10031;Database=BD_GestionAmbiental;User Id=Steven;Password=#sWbQy)J[^mJPF9atbpVA^c*b#%zn0ZkqcUDU>EDtaGXBDh<c+65B]w0rf0y#TnU;";
+            //connectionString = "Server=mssql-176029-0.cloudclusters.net,19136;Database=BD_GestionAmbiental;User Id=Yordy;Password=#sWbQy)J[^mJPF9atbpVA^c*b#%zn0ZkqcUDU>EDtaGXBDh<c+65B]w0rf0y#TnU;";
+            connectionString = $"Server={machineName}\\SQLEXPRESS;Database=BD_GestionAmbiental;Integrated Security=True;";
         }
 
         public string obtenerConexion()

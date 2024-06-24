@@ -309,6 +309,8 @@ namespace CapaPresentación.Formularios
                         // Si el usuario no quiere agregar una imagen, insertar los detalles sin abrir el formulario de imagen
                         InsertarDetallesConImagen(nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, null); // Pasar null como URL de imagen
                     }
+                    InstanciFrmL.seDebeActualizar = true;
+                    InstanciFrmL.CargarLocalidadesEnPanel();
                     break;
 
 
@@ -322,6 +324,8 @@ namespace CapaPresentación.Formularios
                         logLocalidades.Instancia.ActualizarDetallesLocalidades(idDetalleLocalidad, nombre, descripcion, referencia, urbanizacion, sector, direccion, latitud, longitud, idEmpleado);
 
                         MessageBox.Show("ACTUALIZADO CORRECTAMENTE!!");
+                        InstanciFrmL.seDebeActualizar = true;
+                        InstanciFrmL.CargarLocalidadesEnPanel();
                     }
                     catch (Exception ex)
                     {

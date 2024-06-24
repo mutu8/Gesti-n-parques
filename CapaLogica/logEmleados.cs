@@ -86,6 +86,16 @@ namespace CapaLogica
         {
             return datEmpleados.Instancia.EliminarEmpleado(empleadoId, out mensajeError);
         }
-
+        public DataTable ObtenerEmpleadosFiltrados(string filtro)
+        {
+            try
+            {
+                return datEmpleados.Instancia.ObtenerEmpleadosFiltrados(filtro);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error en la capa de lógica al obtener empleados filtrados: " + ex.Message);
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using MaterialSkin.Controls;
 
 namespace CapaPresentacion
 {
@@ -64,28 +65,50 @@ namespace CapaPresentacion
         }
 
 
-        public void CargarLocalidadesEnPanel()
+        public void CargarLocalidadesEnPanel(string filtro = "")
         {
             try
             {
                 // 1. Verificar si es necesario actualizar (antes de cargar datos)
-                if (allUserControlsLocalidades.Count > 0 && !seDebeActualizar)
+                if (allUserControlsLocalidades.Count > 0 && !seDebeActualizar && string.IsNullOrEmpty(filtro))
                 {
-                    return; // No hay cambios, salimos temprano
+                    return; // No hay cambios ni filtro, salimos temprano
                 }
 
+                DataTable dtLocalidades;
+
                 // 2. Obtener datos (considerar carga asíncrona si es necesario)
-                DataTable dtLocalidades = logLocalidades.Instancia.ObtenerTodasLasLocalidades();
+                if (!string.IsNullOrEmpty(filtro)) // Filtrar si hay filtro
+                {
+                    dtLocalidades = logLocalidades.Instancia.ObtenerLocalidadesFiltradas(filtro);
+                }
+                else // Obtener todos si no hay filtro
+                {
+                    dtLocalidades = logLocalidades.Instancia.ObtenerTodasLasLocalidades();
+                    seDebeActualizar = false; // Reiniciar la bandera después de cargar
+                }
 
                 if (dtLocalidades == null || dtLocalidades.Rows.Count == 0)
                 {
-                    MessageBox.Show("Error: No hay datos de localidades disponibles.");
                     return;
                 }
 
                 // 3. Reutilizar o crear UserControls
                 int existingControls = allUserControlsLocalidades.Count;
                 int newControlsNeeded = dtLocalidades.Rows.Count - existingControls;
+
+                // Filtrar los UserControls existentes si el filtro no está vacío
+                if (!string.IsNullOrEmpty(filtro))
+                {
+                    allUserControlsLocalidades = allUserControlsLocalidades
+                        .Where(uc => uc.NombreLocalidad.ToLower().Contains(filtro.ToLower()) ||
+                                     uc.Direccion.ToLower().Contains(filtro.ToLower()))
+                        .ToList();
+
+                    // Recalcular la cantidad de controles necesarios después del filtrado
+                    existingControls = allUserControlsLocalidades.Count;
+                    newControlsNeeded = dtLocalidades.Rows.Count - existingControls;
+                }
 
                 for (int i = 0; i < newControlsNeeded; i++)
                 {
@@ -122,14 +145,13 @@ namespace CapaPresentacion
                 }
 
                 flowLayoutPanel1.ResumeLayout(); // Reanudar el diseño
-
-                seDebeActualizar = false; // Reiniciar la bandera
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar las localidades: {ex.Message}"); // Interpolación de cadenas
             }
         }
+
 
 
 
@@ -181,8 +203,10 @@ namespace CapaPresentacion
         }
 
 
-        private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
+
+        private void materialMaskedTextBox1_TextChanged(object sender, EventArgs e)
         {
+            CargarLocalidadesEnPanel(materialMaskedTextBox1.Text);
 
         }
     }
