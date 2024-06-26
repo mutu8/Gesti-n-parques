@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -155,14 +156,21 @@ namespace CapaDatos
 
         public bool InsertarVisita(DateTime fechaVisita, bool estado, int idLocalidad, int idEmpleado)
         {
+            // Verificar que idEmpleado sea válido (diferente de null y mayor que 0)
+            if (idEmpleado == null || idEmpleado <= 0)
+            {
+                Console.WriteLine("No se pudo insertar la visita: ID_Empleado inválido.");
+                return false; // Indica que la inserción falló por ID_Empleado inválido
+            }
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
                     string query = @"
-                    INSERT INTO Visitas (Fecha_Visita, Estado, ID_Localidad, ID_Empleado)
-                    VALUES (@FechaVisita, @Estado, @IDLocalidad, @IDEmpleado)";
+             INSERT INTO Visitas (Fecha_Visita, Estado, ID_Localidad, ID_Empleado)
+             VALUES (@FechaVisita, @Estado, @IDLocalidad, @IDEmpleado)";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -183,6 +191,7 @@ namespace CapaDatos
                 }
             }
         }
+
         public bool ObtenerEstadoVisita(int idVisita)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -351,12 +360,12 @@ namespace CapaDatos
             DataTable dt = new DataTable();
 
             string query = @"
-    SELECT l.ID_Localidad, l.Nombre_Localidad, 
-           ISNULL(CONCAT(e.Nombres, ' ', e.Apellidos), 'Sin Asignar') AS NombreEmpleado, 
-           ISNULL(e.ID_Empleado, 0) AS ID_Empleado
-    FROM Localidades l
-    LEFT JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
-    LEFT JOIN Empleados e ON dl.ID_Empleado = e.ID_Empleado";
+            SELECT l.ID_Localidad, l.Nombre_Localidad, 
+                   ISNULL(CONCAT(e.Nombres, ' ', e.Apellidos), 'Sin Asignar') AS NombreEmpleado, 
+                   ISNULL(e.ID_Empleado, 0) AS ID_Empleado
+            FROM Localidades l
+            LEFT JOIN Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
+            LEFT JOIN Empleados e ON dl.ID_Empleado = e.ID_Empleado";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -380,46 +389,27 @@ namespace CapaDatos
             return dt;
         }
 
-
-
-
-        public bool GenerarVisitasParaTodasLasLocalidadesConEmpleados(DateTime fechaVisita, bool estado)
+        public bool GenerarVisitasParaTodasLasLocalidadesConEmpleados(DateTime fechaVisita, bool estado, int idLocalidad, int idEmpleado)
         {
-            DataTable dtLocalidades = ObtenerLocalidadesConEmpleados();
-            bool exitoGlobal = true;
+            // Verificar si ya existe una visita activa para esta fecha, localidad e idEmpleado
+            bool visitaActiva = ExisteVisitaActivaParaFechaLocalidadYEmpleado(fechaVisita, idLocalidad, idEmpleado);
 
-            foreach (DataRow row in dtLocalidades.Rows)
+            if (!visitaActiva)
             {
-                int idLocalidad = Convert.ToInt32(row["ID_Localidad"]);
-                int? idEmpleado = ObtenerIdEmpleadoPorIdLocalidad(idLocalidad);
-
-                // Solo intenta insertar visita si hay un idEmpleado válido
-                if (idEmpleado.HasValue)
-                {
-                    // Verificar si ya existe una visita activa para esta fecha, localidad e idEmpleado
-                    bool visitaActiva = ExisteVisitaActivaParaFechaLocalidadYEmpleado(fechaVisita, idLocalidad, idEmpleado.Value);
-
-                    if (!visitaActiva)
-                    {
-                        bool exito = InsertarVisita(fechaVisita, estado, idLocalidad, idEmpleado.Value);
-                        if (!exito)
-                        {
-                            exitoGlobal = false;
-                        }
-                    }
-                    else
-                    {
-                        // Opcional: Manejar la situación de visita existente (registrando un log, por ejemplo)
-                        Console.WriteLine($"Ya existe una visita activa para la localidad {idLocalidad} " +
-                                          $"en la fecha {fechaVisita} para el empleado {idEmpleado.Value}");
-                        // No modificar exitoGlobal en este caso
-                    }
-                }
-                // Si idEmpleado es null, simplemente continúa con la siguiente localidad
+                bool exito = InsertarVisita(fechaVisita, estado, idLocalidad, idEmpleado);
+                return exito;
             }
-
-            return exitoGlobal;
+            else
+            {
+                // Opcional: Manejar la situación de visita existente (registrando un log, por ejemplo)
+                Console.WriteLine($"Ya existe una visita activa para la localidad {idLocalidad} " +
+                                  $"en la fecha {fechaVisita} para el empleado {idEmpleado}");
+                return false; // Indicar que no se pudo generar la visita
+            }
         }
+
+
+
 
         // Método para verificar si ya existe una visita activa para una fecha, localidad e idEmpleado específicos
         private bool ExisteVisitaActivaParaFechaLocalidadYEmpleado(DateTime fechaVisita, int idLocalidad, int idEmpleado)
@@ -456,7 +446,95 @@ namespace CapaDatos
                 }
             }
         }
-        
+        // Método para obtener todas las visitas del día actual
+        public DataTable ObtenerVisitasDelDia()
+        {
+            DataTable dtVisitas = new DataTable();
+
+            string query = @"
+            SELECT 
+                v.ID_Visita, 
+                v.Fecha_Visita, 
+                v.Estado, 
+                l.Nombre_Localidad, 
+                CONCAT(e.Nombres, ' ', e.Apellidos) AS Nombre_Completo_Empleado
+            FROM 
+                Visitas v
+            INNER JOIN 
+                Localidades l ON v.ID_Localidad = l.ID_Localidad
+            INNER JOIN 
+                Detalles_Localidades dl ON l.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
+            INNER JOIN 
+                Empleados e ON v.ID_Empleado = e.ID_Empleado
+            WHERE 
+                CONVERT(date, v.Fecha_Visita) = CONVERT(date, GETDATE())";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        adapter.Fill(dtVisitas);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejar la excepción apropiadamente
+                        throw new Exception($"Error al obtener las visitas del día actual: {ex.Message}", ex);
+                    }
+                }
+            }
+
+            return dtVisitas;
+        }
+
+        public bool MarcarVisitasComoCompletadas(List<int> idsVisitas, bool completada)
+        {
+            bool exitoGlobal = true;
+
+            foreach (int idVisita in idsVisitas)
+            {
+                bool exito = false;
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = @"
+                    UPDATE Visitas
+                    SET Estado = @Completada
+                    WHERE ID_Visita = @ID_Visita";
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@Completada", completada);
+                            command.Parameters.AddWithValue("@ID_Visita", idVisita);
+
+                            int rowsAffected = command.ExecuteNonQuery();
+                            exito = rowsAffected > 0;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejo de la excepción
+                        Console.WriteLine($"Error al marcar la visita con ID {idVisita} como completada: {ex.Message}");
+                        exito = false;
+                    }
+                }
+
+                if (!exito)
+                {
+                    exitoGlobal = false;
+                }
+            }
+
+            return exitoGlobal;
+        }
+
+
     }
 
 }

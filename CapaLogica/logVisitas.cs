@@ -1,5 +1,6 @@
 ﻿using CapaDatos;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace CapaLogica
@@ -58,9 +59,38 @@ namespace CapaLogica
         {
             return datVisitas.Instancia.ObtenerLocalidadesConEmpleados2();
         }
-        public bool GenerarVisitasParaTodasLasLocalidadesConEmpleados(DateTime fechaVisita, bool estado)
+        public bool GenerarVisitasParaTodasLasLocalidadesConEmpleados(DateTime fechaVisita, bool estado, int idLocalidad, int idEmpleado)
         {
-            return datVisitas.Instancia.GenerarVisitasParaTodasLasLocalidadesConEmpleados(fechaVisita, estado);
+            return datVisitas.Instancia.GenerarVisitasParaTodasLasLocalidadesConEmpleados(fechaVisita, estado, idLocalidad, idEmpleado);
         }
+        // Método para obtener todas las visitas del día actual
+        public DataTable ObtenerVisitasDelDia()
+        {
+            DataTable dtVisitas = new DataTable();
+
+            try
+            {
+                // Llamar al método correspondiente en datVisitas para obtener las visitas del día actual
+                dtVisitas = datVisitas.Instancia.ObtenerVisitasDelDia();
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción apropiadamente
+                throw new Exception($"Error al obtener las visitas del día actual desde datVisitas: {ex.Message}", ex);
+            }
+
+            return dtVisitas;
+        }
+        public bool MarcarVisitasComoCompletadas(List<int> idsVisitas, bool completada)
+        {
+            // Llamar al método del datVisitas para marcar las visitas como completadas
+            bool exito = datVisitas.Instancia.MarcarVisitasComoCompletadas(idsVisitas, completada);
+
+            // Aquí podrías realizar acciones adicionales después de marcar las visitas, como registrar en un log o enviar notificaciones, etc.
+
+            return exito;
+        }
+
+
     }
 }

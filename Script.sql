@@ -56,6 +56,8 @@ SELECT * FROM Sectores
 SELECT * FROM Empleados
 SELECT * FROM Visitas
 
+drop table Visitas
+
 INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Alcalde', 'Carrillo Humberto', 1);
 INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Alcantara', 'Leiva Segundo', 1);
 INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES ('Ana', 'Peña Cortez', 1);
@@ -271,21 +273,23 @@ BEGIN
 
     INSERT INTO Localidades (Nombre_Localidad, ID_Detalle_Localidad)
     SELECT Nombre_Localidad, ID_Detalle_Localidad
-    FROM inserted;
+    FROM inserted;	
 END;
 
+/*
 CREATE TRIGGER trgEvitarAsignacionDoble
 ON Detalles_Localidades
 FOR INSERT, UPDATE
 AS
 BEGIN
     -- Verificar si se intenta insertar o actualizar un registro
-    -- que asigna el mismo empleado a la misma localidad
+    -- que asigna el mismo empleado a una localidad diferente
     IF EXISTS (
         SELECT 1
         FROM inserted i
         JOIN Detalles_Localidades dl ON i.ID_Detalle_Localidad = dl.ID_Detalle_Localidad
         WHERE EXISTS (
+            -- Buscar en Detalles_Localidades si ya existe una asignación para el mismo empleado
             SELECT 1
             FROM Detalles_Localidades
             WHERE ID_Empleado = i.ID_Empleado
@@ -299,5 +303,6 @@ BEGIN
         RETURN;
     END
 END;
+*/
 
 

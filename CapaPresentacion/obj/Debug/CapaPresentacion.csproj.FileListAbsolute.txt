@@ -80,3 +80,4 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresenta
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\itextsharp.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\itextsharp.xml
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmHomeVisitas.resources
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.FormSeleccionVisitasEmergente.resources

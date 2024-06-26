@@ -1,8 +1,14 @@
 ﻿using CapaLogica;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CapaPresentacion
 {
@@ -28,10 +34,10 @@ namespace CapaPresentacion
 
             // Verificar los nombres de las columnas en el DataTable
 
-            //foreach (DataColumn column in dtLocalidadesConEmpleados.Columns)
-            //{
-            //    Console.WriteLine(column.ColumnName);
-            //}
+            foreach (DataColumn column in dtLocalidadesConEmpleados.Columns)
+            {
+                Console.WriteLine(column.ColumnName);
+            }
 
         }
 
@@ -89,24 +95,40 @@ namespace CapaPresentacion
                 DateTime fechaVisita = DateTime.Now.Date; // Fecha de la visita es la fecha actual
                 bool estado = false; // Puedes ajustar el estado según sea necesario
 
-                logVisitas.Instancia.GenerarVisitasParaTodasLasLocalidadesConEmpleados(fechaVisita, estado);
+                // Iterar sobre todas las filas seleccionadas del DataGridView
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    // Obtener el ID_Localidad y ID_Empleado de cada fila seleccionada
+                    int idLocalidad = Convert.ToInt32(row.Cells["ID_Localidad"].Value);
+                    int idEmpleado = Convert.ToInt32(row.Cells["Empleado"].Value);
+
+                    // Llamar al método de logVisitas para generar visita con los datos actuales
+                    bool exito = logVisitas.Instancia.GenerarVisitasParaTodasLasLocalidadesConEmpleados(fechaVisita, estado, idLocalidad, idEmpleado);
+
+                }
 
                 MessageBox.Show("Visitas generadas exitosamente.");
 
-                // Limpiar el DataGridView antes de asignar un nuevo DataSource
-                dataGridView1.DataSource = null;
-                dataGridView1.Columns.Clear();
-
-                // Obtener y asignar el nuevo DataSource
-                DataTable dtVisitas = logVisitas.Instancia.ListarVisitasParaDgv(fechaVisita);
-                dataGridView1.DataSource = dtVisitas;
-
-                // Aplicar el diseño del DataGridView después de asignar el DataSource
-                AplicarDisenoDataGridView(dataGridView1);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+
+
+
+
+        public void LimpiarDataGridView(DataGridView dgv)
+        {
+            if (dgv.Rows.Count > 0 || dgv.Columns.Count > 0)
+            {
+                dgv.SuspendLayout(); // Suspender la actualización visual para mejorar el rendimiento
+                dgv.DataSource = null; // Eliminar la referencia al DataSource
+                dgv.Rows.Clear(); // Limpiar las filas
+                dgv.Columns.Clear(); // Limpiar las columnas
+                dgv.ResumeLayout(); // Reanudar la actualización visual
             }
         }
 
@@ -118,10 +140,14 @@ namespace CapaPresentacion
             AgregarColumnaComboBox(dgv);
             //AsignarValoresComboBox(dgv);
             EstablecerColumnasReadonly(dgv);
+
         }
+
 
         private void ConfigurarDataGridView(DataGridView dgv)
         {
+
+
             dgv.AllowUserToAddRows = false;
             dgv.AllowUserToDeleteRows = false;
             dgv.AllowUserToResizeRows = false;
@@ -130,7 +156,7 @@ namespace CapaPresentacion
 
             dgv.EnableHeadersVisualStyles = false;
             dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 10, FontStyle.Bold);
+            dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Arial", 10, FontStyle.Bold);
 
             dgv.DefaultCellStyle.SelectionBackColor = Color.LightBlue;
             dgv.DefaultCellStyle.SelectionForeColor = Color.Black;
@@ -156,40 +182,61 @@ namespace CapaPresentacion
         {
             try
             {
-                // Obtener la lista de empleados incluyendo posiblemente valores nulos
-                DataTable dtEmpleados = logVisitas.Instancia.ListarEmpleados();
+                // Verificar si la columna ya está agregada
+                DataGridViewComboBoxColumn comboColumn = dgv.Columns["Personal"] as DataGridViewComboBoxColumn;
 
-                // Crear la columna ComboBox
-                DataGridViewComboBoxColumn comboColumn = new DataGridViewComboBoxColumn
+                if (comboColumn != null)
                 {
-                    HeaderText = "Personal",
-                    Name = "Personal",
-                    DataPropertyName = "ID_Empleado",
-                    DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox,
-                    FlatStyle = FlatStyle.Flat,
-                    AutoComplete = true,
-                    DisplayMember = "NombreCompleto",
-                    ValueMember = "ID_Empleado",
-                    ReadOnly = false
-                };
+                    // Actualizar solo el DataSource de la columna existente
+                    DataTable dtEmpleados = logVisitas.Instancia.ListarEmpleados();
 
-                // Añadir un valor por defecto para manejar los valores nulos
-                var defaultRow = dtEmpleados.NewRow();
-                defaultRow["ID_Empleado"] = DBNull.Value;
-                defaultRow["NombreCompleto"] = "-- Seleccione --";
-                dtEmpleados.Rows.InsertAt(defaultRow, 0);
+                    // Añadir un valor por defecto para manejar los valores nulos
+                    var defaultRow = dtEmpleados.NewRow();
+                    defaultRow["ID_Empleado"] = DBNull.Value;
+                    defaultRow["NombreCompleto"] = "-- Seleccione --";
+                    dtEmpleados.Rows.InsertAt(defaultRow, 0);
 
-                // Asignar el DataTable modificado como DataSource del ComboBoxColumn
-                comboColumn.DataSource = dtEmpleados;
+                    // Asignar el DataTable modificado como DataSource del ComboBoxColumn
+                    comboColumn.DataSource = dtEmpleados;
+                }
+                else
+                {
+                    // Si la columna no está agregada, crearla y configurarla desde cero
+                    DataTable dtEmpleados = logVisitas.Instancia.ListarEmpleados();
 
-                // Añadir la columna al DataGridView
-                dgv.Columns.Add(comboColumn);
+                    // Crear la columna ComboBox
+                    comboColumn = new DataGridViewComboBoxColumn
+                    {
+                        HeaderText = "Personal",
+                        Name = "Personal",
+                        DataPropertyName = "ID_Empleado",
+                        DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox,
+                        FlatStyle = FlatStyle.Flat,
+                        AutoComplete = true,
+                        DisplayMember = "NombreCompleto",
+                        ValueMember = "ID_Empleado",
+                        ReadOnly = false
+                    };
+
+                    // Añadir un valor por defecto para manejar los valores nulos
+                    var defaultRow = dtEmpleados.NewRow();
+                    defaultRow["ID_Empleado"] = DBNull.Value;
+                    defaultRow["NombreCompleto"] = "-- Seleccione --";
+                    dtEmpleados.Rows.InsertAt(defaultRow, 0);
+
+                    // Asignar el DataTable modificado como DataSource del ComboBoxColumn
+                    comboColumn.DataSource = dtEmpleados;
+
+                    // Añadir la columna al DataGridView
+                    dgv.Columns.Add(comboColumn);
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al agregar columna ComboBox: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
         private void AsignarValoresComboBox(DataGridView dgv)
@@ -302,6 +349,9 @@ namespace CapaPresentacion
                             lblIdEmpleado.Text = "N/A"; // En caso de no encontrar el empleado
                         }
                     }
+
+                    // Refrescar la fila seleccionada para actualizar visualmente los cambios
+                    selectedRow.DataGridView.InvalidateRow(selectedRow.Index);
                 }
             }
             catch (Exception ex)
@@ -309,6 +359,7 @@ namespace CapaPresentacion
                 MessageBox.Show($"Error al obtener ID_Localidad o ID_Empleado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private bool cambioPorUsuario = true; // Variable para controlar si el cambio es causado por el usuario
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -346,25 +397,26 @@ namespace CapaPresentacion
                                             try
                                             {
                                                 logLocalidades.Instancia.ActualizarEmpleadoEnLocalidad(int.Parse(lblIdLocalidad.Text), Convert.ToInt32(idEmpleado));
-
+                                                AgregarColumnaComboBox(dataGridView1);
                                                 // Mostrar mensaje de actualización exitosa
                                                 MessageBox.Show($"Se actualizó el empleado: {nombreEmpleado}. ID: {idEmpleado}", "Actualización exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                                             }
                                             catch (Exception ex)
                                             {
-                                                // Manejar la excepción lanzada por el trigger
-                                                MessageBox.Show($"No se puede asignar el mismo empleado a más de una localidad. Operación cancelada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                               // // Manejar la excepción lanzada por el trigger
+                                               // MessageBox.Show($"No se puede asignar el mismo empleado a más de una localidad. Operación cancelada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                                                // Desactivar temporalmente el evento CellValueChanged para evitar bucles
-                                                dataGridView1.CellValueChanged -= dataGridView1_CellValueChanged;
+                                               // Desactivar temporalmente el evento CellValueChanged para evitar bucles
+                                               // dataGridView1.CellValueChanged -= dataGridView1_CellValueChanged;
 
-                                                // Restaurar el valor anterior si se cancela la operación
-                                                cambioPorUsuario = false;
-                                                comboCell.Value = comboCell.Tag;
-                                                cambioPorUsuario = true;
+                                               // Restaurar el valor anterior si se cancela la operación
+                                               //cambioPorUsuario = false;
+                                               // comboCell.Value = comboCell.Tag;
+                                               // cambioPorUsuario = true;
 
-                                                // Volver a activar el evento CellValueChanged
-                                                dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
+                                               // Volver a activar el evento CellValueChanged
+                                               // dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
                                             }
                                         }
                                         else
@@ -404,6 +456,198 @@ namespace CapaPresentacion
                 MessageBox.Show($"Error al procesar la celda modificada: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnImprimier_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Obtener las visitas del día desde logVisitas
+                DataTable dtVisitas = logVisitas.Instancia.ObtenerVisitasDelDia();
+
+                if (dtVisitas.Rows.Count == 0)
+                {
+                    MessageBox.Show("No hay visitas registradas para el día.");
+                    return;
+                }
+
+                // Configuración del diálogo para guardar el archivo PDF
+                using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+                {
+                    saveFileDialog.Filter = "Archivos PDF (*.pdf)|*.pdf";
+                    saveFileDialog.FileName = "Reporte de Visitas del Día.pdf";
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        Document doc = new Document();
+                        try
+                        {
+                            PdfWriter.GetInstance(doc, new FileStream(saveFileDialog.FileName, FileMode.Create));
+                            doc.Open();
+
+                            // Título del cronograma
+                            iTextSharp.text.Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.DARK_GRAY);
+                            Paragraph title = new Paragraph("CRONOGRAMA", titleFont);
+                            title.Alignment = Element.ALIGN_CENTER;
+                            title.SpacingAfter = 10f;
+                            doc.Add(title);
+
+                            // Fecha actual
+                            iTextSharp.text.Font dateFont = FontFactory.GetFont(FontFactory.HELVETICA, 12, BaseColor.BLACK);
+                            string fechaActual = DateTime.Now.ToString("dd/MM/yyyy");
+                            Paragraph dateParagraph = new Paragraph($"Fecha: {fechaActual}", dateFont);
+                            dateParagraph.Alignment = Element.ALIGN_CENTER;
+                            dateParagraph.SpacingAfter = 20f;
+                            doc.Add(dateParagraph);
+
+                            // Diseño de la tabla (sin la columna ID)
+                            PdfPTable table = new PdfPTable(3); // Tres columnas: Nombre del Parque, Nombre del Encargado, Estado
+                            table.WidthPercentage = 100;
+                            table.SpacingBefore = 10f;
+                            table.SpacingAfter = 10f;
+                            table.DefaultCell.Padding = 5;
+                            table.DefaultCell.BorderColor = BaseColor.LIGHT_GRAY;
+
+                            // Encabezados de columna
+                            string[] headers = { "Nombre del Parque", "Nombre del Encargado", "Estado" };
+
+                            // Estilo de los encabezados
+                            iTextSharp.text.Font headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE);
+
+                            // Fondo del encabezado
+                            PdfPCell headerCell = new PdfPCell();
+                            headerCell.BackgroundColor = BaseColor.DARK_GRAY;
+                            headerCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            headerCell.Padding = 5;
+
+                            // Encabezados de columna
+                            foreach (string header in headers)
+                            {
+                                headerCell.Phrase = new Phrase(header, headerFont);
+                                table.AddCell(headerCell);
+                            }
+
+                            // Datos (con formato de fecha y estado)
+                            foreach (DataRow row in dtVisitas.Rows)
+                            {
+                                PdfPCell parkCell = new PdfPCell(new Phrase(row["Nombre_Localidad"].ToString()));
+                                parkCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                                table.AddCell(parkCell);
+
+                                PdfPCell employeeCell = new PdfPCell(new Phrase(row["Nombre_Completo_Empleado"].ToString()));
+                                employeeCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                                table.AddCell(employeeCell);
+
+                                bool estado = Convert.ToBoolean(row["Estado"]);
+                                string estadoTexto = estado ? "Completada" : "Pendiente";
+                                PdfPCell statusCell = new PdfPCell(new Phrase(estadoTexto));
+                                statusCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                                table.AddCell(statusCell);
+                            }
+
+                            doc.Add(table);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error al generar el PDF: {ex.Message}");
+                        }
+                        finally
+                        {
+                            doc.Close(); // Cerrar el documento ANTES de abrirlo
+
+                            // Abrir el PDF
+                            try
+                            {
+                                System.Diagnostics.Process.Start(saveFileDialog.FileName);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Error al abrir el PDF: {ex.Message}");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al obtener las visitas del día: {ex.Message}");
+            }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Obtener las visitas del día desde logVisitas
+                DataTable dtVisitas = logVisitas.Instancia.ObtenerVisitasDelDia();
+
+                if (dtVisitas.Rows.Count == 0)
+                {
+                    MessageBox.Show("No hay visitas registradas para el día.");
+                    return;
+                }
+
+                // Mostrar MessageBox para preguntar al usuario
+                DialogResult result = MessageBox.Show("¿Desea marcar todas las visitas como completadas?", "Confirmación", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    // Marcar todas las visitas como completadas
+                    bool completada = true; // Marcar como completadas
+                    bool exito = logVisitas.Instancia.MarcarVisitasComoCompletadas(dtVisitas.AsEnumerable().Select(r => r.Field<int>("ID_Visita")).ToList(), completada);
+
+                    if (exito)
+                    {
+                        MessageBox.Show("Todas las visitas han sido marcadas como completadas exitosamente.");
+                        // Actualizar el DataGridView u otra acción necesaria después de marcar las visitas
+                    }
+                    else
+                    {
+                        MessageBox.Show("Hubo un problema al marcar las visitas. Por favor, revise los registros.");
+                    }
+                }
+                else if (result == DialogResult.No)
+                {
+                    // Abrir formulario emergente para seleccionar visitas que no marcar como completadas
+                    using (FormSeleccionVisitasEmergente form = new FormSeleccionVisitasEmergente(dtVisitas))
+                    {
+                        if (form.ShowDialog() == DialogResult.OK)
+                        {
+                            List<int> visitasNoCompletar = form.VisitasNoCompletar;
+
+                            // Marcar las visitas seleccionadas como completadas
+                            bool exito = logVisitas.Instancia.MarcarVisitasComoCompletadas(
+                                dtVisitas.AsEnumerable().Select(r => r.Field<int>("ID_Visita")).Except(visitasNoCompletar).ToList(),
+                                true);
+
+                            if (exito)
+                            {
+                                MessageBox.Show("Las visitas seleccionadas han sido marcadas como completadas.");
+                                // Actualizar el DataGridView u otra acción necesaria después de marcar las visitas
+                            }
+                            else
+                            {
+                                MessageBox.Show("Hubo un problema al marcar las visitas seleccionadas. Por favor, revise los registros.");
+                            }
+                        }
+                    }
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    // Cancelar la operación
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+
+
+
+
+
 
 
     }

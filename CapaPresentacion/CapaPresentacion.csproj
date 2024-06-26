@@ -177,6 +177,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormSeleccionVisitasEmergente .cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSeleccionVisitasEmergente .Designer.cs">
+      <DependentUpon>FormSeleccionVisitasEmergente .cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\frmHomeVisitas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -257,6 +263,9 @@
     </Compile>
     <EmbeddedResource Include="ClasesForm\UserControlTarget.resx">
       <DependentUpon>UserControlTarget.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSeleccionVisitasEmergente .resx">
+      <DependentUpon>FormSeleccionVisitasEmergente .cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmHomeVisitas.resx">
       <DependentUpon>frmHomeVisitas.cs</DependentUpon>

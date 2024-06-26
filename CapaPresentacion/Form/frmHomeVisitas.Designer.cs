@@ -32,11 +32,13 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panelCarta = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
-            this.lblIdLocalidad = new System.Windows.Forms.Label();
+            this.btnUpdate = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.btnImprimier = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.lblIdEmpleado = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.lblIdLocalidad = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panelCarta.SuspendLayout();
@@ -78,6 +80,8 @@
             // panelCarta
             // 
             this.panelCarta.BackColor = System.Drawing.Color.Transparent;
+            this.panelCarta.Controls.Add(this.btnUpdate);
+            this.panelCarta.Controls.Add(this.btnImprimier);
             this.panelCarta.Controls.Add(this.lblIdEmpleado);
             this.panelCarta.Controls.Add(this.label3);
             this.panelCarta.Controls.Add(this.lblIdLocalidad);
@@ -90,14 +94,74 @@
             this.panelCarta.Size = new System.Drawing.Size(1255, 770);
             this.panelCarta.TabIndex = 3;
             // 
+            // btnUpdate
+            // 
+            this.btnUpdate.AnimateShowHideButton = true;
+            this.btnUpdate.Depth = 0;
+            this.btnUpdate.Icon = global::CapaPresentacion.Properties.Resources.done;
+            this.btnUpdate.Location = new System.Drawing.Point(153, 77);
+            this.btnUpdate.Mini = true;
+            this.btnUpdate.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(40, 40);
+            this.btnUpdate.TabIndex = 54;
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
+            // btnImprimier
+            // 
+            this.btnImprimier.AnimateShowHideButton = true;
+            this.btnImprimier.BackColor = System.Drawing.Color.Transparent;
+            this.btnImprimier.Depth = 0;
+            this.btnImprimier.Icon = global::CapaPresentacion.Properties.Resources.printer__3_;
+            this.btnImprimier.Location = new System.Drawing.Point(107, 77);
+            this.btnImprimier.Mini = true;
+            this.btnImprimier.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnImprimier.Name = "btnImprimier";
+            this.btnImprimier.Size = new System.Drawing.Size(40, 40);
+            this.btnImprimier.TabIndex = 53;
+            this.btnImprimier.UseVisualStyleBackColor = false;
+            this.btnImprimier.Click += new System.EventHandler(this.btnImprimier_Click);
+            // 
+            // lblIdEmpleado
+            // 
+            this.lblIdEmpleado.AutoSize = true;
+            this.lblIdEmpleado.Location = new System.Drawing.Point(497, 91);
+            this.lblIdEmpleado.Name = "lblIdEmpleado";
+            this.lblIdEmpleado.Size = new System.Drawing.Size(37, 13);
+            this.lblIdEmpleado.TabIndex = 37;
+            this.lblIdEmpleado.Text = "_____";
+            this.lblIdEmpleado.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(404, 91);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.TabIndex = 36;
+            this.label3.Text = "ID Empleado:";
+            this.label3.Visible = false;
+            // 
+            // lblIdLocalidad
+            // 
+            this.lblIdLocalidad.AutoSize = true;
+            this.lblIdLocalidad.Location = new System.Drawing.Point(314, 91);
+            this.lblIdLocalidad.Name = "lblIdLocalidad";
+            this.lblIdLocalidad.Size = new System.Drawing.Size(37, 13);
+            this.lblIdLocalidad.TabIndex = 35;
+            this.lblIdLocalidad.Text = "_____";
+            this.lblIdLocalidad.Visible = false;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(145, 91);
+            this.label1.Location = new System.Drawing.Point(221, 91);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 34;
             this.label1.Text = "ID Localidad:";
+            this.label1.Visible = false;
             // 
             // materialFloatingActionButton1
             // 
@@ -114,33 +178,6 @@
             this.materialFloatingActionButton1.Text = "materialFloatingActionButton1";
             this.materialFloatingActionButton1.UseVisualStyleBackColor = true;
             this.materialFloatingActionButton1.Click += new System.EventHandler(this.materialFloatingActionButton1_Click);
-            // 
-            // lblIdLocalidad
-            // 
-            this.lblIdLocalidad.AutoSize = true;
-            this.lblIdLocalidad.Location = new System.Drawing.Point(238, 91);
-            this.lblIdLocalidad.Name = "lblIdLocalidad";
-            this.lblIdLocalidad.Size = new System.Drawing.Size(37, 13);
-            this.lblIdLocalidad.TabIndex = 35;
-            this.lblIdLocalidad.Text = "_____";
-            // 
-            // lblIdEmpleado
-            // 
-            this.lblIdEmpleado.AutoSize = true;
-            this.lblIdEmpleado.Location = new System.Drawing.Point(421, 91);
-            this.lblIdEmpleado.Name = "lblIdEmpleado";
-            this.lblIdEmpleado.Size = new System.Drawing.Size(37, 13);
-            this.lblIdEmpleado.TabIndex = 37;
-            this.lblIdEmpleado.Text = "_____";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(328, 91);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 13);
-            this.label3.TabIndex = 36;
-            this.label3.Text = "ID Empleado:";
             // 
             // frmHomeVisitas
             // 
@@ -169,5 +206,7 @@
         private System.Windows.Forms.Label lblIdLocalidad;
         private System.Windows.Forms.Label lblIdEmpleado;
         private System.Windows.Forms.Label label3;
+        private MaterialSkin.Controls.MaterialFloatingActionButton btnImprimier;
+        private MaterialSkin.Controls.MaterialFloatingActionButton btnUpdate;
     }
 }
