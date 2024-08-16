@@ -28,16 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panelCarta = new System.Windows.Forms.Panel();
+            this.btnOtroForm = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.materialMaskedTextBox1 = new MaterialSkin.Controls.MaterialMaskedTextBox();
             this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panelCarta.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelCarta
             // 
             this.panelCarta.BackColor = System.Drawing.Color.Transparent;
+            this.panelCarta.Controls.Add(this.btnOtroForm);
             this.panelCarta.Controls.Add(this.materialMaskedTextBox1);
             this.panelCarta.Controls.Add(this.materialFloatingActionButton1);
             this.panelCarta.Controls.Add(this.flowLayoutPanel1);
@@ -46,6 +50,22 @@
             this.panelCarta.Name = "panelCarta";
             this.panelCarta.Size = new System.Drawing.Size(1255, 770);
             this.panelCarta.TabIndex = 2;
+            // 
+            // btnOtroForm
+            // 
+            this.btnOtroForm.AnimateShowHideButton = true;
+            this.btnOtroForm.Depth = 0;
+            this.btnOtroForm.ForeColor = System.Drawing.Color.Transparent;
+            this.btnOtroForm.Icon = null;
+            this.btnOtroForm.Location = new System.Drawing.Point(107, 77);
+            this.btnOtroForm.Mini = true;
+            this.btnOtroForm.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnOtroForm.Name = "btnOtroForm";
+            this.btnOtroForm.Size = new System.Drawing.Size(40, 40);
+            this.btnOtroForm.TabIndex = 36;
+            this.btnOtroForm.Text = "materialFloatingActionButton2";
+            this.btnOtroForm.UseVisualStyleBackColor = true;
+            this.btnOtroForm.Click += new System.EventHandler(this.btnOtroForm_Click);
             // 
             // materialMaskedTextBox1
             // 
@@ -61,7 +81,7 @@
             this.materialMaskedTextBox1.HideSelection = true;
             this.materialMaskedTextBox1.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Default;
             this.materialMaskedTextBox1.LeadingIcon = null;
-            this.materialMaskedTextBox1.Location = new System.Drawing.Point(128, 77);
+            this.materialMaskedTextBox1.Location = new System.Drawing.Point(153, 77);
             this.materialMaskedTextBox1.Mask = "";
             this.materialMaskedTextBox1.MaxLength = 32767;
             this.materialMaskedTextBox1.MouseState = MaterialSkin.MouseState.OUT;
@@ -139,5 +159,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton1;
         private MaterialSkin.Controls.MaterialMaskedTextBox materialMaskedTextBox1;
+        private MaterialSkin.Controls.MaterialFloatingActionButton btnOtroForm;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

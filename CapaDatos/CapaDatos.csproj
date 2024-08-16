@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Conexion.cs" />
     <Compile Include="datEmpleados.cs" />
+    <Compile Include="datGenerarAsistencia.cs" />
     <Compile Include="datLocalidades.cs" />
     <Compile Include="datVisitas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

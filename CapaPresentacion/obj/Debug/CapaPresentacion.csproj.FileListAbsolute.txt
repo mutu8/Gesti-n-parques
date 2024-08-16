@@ -11,12 +11,14 @@ C:\Users\Steven\Downloads\APP\ProyectoParques\ProyectoParques\CapaPresentacion\o
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaPresentacion.exe.config
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaPresentacion.exe
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaPresentacion.pdb
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\BouncyCastle.Crypto.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaEntidad.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaLogica.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CloudinaryDotNet.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\GeoJSON.Net.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\GMap.NET.Core.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\GMap.NET.WindowsForms.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\itextsharp.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\MaterialSkin.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
@@ -38,7 +40,9 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresenta
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaDatos.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaEntidad.pdb
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaLogica.pdb
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaLogica.dll.config
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CloudinaryDotNet.xml
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\itextsharp.xml
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\Microsoft.Extensions.DependencyInjection.xml
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml
@@ -59,6 +63,9 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresenta
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaDatos.pdb
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.csproj.AssemblyReference.cache
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.UserControlTarget.resources
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.FormPersonalLimpieza.resources
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.FormSeleccionVisitasEmergente.resources
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmHomeVisitas.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmDatosPersonal.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmImagen.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmLocalidades.resources
@@ -68,6 +75,9 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresenta
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentación.Formularios.frmLogin.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmPersonal.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmVisitas.resources
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmReportesFechas.resources
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.PasswordForm.resources
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmReporteAsistencias.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.Properties.Resources.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.UserControlEmpleado.resources
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.csproj.GenerateResource.cache
@@ -75,9 +85,3 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresenta
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPres.61CA7C38.Up2Date
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.exe
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.pdb
-C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\CapaLogica.dll.config
-C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\BouncyCastle.Crypto.dll
-C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\itextsharp.dll
-C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\bin\Debug\itextsharp.xml
-C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.frmHomeVisitas.resources
-C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaPresentacion\obj\Debug\CapaPresentacion.FormSeleccionVisitasEmergente.resources

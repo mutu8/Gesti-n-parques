@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="frmUtil.cs" />
+    <Compile Include="logAsistencias.cs" />
     <Compile Include="logConexion.cs" />
     <Compile Include="logEmleados.cs" />
     <Compile Include="logLocalidades.cs" />

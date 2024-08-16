@@ -23,6 +23,11 @@ namespace CapaPresentacion
         public frmLocalidades()
         {
             InitializeComponent();
+
+            toolTip1.SetToolTip(materialFloatingActionButton1, "Agregar un nuevo parque");
+            toolTip1.SetToolTip(btnOtroForm, "Funciones adicionales");
+            toolTip1.SetToolTip(materialMaskedTextBox1, "Buscar");
+
         }
 
         // Propiedad pública para exponer el panel
@@ -207,6 +212,22 @@ namespace CapaPresentacion
         private void materialMaskedTextBox1_TextChanged(object sender, EventArgs e)
         {
             CargarLocalidadesEnPanel(materialMaskedTextBox1.Text);
+
+        }
+
+        private void btnOtroForm_Click(object sender, EventArgs e)
+        {
+            using (frmHomeVisitas reportesFechas = new frmHomeVisitas())
+            {
+                // Establecer la posición inicial del formulario en el centro de la pantalla
+                reportesFechas.StartPosition = FormStartPosition.CenterScreen;
+
+                // Mostrar el formulario como un cuadro de diálogo
+                if (reportesFechas.ShowDialog() == DialogResult.OK)
+                {
+                    // Código a ejecutar si se presiona OK
+                }
+            }
 
         }
     }

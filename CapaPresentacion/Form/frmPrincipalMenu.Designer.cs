@@ -36,12 +36,15 @@
             this.panelCentral = new System.Windows.Forms.Panel();
             this.BarraIzquierda = new CapaPresentacion.ClasesForm.Gradient_SidebarPanel();
             this.panelOpciones = new System.Windows.Forms.Panel();
-            this.btnPersonal = new CapaPresentacion.ClasesForm.ucMenu();
-            this.btnPuntos = new CapaPresentacion.ClasesForm.ucMenu();
+            this.materialDivider2 = new MaterialSkin.Controls.MaterialDivider();
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
+            this.btnPuntos = new CapaPresentacion.ClasesForm.ucMenu();
             this.panelBS = new System.Windows.Forms.Panel();
             this.btnHome = new CapaPresentacion.ClasesForm.ucMenu();
             this.panelBI = new System.Windows.Forms.Panel();
+            this.materialDivider3 = new MaterialSkin.Controls.MaterialDivider();
+            this.btnPersonal = new CapaPresentacion.ClasesForm.ucMenu();
+            this.btnLimpiezaPersonal = new CapaPresentacion.ClasesForm.ucMenu();
             this.panel5.SuspendLayout();
             this.BarraControl.SuspendLayout();
             this.BarraIzquierda.SuspendLayout();
@@ -127,7 +130,10 @@
             // panelOpciones
             // 
             this.panelOpciones.BackColor = System.Drawing.Color.Transparent;
+            this.panelOpciones.Controls.Add(this.btnLimpiezaPersonal);
+            this.panelOpciones.Controls.Add(this.materialDivider3);
             this.panelOpciones.Controls.Add(this.btnPersonal);
+            this.panelOpciones.Controls.Add(this.materialDivider2);
             this.panelOpciones.Controls.Add(this.materialDivider1);
             this.panelOpciones.Controls.Add(this.btnPuntos);
             this.panelOpciones.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -136,19 +142,29 @@
             this.panelOpciones.Size = new System.Drawing.Size(95, 398);
             this.panelOpciones.TabIndex = 10;
             // 
-            // btnPersonal
+            // materialDivider2
             // 
-            this.btnPersonal.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.btnPersonal.BackColor = System.Drawing.Color.Transparent;
-            this.btnPersonal.BorderColor = System.Drawing.Color.Transparent;
-            this.btnPersonal.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPersonal.Icon = global::CapaPresentacion.Properties.Resources.user__12_;
-            this.btnPersonal.Location = new System.Drawing.Point(0, 107);
-            this.btnPersonal.Menu = "Personal";
-            this.btnPersonal.Name = "btnPersonal";
-            this.btnPersonal.Size = new System.Drawing.Size(95, 87);
-            this.btnPersonal.TabIndex = 2;
-            this.btnPersonal.Load += new System.EventHandler(this.btnPersonal_Load);
+            this.materialDivider2.BackColor = System.Drawing.Color.Transparent;
+            this.materialDivider2.Depth = 0;
+            this.materialDivider2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialDivider2.Location = new System.Drawing.Point(0, 107);
+            this.materialDivider2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialDivider2.Name = "materialDivider2";
+            this.materialDivider2.Size = new System.Drawing.Size(95, 17);
+            this.materialDivider2.TabIndex = 4;
+            this.materialDivider2.Text = "materialDivider2";
+            // 
+            // materialDivider1
+            // 
+            this.materialDivider1.BackColor = System.Drawing.Color.Transparent;
+            this.materialDivider1.Depth = 0;
+            this.materialDivider1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialDivider1.Location = new System.Drawing.Point(0, 90);
+            this.materialDivider1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialDivider1.Name = "materialDivider1";
+            this.materialDivider1.Size = new System.Drawing.Size(95, 17);
+            this.materialDivider1.TabIndex = 0;
+            this.materialDivider1.Text = "materialDivider1";
             // 
             // btnPuntos
             // 
@@ -164,18 +180,6 @@
             this.btnPuntos.Size = new System.Drawing.Size(95, 90);
             this.btnPuntos.TabIndex = 0;
             this.btnPuntos.Load += new System.EventHandler(this.btnPuntos_Load);
-            // 
-            // materialDivider1
-            // 
-            this.materialDivider1.BackColor = System.Drawing.Color.Transparent;
-            this.materialDivider1.Depth = 0;
-            this.materialDivider1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.materialDivider1.Location = new System.Drawing.Point(0, 90);
-            this.materialDivider1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialDivider1.Name = "materialDivider1";
-            this.materialDivider1.Size = new System.Drawing.Size(95, 17);
-            this.materialDivider1.TabIndex = 0;
-            this.materialDivider1.Text = "materialDivider1";
             // 
             // panelBS
             // 
@@ -200,6 +204,7 @@
             this.btnHome.Name = "btnHome";
             this.btnHome.Size = new System.Drawing.Size(95, 73);
             this.btnHome.TabIndex = 0;
+            this.btnHome.Load += new System.EventHandler(this.btnHome_Load);
             // 
             // panelBI
             // 
@@ -209,6 +214,46 @@
             this.panelBI.Name = "panelBI";
             this.panelBI.Size = new System.Drawing.Size(95, 200);
             this.panelBI.TabIndex = 9;
+            // 
+            // materialDivider3
+            // 
+            this.materialDivider3.BackColor = System.Drawing.Color.Transparent;
+            this.materialDivider3.Depth = 0;
+            this.materialDivider3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialDivider3.Location = new System.Drawing.Point(0, 211);
+            this.materialDivider3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialDivider3.Name = "materialDivider3";
+            this.materialDivider3.Size = new System.Drawing.Size(95, 17);
+            this.materialDivider3.TabIndex = 7;
+            this.materialDivider3.Text = "materialDivider3";
+            // 
+            // btnPersonal
+            // 
+            this.btnPersonal.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.btnPersonal.BackColor = System.Drawing.Color.Transparent;
+            this.btnPersonal.BorderColor = System.Drawing.Color.Transparent;
+            this.btnPersonal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPersonal.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnPersonal.Icon = global::CapaPresentacion.Properties.Resources.user__12_;
+            this.btnPersonal.Location = new System.Drawing.Point(0, 124);
+            this.btnPersonal.Menu = "Personal";
+            this.btnPersonal.Name = "btnPersonal";
+            this.btnPersonal.Size = new System.Drawing.Size(95, 87);
+            this.btnPersonal.TabIndex = 6;
+            // 
+            // btnLimpiezaPersonal
+            // 
+            this.btnLimpiezaPersonal.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.btnLimpiezaPersonal.BackColor = System.Drawing.Color.Transparent;
+            this.btnLimpiezaPersonal.BorderColor = System.Drawing.Color.Transparent;
+            this.btnLimpiezaPersonal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLimpiezaPersonal.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnLimpiezaPersonal.Icon = global::CapaPresentacion.Properties.Resources.user__12_;
+            this.btnLimpiezaPersonal.Location = new System.Drawing.Point(0, 228);
+            this.btnLimpiezaPersonal.Menu = "Limpieza";
+            this.btnLimpiezaPersonal.Name = "btnLimpiezaPersonal";
+            this.btnLimpiezaPersonal.Size = new System.Drawing.Size(95, 87);
+            this.btnLimpiezaPersonal.TabIndex = 8;
             // 
             // frmPrincipal
             // 
@@ -249,8 +294,11 @@
         private System.Windows.Forms.Button btnMinimizar;
         private System.Windows.Forms.Panel BarraControl;
         private ClasesForm.ucMenu btnHome;
-        private ClasesForm.ucMenu btnPersonal;
         private MaterialSkin.Controls.MaterialDivider materialDivider1;
         private System.Windows.Forms.Panel panelCentral;
+        private MaterialSkin.Controls.MaterialDivider materialDivider2;
+        private MaterialSkin.Controls.MaterialDivider materialDivider3;
+        private ClasesForm.ucMenu btnPersonal;
+        private ClasesForm.ucMenu btnLimpiezaPersonal;
     }
 }

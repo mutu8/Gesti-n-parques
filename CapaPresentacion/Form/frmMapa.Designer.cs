@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMapa));
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             this.txtDescripcion = new System.Windows.Forms.TextBox();
@@ -42,7 +41,6 @@
             this.btnRelieve = new System.Windows.Forms.Button();
             this.trackZoom = new System.Windows.Forms.TrackBar();
             this.label4 = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnAgregar = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.txtReferencia = new System.Windows.Forms.TextBox();
@@ -57,6 +55,8 @@
             this.cboSector = new System.Windows.Forms.ComboBox();
             this.cboEncargado = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackZoom)).BeginInit();
             this.SuspendLayout();
             // 
@@ -198,12 +198,6 @@
             this.label4.TabIndex = 17;
             this.label4.Text = "Zoom:";
             // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 10;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // btnAgregar
             // 
             this.btnAgregar.BackColor = System.Drawing.SystemColors.MenuHighlight;
@@ -339,12 +333,38 @@
             this.label7.TabIndex = 44;
             this.label7.Text = "Encargado";
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(826, 243);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(20, 21);
+            this.button1.TabIndex = 46;
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(826, 413);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(20, 21);
+            this.button2.TabIndex = 47;
+            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // frmMapa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(842, 544);
+            this.ClientSize = new System.Drawing.Size(852, 544);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.cboEncargado);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.cboSector);
@@ -398,7 +418,6 @@
         private System.Windows.Forms.Button btnRelieve;
         private System.Windows.Forms.TrackBar trackZoom;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnAgregar;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtReferencia;
@@ -413,6 +432,8 @@
         private System.Windows.Forms.ComboBox cboSector;
         private System.Windows.Forms.ComboBox cboEncargado;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

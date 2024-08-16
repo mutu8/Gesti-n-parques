@@ -21,6 +21,9 @@ namespace CapaPresentacion
         public frmPersonal()
         {
             InitializeComponent();
+
+            toolTip1.SetToolTip(materialFloatingActionButton1, "Agregar nuevo personal");
+            toolTip1.SetToolTip(materialTextBox1, "Buscar");
         }
 
         // Propiedad pública para exponer el panel
@@ -64,9 +67,36 @@ namespace CapaPresentacion
                     UserControlEmpleado nuevoEmpleado = new UserControlEmpleado(this);
                     nuevoEmpleado.Nombre = row["Nombres"].ToString() + " " + row["Apellidos"].ToString();
                     nuevoEmpleado.Rol = CargoInverso((bool)row["esApoyo"]);
+
                     // ... (Otras propiedades que tenga tu UserControl, como ID, foto, etc.)
                     nuevoEmpleado.Anchor = AnchorStyles.Right | AnchorStyles.Left;
                     nuevoEmpleado.Margin = new Padding(5);
+
+                    // Obtener la fecha de nacimiento del empleado si no es null
+                    DateTime? fechaNacimiento = row["FechaNacimiento"] as DateTime?;
+
+                    if (fechaNacimiento.HasValue)
+                    {
+                        // Crear una fecha con el día y mes de hoy
+                        DateTime fechaHoy = DateTime.Today;
+                        DateTime fechaComparacion = new DateTime(fechaHoy.Year, fechaNacimiento.Value.Month, fechaNacimiento.Value.Day);
+
+                        // Verificar si la fecha de nacimiento es la misma que la de hoy (solo día y mes)
+                        if (fechaComparacion.Date == fechaHoy.Date)
+                        {
+                            nuevoEmpleado.BtnEditar = false; // Inhabilitar el botón de editar
+                        }
+                        else
+                        {
+                            nuevoEmpleado.BtnEditar = true; // Habilitar el botón de editar
+                        }
+                    }
+                    else
+                    {
+                        nuevoEmpleado.BtnEditar = true; // Por ejemplo, habilitar el botón si la fecha de nacimiento es null
+                    }
+
+
 
                     allUserControlsEmpleados.Add(nuevoEmpleado);
                 }
@@ -85,10 +115,6 @@ namespace CapaPresentacion
                 MessageBox.Show("Error al cargar los empleados: " + ex.Message);
             }
         }
-
-
-
-
 
 
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)

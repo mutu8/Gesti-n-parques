@@ -1,4 +1,5 @@
 ﻿using CapaLogica;
+using MaterialSkin.Controls;
 using System;
 using System.Data;
 using System.Drawing;
@@ -15,6 +16,11 @@ namespace CapaPresentacion
         private bool frmEmpleadoAbierto = false;
         private frmDatosPersonal frmDatosPersonalInstancia;
 
+        public bool BtnEditar
+        {
+            get { return btnSettings.Enabled; }
+            set { btnSettings.Enabled = value; }
+        }
 
         public frmPersonal InstanciFrmE;
 
@@ -34,6 +40,12 @@ namespace CapaPresentacion
         {
             InitializeComponent();
             this.InstanciFrmE = frm;
+
+            toolTip1.SetToolTip(materialFloatingActionButton2, "Generar reporte de asistencias por mes y año");
+            toolTip1.SetToolTip(btbVer, "Visualizar información de personal");
+            toolTip1.SetToolTip(btnSettings, "Modificar información de personal");
+            toolTip1.SetToolTip(btnDelete, "Eliminar información de personal");
+
         }
 
         // Método para establecer los datos de la localidad
@@ -78,7 +90,107 @@ namespace CapaPresentacion
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
+            using (PasswordForm reportesFechas = new PasswordForm())
+            {
+                reportesFechas.StartPosition = FormStartPosition.CenterScreen;
 
+                // Mostrar el formulario como un cuadro de diálogo
+                if (reportesFechas.ShowDialog() == DialogResult.OK)
+                {
+                    if (FormUtil.TryOpenForm(() =>
+                    {
+                        var frmDetallesEmpleado = new frmDatosPersonal();
+                        frmDetallesEmpleado.InstanciFrmE = InstanciFrmE;
+                        // 1. Obtener el ID del empleado seleccionado (asumiendo que tienes un control para seleccionarlo)
+                        // Puedes usar un DataGridView, ListBox, etc. para obtener el ID
+                        int empleadoId = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(Nombre); // Implementa esta función
+
+                        // 2. Obtener los detalles del empleado usando logEmpleados
+                        DataTable dtDetallesEmpleado = logEmleados.Instancia.ObtenerDetallesEmpleadoPorId(empleadoId);
+
+                        if (dtDetallesEmpleado.Rows.Count > 0)
+                        {
+                            DataRow row = dtDetallesEmpleado.Rows[0];
+
+                            frmDetallesEmpleado.idEmpleado = empleadoId;
+
+                            // 3. Asignar los valores a las propiedades del formulario
+                            frmDetallesEmpleado.Nombre = row["Nombres"].ToString();
+                            frmDetallesEmpleado.Apellido = row["Apellidos"].ToString();
+                            frmDetallesEmpleado.Rol = frmDetallesEmpleado.CargoInverso((bool)row["esApoyo"]);
+                            frmDetallesEmpleado.Text = row["Nombres"].ToString() + " " + row["Apellidos"].ToString();
+
+                            // Asignar nuevos campos
+                            frmDetallesEmpleado.DireccionCorreo = row["DireccionCorreo"].ToString();
+                            frmDetallesEmpleado.ImageUrl = row["urlFoto"].ToString();
+                            frmDetallesEmpleado.DNI = row["DNI"].ToString();
+
+                            // Obtener y parsear la fecha de nacimiento
+                            if (DateTime.TryParse(row["FechaNacimiento"].ToString(), out DateTime fechaNacimiento))
+                            {
+                                frmDetallesEmpleado.FechaNacimiento = fechaNacimiento;
+                            }
+
+                            frmDetallesEmpleado.textoBoton = "Guardar";
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se encontraron detalles para el empleado seleccionado.");
+                        }
+
+                        InstanciFrmE.EstadoBloqueado(false);
+                        frmDetallesEmpleado.StartPosition = FormStartPosition.CenterScreen;
+                        return frmDetallesEmpleado;
+                    }))
+                    {
+                        // El formulario se abrió exitosamente
+                    }
+                }
+            }
+        }
+
+        private void btnImage_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            using (PasswordForm reportesFechas = new PasswordForm())
+            {
+                reportesFechas.StartPosition = FormStartPosition.CenterScreen;
+
+                // Mostrar el formulario como un cuadro de diálogo
+                if (reportesFechas.ShowDialog() == DialogResult.OK)
+                {
+                    // Obtener el ID del empleado
+                    int empleadoId = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(txtNombre.Text);
+
+                    // Confirmar la eliminación con el usuario
+                    DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este empleado?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    // Verificar la respuesta del usuario
+                    if (result == DialogResult.Yes)
+                    {
+                        // Realizar la eliminación del empleado
+                        string mensajeError;
+                        if (logEmleados.Instancia.EliminarEmpleado(empleadoId, out mensajeError))
+                        {
+                            MessageBox.Show("Empleado eliminado correctamente.");
+                            InstanciFrmE.seDebeActualizar = true;
+                            InstanciFrmE.CargarUserControlsEmpleados();
+                        }
+                        else
+                        {
+                            MessageBox.Show(mensajeError); // Mostrar el mensaje de error específico
+                        }
+                    }
+                }
+            } 
+        }
+
+        private void btbVer_Click(object sender, EventArgs e)
+        {
             if (FormUtil.TryOpenForm(() =>
             {
                 var frmDetallesEmpleado = new frmDatosPersonal();
@@ -94,11 +206,26 @@ namespace CapaPresentacion
                 {
                     DataRow row = dtDetallesEmpleado.Rows[0];
 
+                    frmDetallesEmpleado.idEmpleado = empleadoId;
+
                     // 3. Asignar los valores a las propiedades del formulario
                     frmDetallesEmpleado.Nombre = row["Nombres"].ToString();
                     frmDetallesEmpleado.Apellido = row["Apellidos"].ToString();
                     frmDetallesEmpleado.Rol = frmDetallesEmpleado.CargoInverso((bool)row["esApoyo"]);
-                    frmDetallesEmpleado.textoBoton = "Guardar";
+                    frmDetallesEmpleado.Text = row["Nombres"].ToString() + " " + row["Apellidos"].ToString();
+
+                    // Asignar nuevos campos
+                    frmDetallesEmpleado.DireccionCorreo = row["DireccionCorreo"].ToString();
+                    frmDetallesEmpleado.ImageUrl = row["urlFoto"].ToString();
+                    frmDetallesEmpleado.DNI = row["DNI"].ToString();
+
+                    // Obtener y parsear la fecha de nacimiento
+                    if (DateTime.TryParse(row["FechaNacimiento"].ToString(), out DateTime fechaNacimiento))
+                    {
+                        frmDetallesEmpleado.FechaNacimiento = fechaNacimiento;
+                    }
+
+                    frmDetallesEmpleado.textoBoton = "";
                 }
                 else
                 {
@@ -114,37 +241,26 @@ namespace CapaPresentacion
             }
         }
 
-        private void btnImage_Click(object sender, EventArgs e)
+        private void materialFloatingActionButton2_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            // Obtener el ID del empleado
-            int empleadoId = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(txtNombre.Text);
-
-            // Confirmar la eliminación con el usuario
-            DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este empleado?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            // Verificar la respuesta del usuario
-            if (result == DialogResult.Yes)
+            int id = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(txtNombre.Text);
+            
+            using (frmReportesFechas reportesFechas = new frmReportesFechas())
             {
-                // Realizar la eliminación del empleado
-                string mensajeError;
-                if (logEmleados.Instancia.EliminarEmpleado(empleadoId, out mensajeError))
+                reportesFechas.StartPosition = FormStartPosition.CenterScreen;
+                // Hacer visible el ComboBox (si el formulario ya está inicializado)
+                reportesFechas.cbo.Visible = true;
+                reportesFechas.DiD.Visible = true;
+                reportesFechas.DatePicker.Visible = false;
+
+                reportesFechas.idEmpleado = id;
+
+                // Mostrar el formulario como un cuadro de diálogo
+                if (reportesFechas.ShowDialog() == DialogResult.OK)
                 {
-                    MessageBox.Show("Empleado eliminado correctamente.");
-                    InstanciFrmE.seDebeActualizar = true;
-                    InstanciFrmE.CargarUserControlsEmpleados();
-                }
-                else
-                {
-                    MessageBox.Show(mensajeError); // Mostrar el mensaje de error específico
+
                 }
             }
-
         }
-
     }
 }

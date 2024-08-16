@@ -1,5 +1,6 @@
 ﻿using CapaDatos;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace CapaLogica
@@ -12,11 +13,11 @@ namespace CapaLogica
             get { return logEmleados._instancia; }
         }
         // Método para insertar un empleado (usa datEmpleados)
-        public void InsertarEmpleado(string nombres, string apellidos, bool esApoyo)
+        public void InsertarEmpleado(string nombres, string apellidos, bool esApoyo, string direccionCorreo, string urlFoto, string DNI)
         {
             try
             {
-                datEmpleados.Instancia.InsertarEmpleado(nombres, apellidos, esApoyo);
+                datEmpleados.Instancia.InsertarEmpleado(nombres, apellidos, esApoyo, direccionCorreo, urlFoto, DNI);
             }
             catch (Exception ex)
             {
@@ -71,11 +72,11 @@ namespace CapaLogica
                 throw new Exception("Error en la capa de lógica al obtener detalles del empleado: " + ex.Message);
             }
         }
-        public void ModificarEmpleado(int empleadoId, bool esApoyo)
+        public void ModificarEmpleado(int empleadoId, bool esApoyo, string direccionCorreo, string urlFoto, string DNI, DateTime fechaNacimiento)
         {
             try
             {
-                datEmpleados.Instancia.ModificarEmpleado(empleadoId, esApoyo);
+                datEmpleados.Instancia.ModificarEmpleado(empleadoId, esApoyo, direccionCorreo, urlFoto, DNI, fechaNacimiento);
             }
             catch (Exception ex)
             {
@@ -97,5 +98,34 @@ namespace CapaLogica
                 throw new Exception("Error en la capa de lógica al obtener empleados filtrados: " + ex.Message);
             }
         }
+
+        public DataTable ListarEmpleadosQueSeanLimpieza()
+        {
+            try
+            {
+                return datEmpleados.Instancia.ListarEmpleadosQueSeanLimpieza();
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                throw new Exception("Error al listar empleados que son personal de limpieza: " + ex.Message);
+            }
+        }
+
+        public DataTable datObtenerPersonalLimpiezaParaComboBox()
+        {
+            try
+            {
+                return datEmpleados.Instancia.datObtenerPersonalLimpiezaParaComboBox();
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                throw new Exception("Error al listar empleados que son personal de limpieza: " + ex.Message);
+            }
+        }
+
+
+
     }
 }

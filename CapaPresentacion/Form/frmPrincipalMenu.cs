@@ -25,7 +25,7 @@ namespace CapaPresentacion
         public frmPrincipal()
         {
             InitializeComponent();
-            menuButtons = new List<ucMenu>() { btnHome, btnPuntos, btnPersonal };
+            menuButtons = new List<ucMenu>() { btnHome, btnPuntos, btnPersonal, btnLimpiezaPersonal };
             ClickMenu(menuButtons);
         }
 
@@ -74,24 +74,40 @@ namespace CapaPresentacion
                     {
                         btnPersonal.Enabled = btnPuntos.Enabled = true;
                         btnHome.Enabled = false;
-                        activeMenu(btnHome, btnPuntos, btnPersonal);
-                        CargarFormularioEnPanel(new frmHomeVisitas());
+                        activeMenu(btnHome, btnPuntos, btnPersonal, btnLimpiezaPersonal);
+                        //CargarFormularioEnPanel(new frmHomeVisitas());
+                        panelCentral.Controls.Clear();
                     }
                 },
                 { "btnPuntos", () =>
                     {
-                        activeMenu(btnPuntos, btnHome, btnPersonal);
+                        activeMenu(btnPuntos, btnHome, btnPersonal, btnLimpiezaPersonal);
                         botones(btnPersonal, btnPuntos);
+                        botones(btnLimpiezaPersonal, btnPuntos);
+
                         btnHome.Enabled = true;
                         CargarFormularioEnPanel(new frmLocalidades());
                     }
                 },
                 { "btnPersonal", () =>
                     {
-                        activeMenu(btnPersonal, btnHome, btnPuntos);
+                        activeMenu(btnPersonal, btnHome, btnPuntos, btnLimpiezaPersonal);
                         botones(btnPuntos, btnPersonal);
+                        botones(btnLimpiezaPersonal, btnPersonal);
+
                         btnHome.Enabled = true;
                         CargarFormularioEnPanel(new frmPersonal());
+                    }
+                },
+
+                { "btnLimpiezaPersonal", () =>
+                    {
+                        activeMenu(btnLimpiezaPersonal, btnHome, btnPuntos, btnPersonal);
+                        botones(btnPuntos, btnLimpiezaPersonal);
+                        botones(btnPersonal, btnLimpiezaPersonal);
+
+                        btnHome.Enabled = true;
+                        CargarFormularioEnPanel(new FormPersonalLimpieza());
                     }
                 }
             };
@@ -239,6 +255,11 @@ namespace CapaPresentacion
         }
 
         private void materialDivider3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnHome_Load(object sender, EventArgs e)
         {
 
         }

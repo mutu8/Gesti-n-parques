@@ -28,17 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlEmpleado));
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtRol = new System.Windows.Forms.TextBox();
+            this.materialFloatingActionButton2 = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.btbVer = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.btnDelete = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.btnSettings = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtRol = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -84,6 +88,8 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Controls.Add(this.materialFloatingActionButton2);
+            this.panel3.Controls.Add(this.btbVer);
             this.panel3.Controls.Add(this.btnDelete);
             this.panel3.Controls.Add(this.btnSettings);
             this.panel3.Controls.Add(this.pictureBox1);
@@ -99,27 +105,34 @@
             this.panel3.Size = new System.Drawing.Size(480, 169);
             this.panel3.TabIndex = 15;
             // 
-            // label2
+            // materialFloatingActionButton2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label2.Location = new System.Drawing.Point(166, 86);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(28, 15);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Rol:";
+            this.materialFloatingActionButton2.AnimateShowHideButton = true;
+            this.materialFloatingActionButton2.BackColor = System.Drawing.Color.Transparent;
+            this.materialFloatingActionButton2.Depth = 0;
+            this.materialFloatingActionButton2.Icon = global::CapaPresentacion.Properties.Resources.file__1_;
+            this.materialFloatingActionButton2.Location = new System.Drawing.Point(285, 117);
+            this.materialFloatingActionButton2.Mini = true;
+            this.materialFloatingActionButton2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialFloatingActionButton2.Name = "materialFloatingActionButton2";
+            this.materialFloatingActionButton2.Size = new System.Drawing.Size(40, 40);
+            this.materialFloatingActionButton2.TabIndex = 56;
+            this.materialFloatingActionButton2.UseVisualStyleBackColor = false;
+            this.materialFloatingActionButton2.Click += new System.EventHandler(this.materialFloatingActionButton2_Click);
             // 
-            // txtRol
+            // btbVer
             // 
-            this.txtRol.BackColor = System.Drawing.Color.White;
-            this.txtRol.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtRol.Enabled = false;
-            this.txtRol.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRol.Location = new System.Drawing.Point(248, 82);
-            this.txtRol.Name = "txtRol";
-            this.txtRol.Size = new System.Drawing.Size(215, 19);
-            this.txtRol.TabIndex = 12;
+            this.btbVer.Depth = 0;
+            this.btbVer.Icon = ((System.Drawing.Image)(resources.GetObject("btbVer.Icon")));
+            this.btbVer.Location = new System.Drawing.Point(331, 117);
+            this.btbVer.Mini = true;
+            this.btbVer.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btbVer.Name = "btbVer";
+            this.btbVer.Size = new System.Drawing.Size(40, 40);
+            this.btbVer.TabIndex = 17;
+            this.btbVer.Text = "materialFloatingActionButton1";
+            this.btbVer.UseVisualStyleBackColor = true;
+            this.btbVer.Click += new System.EventHandler(this.btbVer_Click);
             // 
             // btnDelete
             // 
@@ -161,6 +174,28 @@
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label2.Location = new System.Drawing.Point(166, 86);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(28, 15);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Rol:";
+            // 
+            // txtRol
+            // 
+            this.txtRol.BackColor = System.Drawing.Color.White;
+            this.txtRol.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtRol.Enabled = false;
+            this.txtRol.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRol.Location = new System.Drawing.Point(248, 82);
+            this.txtRol.Name = "txtRol";
+            this.txtRol.Size = new System.Drawing.Size(215, 19);
+            this.txtRol.TabIndex = 12;
+            // 
             // UserControlEmpleado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -187,5 +222,8 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtRol;
+        private MaterialSkin.Controls.MaterialFloatingActionButton btbVer;
+        private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton2;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

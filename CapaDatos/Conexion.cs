@@ -20,7 +20,7 @@ namespace CapaDatos
             //Concatena el machineName en la cadena de conexión
             string machineName = Environment.MachineName;
 
-            //connectionString = "Server=mssql-176029-0.cloudclusters.net,19136;Database=BD_GestionAmbiental;User Id=Yordy;Password=#sWbQy)J[^mJPF9atbpVA^c*b#%zn0ZkqcUDU>EDtaGXBDh<c+65B]w0rf0y#TnU;";
+            //connectionString = "Server=mssql-178919-0.cloudclusters.net,10056;Database=BD_GestionAmbiental;User Id=Steven;Password=#sWbQy)J[^mJPF9atbpVA^c*b#%zn0ZkqcUDU>EDtaGXBDh<c+65B]w0rf0y#TnU;";
             connectionString = $"Server={machineName}\\SQLEXPRESS;Database=BD_GestionAmbiental;Integrated Security=True;";
         }
 
@@ -28,5 +28,6 @@ namespace CapaDatos
         {
             return connectionString;
         }
+
     }
 }

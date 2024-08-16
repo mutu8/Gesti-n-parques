@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlTarget));
             this.label1 = new System.Windows.Forms.Label();
             this.txtDireccion = new System.Windows.Forms.TextBox();
@@ -41,6 +42,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.txtNombre = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -224,5 +226,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox txtNombre;
         private MaterialSkin.Controls.MaterialFloatingActionButton btnVisitas;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

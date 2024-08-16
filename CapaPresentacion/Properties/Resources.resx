@@ -118,37 +118,49 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="edit-image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\edit-image.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="foto-y-camara" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\foto-y-camara.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Azur Lane" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Azur Lane.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ajustes-deslizadores" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ajustes-deslizadores.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="file (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\file (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="park" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\park.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="foto-y-camara" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\foto-y-camara.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="plus__4_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plus (4).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mapas-y-banderass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\mapas-y-banderass.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="check" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Azur Lane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Azur Lane.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="done" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\done.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="plus__4_" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plus (4).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ajustes-deslizadores" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ajustes-deslizadores.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="printer__3_" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\printer (3).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="edit-image" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\edit-image.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="user__10_" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\user (10).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="user__12_" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\user (12).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="magic-wand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\magic-wand.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -28,6 +28,17 @@ namespace CapaPresentacion
         {
             DataTable dtVisitas = logVisitas.Instancia.ListarVisitas(idLocalidad);
             dgvVisitas.DataSource = dtVisitas;
+            test();
+        }
+        private void test()
+        {
+            // Iterar sobre todas las columnas del DataGridView
+            foreach (DataGridViewColumn column in dgvVisitas.Columns)
+            {
+                // Establecer el modo de ordenación a NotSortable
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
         }
 
         private void frmVisitas_Load(object sender, EventArgs e)
@@ -142,7 +153,7 @@ namespace CapaPresentacion
             int idEmpleado = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(cboEncargado.Text);
 
             // 2. Insertar la visita
-            bool exito = logVisitas.Instancia.InsertarVisita(fechaVisita, estado, idLocalidad, idEmpleado);
+            bool exito = logVisitas.Instancia.InsertarVisita(fechaVisita, estado, idLocalidad, idEmpleado, richTextBox1.Text);
 
             // 3. Mostrar resultado
             if (exito)
@@ -313,7 +324,7 @@ namespace CapaPresentacion
                         table.DefaultCell.BorderColor = BaseColor.LIGHT_GRAY;
 
                         // Array de encabezados (sin ID)
-                        string[] headers = { "Fecha de Visita", "Lugar de Visita", "Responsable", "Estado" };
+                        string[] headers = { "Fecha de Visita", "Lugar de Visita", "Responsable", "Estado", "Nota"};
 
                         // Estilo de los encabezados
                         iTextSharp.text.Font headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);

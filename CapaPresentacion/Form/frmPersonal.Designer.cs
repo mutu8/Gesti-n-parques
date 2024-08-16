@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panelVisitas = new System.Windows.Forms.Panel();
             this.materialTextBox1 = new MaterialSkin.Controls.MaterialTextBox();
             this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panelVisitas.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -116,5 +118,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton1;
         private MaterialSkin.Controls.MaterialTextBox materialTextBox1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

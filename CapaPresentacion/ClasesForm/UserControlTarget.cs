@@ -21,6 +21,11 @@ namespace CapaPresentacion
         {
             InitializeComponent();
             this.InstanciFrmL = frm;
+
+            toolTip1.SetToolTip(btnVisitas, "Programar visitas");
+            toolTip1.SetToolTip(btnImagen, "Subir foto a la nube");
+            toolTip1.SetToolTip(btnAjustes, "Modificar información");
+            toolTip1.SetToolTip(btnEliminar, "Eliminar información");
         }
 
         // Propiedad para el nombre de la localidad
@@ -62,52 +67,60 @@ namespace CapaPresentacion
 
         private void materialFloatingActionButton1_Click(object sender, EventArgs e)
         {
-
-            // Intentar abrir el formulario frmMapa usando la función general
-            if (FormUtil.TryOpenForm(() =>
+            using (PasswordForm reportesFechas = new PasswordForm())
             {
-                var frmMapa = new frmMapa();
-                frmMapa.textoBoton = "Guardar";
+                reportesFechas.StartPosition = FormStartPosition.CenterScreen;
 
-                frmMapa.InstanciFrmL = InstanciFrmL;
-
-                InstanciFrmL.EstadoBloqueado(false);
-
-                // Obtener datos de la localidad usando la capa de lógica
-                DataTable dtDetallesLocalidad = logLocalidades.ObtenerDetallesLocalidadPorNombreYDireccion(txtNombre.Text, txtDireccion.Text);
-                if (dtDetallesLocalidad.Rows.Count > 0)
+                // Mostrar el formulario como un cuadro de diálogo
+                if (reportesFechas.ShowDialog() == DialogResult.OK)
                 {
-                    DataRow row = dtDetallesLocalidad.Rows[0];
-
-                    frmMapa.Nombre_Localidad = txtNombre.Text;
-                    frmMapa.Descripcion = row["Descripcion"] != DBNull.Value ? row["Descripcion"].ToString() : string.Empty;
-                    frmMapa.Direccion = row["Direccion"] != DBNull.Value ? row["Direccion"].ToString() : string.Empty;
-                    frmMapa.Referencias = row["Referencias"] != DBNull.Value ? row["Referencias"].ToString() : string.Empty;
-                    frmMapa.Urbanizacion = row["Urbanizacion"] != DBNull.Value ? row["Urbanizacion"].ToString() : string.Empty;
-                    frmMapa.Sector = row["Sector"] != DBNull.Value ? row["Sector"].ToString() : string.Empty;
-                    frmMapa.Latitud = row["Latitud"] != DBNull.Value ? Convert.ToDecimal(row["Latitud"]) : 0;
-                    frmMapa.Longitud = row["Longitud"] != DBNull.Value ? Convert.ToDecimal(row["Longitud"]) : 0;
-                    frmMapa.ImageUrl = row["url_Localidad"] != DBNull.Value ? row["url_Localidad"].ToString() : string.Empty;
-                    frmMapa.idEmpleado = row["ID_Empleado"] != DBNull.Value ? Convert.ToInt32(row["ID_Empleado"]) : 0; // Obtener el ID del empleado como entero
-
-                    if (frmMapa.Latitud != 0 && frmMapa.Longitud != 0)
+                    // Intentar abrir el formulario frmMapa usando la función general
+                    if (FormUtil.TryOpenForm(() =>
                     {
-                        frmMapa.LatInicial = (double)frmMapa.Latitud;
-                        frmMapa.LngInicial = (double)frmMapa.Longitud;
+                        var frmMapa = new frmMapa();
+                        frmMapa.textoBoton = "Guardar";
+
+                        frmMapa.InstanciFrmL = InstanciFrmL;
+
+                        InstanciFrmL.EstadoBloqueado(false);
+
+                        // Obtener datos de la localidad usando la capa de lógica
+                        DataTable dtDetallesLocalidad = logLocalidades.ObtenerDetallesLocalidadPorNombreYDireccion(txtNombre.Text, txtDireccion.Text);
+                        if (dtDetallesLocalidad.Rows.Count > 0)
+                        {
+                            DataRow row = dtDetallesLocalidad.Rows[0];
+
+                            frmMapa.Nombre_Localidad = txtNombre.Text;
+                            frmMapa.Descripcion = row["Descripcion"] != DBNull.Value ? row["Descripcion"].ToString() : string.Empty;
+                            frmMapa.Direccion = row["Direccion"] != DBNull.Value ? row["Direccion"].ToString() : string.Empty;
+                            frmMapa.Referencias = row["Referencias"] != DBNull.Value ? row["Referencias"].ToString() : string.Empty;
+                            frmMapa.Urbanizacion = row["Urbanizacion"] != DBNull.Value ? row["Urbanizacion"].ToString() : string.Empty;
+                            frmMapa.Sector = row["Sector"] != DBNull.Value ? row["Sector"].ToString() : string.Empty;
+                            frmMapa.Latitud = row["Latitud"] != DBNull.Value ? Convert.ToDecimal(row["Latitud"]) : 0;
+                            frmMapa.Longitud = row["Longitud"] != DBNull.Value ? Convert.ToDecimal(row["Longitud"]) : 0;
+                            frmMapa.ImageUrl = row["url_Localidad"] != DBNull.Value ? row["url_Localidad"].ToString() : string.Empty;
+                            frmMapa.idEmpleado = row["ID_Empleado"] != DBNull.Value ? Convert.ToInt32(row["ID_Empleado"]) : 0; // Obtener el ID del empleado como entero
+
+                            if (frmMapa.Latitud != 0 && frmMapa.Longitud != 0)
+                            {
+                                frmMapa.LatInicial = (double)frmMapa.Latitud;
+                                frmMapa.LngInicial = (double)frmMapa.Longitud;
+                            }
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se encontraron detalles para la localidad especificada.");
+                        }
+
+                        frmMapa.StartPosition = FormStartPosition.CenterScreen;
+                        return frmMapa;
+                    }))
+                    {
+                        // El formulario se abrió exitosamente
+                        frmMapaAbierto = true;
                     }
-
                 }
-                else
-                {
-                    MessageBox.Show("No se encontraron detalles para la localidad especificada.");
-                }
-
-                frmMapa.StartPosition = FormStartPosition.CenterScreen;
-                return frmMapa;
-            }))
-            {
-                // El formulario se abrió exitosamente
-                frmMapaAbierto = true;
             }
         }
 
@@ -160,41 +173,50 @@ namespace CapaPresentacion
 
         private void materialFloatingActionButton3_Click(object sender, EventArgs e)
         {
-            // Obtener el nombre de la localidad y la dirección de donde sea que los obtengas
-            string nombreLocalidad = txtNombre.Text; // Debes proporcionar la implementación de esta función
-            string direccion = txtDireccion.Text; // Debes proporcionar la implementación de esta función
-
-            // Llamar al método para obtener ambos IDs
-            var ids = logLocalidades.Instancia.ObtenerId(nombreLocalidad, direccion);
-
-            // Acceder a los IDs obtenidos
-            int idLocalidad = ids.Item1;
-            int idDetalleLocalidad = ids.Item2;
-
-            if (logLocalidades.Instancia.tieneVisitasPendientes(idLocalidad))
+            using (PasswordForm reportesFechas = new PasswordForm())
             {
-                MessageBox.Show("TIENE VISITAS PENDIENTES");
-                return;
-            }
-            else
-            {
-                // Obtener confirmación del usuario
-                DialogResult resultado = MessageBox.Show("¿Estás seguro de que deseas eliminar el parque?",
-                                                          "Confirmar eliminación",
-                                                          MessageBoxButtons.YesNo,
-                                                          MessageBoxIcon.Question);
+                reportesFechas.StartPosition = FormStartPosition.CenterScreen;
 
-                if (resultado == DialogResult.Yes)
+                // Mostrar el formulario como un cuadro de diálogo
+                if (reportesFechas.ShowDialog() == DialogResult.OK)
                 {
-                    // El usuario confirmó la eliminación
-                    logLocalidades.Instancia.EliminarLocalidadYDetalle(idLocalidad, idDetalleLocalidad);
-                    MessageBox.Show("ELIMINACIÓN COMPLETADA");
-                    InstanciFrmL.seDebeActualizar=true;
-                    InstanciFrmL.CargarLocalidadesEnPanel();
-                }
-                else
-                {
+                    // Obtener el nombre de la localidad y la dirección de donde sea que los obtengas
+                    string nombreLocalidad = txtNombre.Text; // Debes proporcionar la implementación de esta función
+                    string direccion = txtDireccion.Text; // Debes proporcionar la implementación de esta función
 
+                    // Llamar al método para obtener ambos IDs
+                    var ids = logLocalidades.Instancia.ObtenerId(nombreLocalidad, direccion);
+
+                    // Acceder a los IDs obtenidos
+                    int idLocalidad = ids.Item1;
+                    int idDetalleLocalidad = ids.Item2;
+
+                    if (logLocalidades.Instancia.tieneVisitasPendientes(idLocalidad))
+                    {
+                        MessageBox.Show("TIENE VISITAS PENDIENTES");
+                        return;
+                    }
+                    else
+                    {
+                        // Obtener confirmación del usuario
+                        DialogResult resultado = MessageBox.Show("¿Estás seguro de que deseas eliminar el parque?",
+                                                                  "Confirmar eliminación",
+                                                                  MessageBoxButtons.YesNo,
+                                                                  MessageBoxIcon.Question);
+
+                        if (resultado == DialogResult.Yes)
+                        {
+                            // El usuario confirmó la eliminación
+                            logLocalidades.Instancia.EliminarLocalidadYDetalle(idLocalidad, idDetalleLocalidad);
+                            MessageBox.Show("ELIMINACIÓN COMPLETADA");
+                            InstanciFrmL.seDebeActualizar = true;
+                            InstanciFrmL.CargarLocalidadesEnPanel();
+                        }
+                        else
+                        {
+
+                        }
+                    }
                 }
             }
         }

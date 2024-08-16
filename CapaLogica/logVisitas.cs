@@ -17,9 +17,9 @@ namespace CapaLogica
             // Utiliza la instancia de datVisitas para obtener los datos, pasando el ID de la localidad
             return datVisitas.Instancia.ListarVisitas(idLocalidad);
         }
-        public bool InsertarVisita(DateTime fechaVisita, bool estado, int idLocalidad, int idEmpleado)
+        public bool InsertarVisita(DateTime fechaVisita, bool estado, int idLocalidad, int idEmpleado, string nota)
         {
-            return datVisitas.Instancia.InsertarVisita(fechaVisita, estado, idLocalidad, idEmpleado);
+            return datVisitas.Instancia.InsertarVisita(fechaVisita, estado, idLocalidad, idEmpleado, nota);
         }
         public bool ActualizarEstadoVisita(int idVisita, bool nuevoEstado)
         {
@@ -47,6 +47,13 @@ namespace CapaLogica
             return datVisitas.Instancia.ListarVisitasParaDgv(fechaActual);
         }
 
+        public List<object[]> ListarVisitasParDeFechaEspecificav(DateTime fecha)
+        {
+            return datVisitas.Instancia.ListarVisitasParDeFechaEspecifica(fecha);
+        }
+
+
+
         public DataTable ListarEmpleados()
         {
             return datVisitas.Instancia.ListarEmpleados();
@@ -59,9 +66,9 @@ namespace CapaLogica
         {
             return datVisitas.Instancia.ObtenerLocalidadesConEmpleados2();
         }
-        public bool GenerarVisitasParaTodasLasLocalidadesConEmpleados(DateTime fechaVisita, bool estado, int idLocalidad, int idEmpleado)
+        public bool GenerarVisitasParaLocalidades(DateTime fechaVisita, bool estado, int idLocalidad, int idEmpleado, string nota)
         {
-            return datVisitas.Instancia.GenerarVisitasParaTodasLasLocalidadesConEmpleados(fechaVisita, estado, idLocalidad, idEmpleado);
+            return datVisitas.Instancia.GenerarVisitasParaLocalidades(fechaVisita, estado, idLocalidad, idEmpleado, nota);
         }
         // Método para obtener todas las visitas del día actual
         public DataTable ObtenerVisitasDelDia()
@@ -90,7 +97,35 @@ namespace CapaLogica
 
             return exito;
         }
+        public bool NoHayVisitasPendientesDelDia()
+        {
+            return datVisitas.Instancia.NoHayVisitasPendientesDelDia();
+        }
 
+        public bool NoHayVisitasEnElDía()
+        {
+            return datVisitas.Instancia.HayVisitasGeneradasHoy();
+        }
+        public bool ExisteVisitaActivaParaFechaLocalidadYEmpleado(DateTime fechaVisita, int idLocalidad) 
+        {
+            return datVisitas.Instancia.ExisteVisitaActivaParaFechaLocalidad( fechaVisita,  idLocalidad);
+        }
+
+        public bool ExisteVisitaActivaParaFecha1parametro(DateTime fechaVisita)
+        {
+            return datVisitas.Instancia.ExisteVisitaActivaParaFecha1parametro(fechaVisita);
+        }
+
+        // Método para listar visitas de un empleado específico filtradas por mes y año
+        public List<object[]> ListarVisitasDeEmpleado(int idEmpleado, int mes, int anio)
+        {
+            // Utiliza la instancia de datVisitas para obtener los datos, pasando el ID del empleado, mes y año
+            return datVisitas.Instancia.ObtenerVisitasDeEmpleadoEspecifico(idEmpleado, mes, anio);
+        }
+        public bool HayVisitasCompletadasEnFecha(DateTime fechaVisita)
+        {
+            return datVisitas.Instancia.HayVisitasCompletadasEnFecha(fechaVisita);
+        }
 
     }
 }

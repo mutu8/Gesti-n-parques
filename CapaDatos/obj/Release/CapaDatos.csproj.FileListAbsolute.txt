@@ -1,0 +1,11 @@
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\bin\Release\CapaDatos.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\bin\Release\CapaDatos.pdb
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\bin\Release\CapaEntidad.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\bin\Release\Newtonsoft.Json.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\bin\Release\CapaEntidad.pdb
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\bin\Release\Newtonsoft.Json.xml
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\obj\Release\CapaDatos.csproj.AssemblyReference.cache
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\obj\Release\CapaDatos.csproj.CoreCompileInputs.cache
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\obj\Release\CapaDatos.csproj.Up2Date
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\obj\Release\CapaDatos.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaDatos\obj\Release\CapaDatos.pdb

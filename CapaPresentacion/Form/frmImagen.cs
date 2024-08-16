@@ -29,12 +29,16 @@ namespace CapaPresentacion
             Account account = new Account(CLOUD_NAME, API_KEY, API_SECRET);
             cloudinary = new Cloudinary(account);
         }
-
+        
         public frmImagen()
         {
             InitializeComponent();
             InitializeCloudinary();
             this.MaximizeBox = false; // Desactivar el botón de maximizar
+
+            toolTip1.SetToolTip(btnAbrir, "Cargar imagen local");
+            toolTip1.SetToolTip(btnEliminar, "Borrar imagen local");
+            toolTip1.SetToolTip(btnGuardar, "Guardar imagen en la nube");
 
         }
 
@@ -59,7 +63,7 @@ namespace CapaPresentacion
                         Image imagen = Image.FromStream(stream);
 
                         // Establecer la imagen en el PictureBox
-                        pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                        //pictureBox.SizeMode = PictureBoxSizeMode.Normal;
                         pictureBox.Image = imagen;
                     }
                 }
@@ -71,6 +75,8 @@ namespace CapaPresentacion
         }
 
 
+
+
         public void uploadImage(string imagePath)
         {
             try
@@ -78,24 +84,23 @@ namespace CapaPresentacion
                 // Verificar si la ruta de la imagen está vacía
                 if (string.IsNullOrEmpty(imagePath))
                 {
-                    // Si la URL de la imagen no está vacía, eliminar la imagen de Cloudinary
-                    if (!string.IsNullOrEmpty(ImageUrl))
-                    {
-                        DeleteImageByUrl(ImageUrl);
-                    }
-
-                    // Asignar una cadena vacía a ImageUrl y mostrar un mensaje
-                    ImageUrl = "";
-                    MessageBox.Show("Guardado completado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    return; // Salir del método
+                    MessageBox.Show("La ruta de la imagen está vacía.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    ImageUrl = ""; // Establecer la URL de la imagen en vacío
+                    return; // Salir del método si la ruta está vacía
                 }
 
+                // Obtener la fecha y hora actuales
+                string currentDate = DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
-                // Subir la nueva imagen a Cloudinary
+                // Crear el nombre del archivo con el nombre específico y la fecha actual
+                string fileName = $"{this.Text}_{currentDate}{Path.GetExtension(imagePath)}";
+
+                // Verificar si la carpeta específica existe, si no, crearla
+                var folderPath = $"{this.Text}";
                 var uploadParams = new ImageUploadParams()
                 {
-                    File = new FileDescription(imagePath)
+                    File = new FileDescription(imagePath),
+                    PublicId = $"{folderPath}/{fileName}" // Especificar la carpeta y el nombre del archivo
                 };
 
                 // Intentar subir la imagen a Cloudinary
@@ -116,9 +121,7 @@ namespace CapaPresentacion
             {
                 MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
-
 
 
         public void DeleteImageByUrl(string imageUrl)
@@ -180,8 +183,6 @@ namespace CapaPresentacion
                 return null;
             }
         }
-
-
 
         private void btnGrabar_Click(object sender, EventArgs e)
         {

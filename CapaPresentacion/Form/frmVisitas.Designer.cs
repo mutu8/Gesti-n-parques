@@ -31,6 +31,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvVisitas = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.cboEncargado = new System.Windows.Forms.ComboBox();
@@ -67,6 +69,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.richTextBox1);
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
             this.groupBox1.Controls.Add(this.cboEncargado);
@@ -75,9 +79,27 @@
             this.groupBox1.Controls.Add(this.btnGuardar);
             this.groupBox1.Location = new System.Drawing.Point(21, 110);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(434, 228);
+            this.groupBox1.Size = new System.Drawing.Size(434, 304);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(107, 166);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(238, 67);
+            this.richTextBox1.TabIndex = 51;
+            this.richTextBox1.Text = "";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Location = new System.Drawing.Point(107, 150);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(30, 13);
+            this.label3.TabIndex = 50;
+            this.label3.Text = "Nota";
             // 
             // label1
             // 
@@ -122,7 +144,7 @@
             this.btnCancelar.Depth = 0;
             this.btnCancelar.HighEmphasis = true;
             this.btnCancelar.Icon = null;
-            this.btnCancelar.Location = new System.Drawing.Point(222, 157);
+            this.btnCancelar.Location = new System.Drawing.Point(225, 242);
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancelar.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancelar.Name = "btnCancelar";
@@ -142,7 +164,7 @@
             this.btnGuardar.Depth = 0;
             this.btnGuardar.HighEmphasis = true;
             this.btnGuardar.Icon = null;
-            this.btnGuardar.Location = new System.Drawing.Point(126, 157);
+            this.btnGuardar.Location = new System.Drawing.Point(129, 242);
             this.btnGuardar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnGuardar.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnGuardar.Name = "btnGuardar";
@@ -234,6 +256,7 @@
             this.Controls.Add(this.dgvVisitas);
             this.Name = "frmVisitas";
             this.Sizable = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmVisitas_FormClosed);
             this.Load += new System.EventHandler(this.frmVisitas_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitas)).EndInit();
@@ -259,5 +282,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblID;
         private MaterialSkin.Controls.MaterialFloatingActionButton btnImprimier;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

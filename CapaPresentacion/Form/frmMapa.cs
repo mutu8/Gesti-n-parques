@@ -95,7 +95,13 @@ namespace CapaPresentación.Formularios
                 "Palmeras y Palmas del Golf",
                 "San Vicente",
                 "Vista Alegre",
-                "Golf - Primera Etapa"
+                "Golf - Primera Etapa",
+                "San Andres V",
+                "Buenos Aires Sur",
+                "Buenos Aires Centro",
+                "Buenos Aires Norte Progreso",
+                "Rosales de San Luis",
+                "El Golf"
             };
 
             cboSector.Items.Clear();
@@ -117,7 +123,25 @@ namespace CapaPresentación.Formularios
                         string nombres = row["Nombres"] != DBNull.Value ? row["Nombres"].ToString().Trim() : string.Empty;
                         string apellidos = row["Apellidos"] != DBNull.Value ? row["Apellidos"].ToString().Trim() : string.Empty;
                         row["NombreCompleto"] = $"{nombres} {apellidos}".Trim();
+
+                        // Validar la fecha de nacimiento (solo mes y día)
+                        DateTime? fechaNacimiento = row["FechaNacimiento"] as DateTime?;
+                        if (fechaNacimiento.HasValue)
+                        {
+                            DateTime fechaHoy = DateTime.Today;
+                            DateTime fechaComparacion = new DateTime(fechaHoy.Year, fechaNacimiento.Value.Month, fechaNacimiento.Value.Day);
+
+                            // Verificar si la fecha de nacimiento es la misma que la de hoy (solo día y mes)
+                            if (fechaComparacion.Date == fechaHoy.Date)
+                            {
+                                // No agregar este empleado al ComboBox
+                                row.Delete(); // Eliminar la fila del DataTable
+                            }
+                        }
                     }
+
+                    // Aplicar los cambios al DataTable (eliminar filas marcadas para eliminación)
+                    dtEmpleados.AcceptChanges();
 
                     comboBox.DisplayMember = "NombreCompleto"; // Mostrar el nombre completo
                     comboBox.ValueMember = "ID_Empleado";     // Valor asociado (ID del empleado)
@@ -131,6 +155,7 @@ namespace CapaPresentación.Formularios
                 // Puedes agregar un registro de error aquí si lo deseas
             }
         }
+
 
         private int conversorNombreEmpleado()
         {
@@ -212,10 +237,6 @@ namespace CapaPresentación.Formularios
             gMapControl1.MapProvider = GMapProviders.GoogleTerrainMap;
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            trackZoom.Value = Convert.ToInt32(gMapControl1.Zoom);
-        }
 
         private void trackZoom_ValueChanged(object sender, EventArgs e)
         {
@@ -271,15 +292,29 @@ namespace CapaPresentación.Formularios
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             // Obtener los valores de los controles antes de abrir el formulario de imagen
-            string nombre = txtNombre.Text;
-            string descripcion = txtDescripcion.Text;
-            string direccion = txtDireccion.Text;
-            string referencia = txtReferencia.Text;
-            string urbanizacion = cboUrb.Text;
-            string sector = cboSector.Text;
-            decimal latitud = Convert.ToDecimal(txtlatitud.Text);
-            decimal longitud = Convert.ToDecimal(txtlongitud.Text);
+            string nombre = txtNombre.Text.Trim();
+            string descripcion = txtDescripcion.Text.Trim();
+            string direccion = txtDireccion.Text.Trim();
+            string referencia = txtReferencia.Text.Trim();
+            string urbanizacion = cboUrb.Text.Trim();
+            string sector = cboSector.Text.Trim();
             int idEmpleado = conversorNombreEmpleado();
+
+            decimal longitud;
+            decimal latitud;
+
+            // Convertir longitud y latitud con manejo de errores
+            if (string.IsNullOrEmpty(txtlongitud.Text) || string.IsNullOrEmpty(txtlatitud.Text))
+            {
+                longitud = 0; // Asignar 0 si txtlongitud.Text está vacío
+                latitud = 0; // Asignar 0 si txtlatitud.Text está vacío
+            }
+            else 
+            {
+                longitud = Convert.ToDecimal(txtlongitud.Text);
+                latitud = Convert.ToDecimal(txtlatitud.Text);
+            }
+
 
             switch (btnAgregar.Text)
             {
@@ -386,5 +421,14 @@ namespace CapaPresentación.Formularios
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            cboUrb.SelectedIndex= -1;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            cboEncargado.SelectedIndex = -1;
+        }
     }
 }

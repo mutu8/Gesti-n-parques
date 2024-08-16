@@ -28,16 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnAbrir = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.ImgCli = new System.Windows.Forms.PictureBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ImgCli)).BeginInit();
             this.SuspendLayout();
             // 
             // btnEliminar
             // 
+            this.btnEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEliminar.Location = new System.Drawing.Point(315, 95);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(106, 26);
@@ -48,6 +51,7 @@
             // 
             // btnAbrir
             // 
+            this.btnAbrir.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAbrir.Location = new System.Drawing.Point(203, 95);
             this.btnAbrir.Name = "btnAbrir";
             this.btnAbrir.Size = new System.Drawing.Size(106, 26);
@@ -66,6 +70,7 @@
             // 
             // btnGuardar
             // 
+            this.btnGuardar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGuardar.Location = new System.Drawing.Point(427, 95);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(104, 27);
@@ -89,9 +94,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(742, 509);
+            this.Controls.Add(this.ImgCli);
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnAbrir);
-            this.Controls.Add(this.ImgCli);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnGuardar);
             this.Name = "frmImagen";
@@ -111,5 +116,6 @@
         private System.Windows.Forms.PictureBox ImgCli;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnGuardar;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

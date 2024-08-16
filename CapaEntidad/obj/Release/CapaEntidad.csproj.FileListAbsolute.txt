@@ -1,0 +1,6 @@
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaEntidad\bin\Release\CapaEntidad.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaEntidad\bin\Release\CapaEntidad.pdb
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaEntidad\obj\Release\CapaEntidad.csproj.AssemblyReference.cache
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaEntidad\obj\Release\CapaEntidad.csproj.CoreCompileInputs.cache
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaEntidad\obj\Release\CapaEntidad.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaEntidad\obj\Release\CapaEntidad.pdb

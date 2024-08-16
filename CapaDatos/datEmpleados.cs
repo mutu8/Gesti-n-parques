@@ -15,36 +15,38 @@ namespace CapaDatos
         }
 
 
-        public void InsertarEmpleado(string nombres, string apellidos, bool esApoyo)
+        public void InsertarEmpleado(string nombres, string apellidos, bool esApoyo, string direccionCorreo, string urlFoto, string dni)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                string query = @"INSERT INTO Empleados (Nombres, Apellidos, esApoyo, DireccionCorreo, urlFoto, DNI)
+                        VALUES (@Nombres, @Apellidos, @EsApoyo, @DireccionCorreo, @UrlFoto, @DNI)";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Nombres", nombres);
+                command.Parameters.AddWithValue("@Apellidos", apellidos);
+                command.Parameters.AddWithValue("@EsApoyo", esApoyo);
+                command.Parameters.AddWithValue("@DireccionCorreo", direccionCorreo);
+                command.Parameters.AddWithValue("@UrlFoto", urlFoto);
+                command.Parameters.AddWithValue("@DNI", dni);
+
                 try
                 {
                     connection.Open();
-                    string query = "INSERT INTO Empleados (Nombres, Apellidos, esApoyo) VALUES (@Nombres, @Apellidos, @EsApoyo)";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Nombres", nombres);
-                        command.Parameters.AddWithValue("@Apellidos", apellidos);
-                        command.Parameters.AddWithValue("@EsApoyo", esApoyo);
-
-                        command.ExecuteNonQuery();
-                    }
+                    command.ExecuteNonQuery();
                 }
                 catch (SqlException ex)
                 {
-                    if (ex.Number == 50000) // Número de error personalizado definido por el RAISERROR del trigger
-                    {
-                        // El trigger ha lanzado un error de inserción duplicada
-                        throw new Exception("Error" + ex);
-                    }
-
+                    // Manejo de excepciones, por ejemplo:
+                    throw new Exception("Error al insertar el empleado en la base de datos: " + ex.Message);
                 }
-
+                finally
+                {
+                    connection.Close();
+                }
             }
         }
+
 
         public DataTable ObtenerTodosLosEmpleados()
         {
@@ -138,7 +140,7 @@ namespace CapaDatos
 
             return dtDetallesEmpleado;
         }
-        public void ModificarEmpleado(int empleadoId, bool esApoyo) // Elimina nombres y apellidos como parámetros
+        public void ModificarEmpleado(int empleadoId, bool esApoyo, string direccionCorreo, string urlFoto, string dni, DateTime fechaNacimiento)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -146,13 +148,21 @@ namespace CapaDatos
                 {
                     connection.Open();
                     string query = @"UPDATE Empleados 
-                            SET esApoyo = @EsApoyo
-                            WHERE ID_Empleado = @EmpleadoId"; // Solo actualiza esApoyo
+                             SET esApoyo = @EsApoyo,
+                                 DireccionCorreo = @DireccionCorreo,
+                                 urlFoto = @UrlFoto,
+                                 DNI = @DNI,
+                                 FechaNacimiento = @FechaNacimiento
+                             WHERE ID_Empleado = @EmpleadoId";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@EmpleadoId", empleadoId);
                         command.Parameters.AddWithValue("@EsApoyo", esApoyo);
+                        command.Parameters.AddWithValue("@DireccionCorreo", direccionCorreo);
+                        command.Parameters.AddWithValue("@UrlFoto", urlFoto);
+                        command.Parameters.AddWithValue("@DNI", dni);
+                        command.Parameters.AddWithValue("@FechaNacimiento", fechaNacimiento);
 
                         command.ExecuteNonQuery();
                     }
@@ -163,6 +173,8 @@ namespace CapaDatos
                 }
             }
         }
+
+
 
         public bool EliminarEmpleado(int empleadoId, out string mensajeError)
         {
@@ -225,6 +237,89 @@ namespace CapaDatos
             return dtEmpleados;
         }
 
+        public DataTable ListarEmpleadosQueSeanLimpieza()
+        {
+            DataTable dtEmpleados = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+                
+                SELECT 
+                    E.ID_Empleado, 
+                    E.Nombres, 
+                    E.Apellidos, 
+                    A.Asistio,
+                    A.ID_Asistencia
+                FROM 
+                    Empleados E
+                LEFT JOIN 
+                    Asistencias A 
+                ON 
+                    E.ID_Empleado = A.ID_Empleado 
+                    AND CAST(A.Fecha_Asistencia AS DATE) = CAST(GETDATE() AS DATE)
+                WHERE 
+                    E.esPersonalLimpieza = 1;
+                ";
+                SqlCommand command = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(dtEmpleados);
+                }
+                catch (SqlException ex)
+                {
+                    // Manejo de excepciones
+                    throw new Exception("Error al listar empleados: " + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            return dtEmpleados;
+        }
+        public DataTable datObtenerPersonalLimpiezaParaComboBox()
+        {
+            DataTable dtEmpleados = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Consulta para obtener los empleados que son personal de limpieza
+                string query = @"
+        SELECT 
+            ID_Empleado, 
+            CONCAT(Nombres, ' ', Apellidos) AS NombreCompleto
+        FROM 
+            Empleados
+        WHERE 
+            esPersonalLimpieza = 1;
+        ";
+
+                SqlCommand command = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(dtEmpleados);
+                }
+                catch (SqlException ex)
+                {
+                    // Manejo de excepciones
+                    throw new Exception("Error al obtener el personal de limpieza: " + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            return dtEmpleados;
+        }
 
 
     }
