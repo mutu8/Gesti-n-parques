@@ -88,10 +88,6 @@ namespace CapaPresentacion
 
         }
 
-       
-
-
-
 
         private void EstablecerColumnasReadonly(DataGridView dgv)
         {

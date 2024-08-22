@@ -54,7 +54,7 @@ namespace CapaDatos
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Empleados"; // Consulta para obtener todos los campos
+                string query = "SELECT * FROM Empleados WHERE esPersonalLimpieza is null;"; // Consulta para obtener todos los campos
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

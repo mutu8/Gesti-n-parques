@@ -68,7 +68,7 @@ namespace CapaPresentación.Formularios
             }
 
             // Si los campos no están vacíos, continuar con la validación de credenciales
-            if (usuarioIngresado == "admin" && claveIngresada == "EKzJRQmfy@c2r=ac&njrBjY<70hFu")
+            if (usuarioIngresado == "admin" && claveIngresada == "1")
             {
                 this.Hide();
                 frmPrincipal frm = new frmPrincipal();

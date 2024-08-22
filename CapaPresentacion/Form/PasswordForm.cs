@@ -13,7 +13,7 @@ namespace CapaPresentacion
 {
     public partial class PasswordForm : MaterialForm
     {
-        private const string ClaveCorrecta = "EKzJRQmfy@c2r=ac&njrBjY<70hFu";
+        private const string ClaveCorrecta = "1";
 
         public PasswordForm()
         {

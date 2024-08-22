@@ -4,3 +4,9 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaEntidad\
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaEntidad\obj\Debug\CapaEntidad.csproj.CoreCompileInputs.cache
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaEntidad\obj\Debug\CapaEntidad.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\ProyectoParques\CapaEntidad\obj\Debug\CapaEntidad.pdb
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\Nueva carpeta\Gestion-parques\CapaEntidad\bin\Debug\CapaEntidad.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\Nueva carpeta\Gestion-parques\CapaEntidad\bin\Debug\CapaEntidad.pdb
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\Nueva carpeta\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.csproj.AssemblyReference.cache
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\Nueva carpeta\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.csproj.CoreCompileInputs.cache
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\Nueva carpeta\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.dll
+C:\Users\Steven\Downloads\Proyectos\ProyectoParques\Nueva carpeta\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.pdb

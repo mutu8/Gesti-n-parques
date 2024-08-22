@@ -371,7 +371,8 @@ namespace CapaDatos
                     connection.Open();
                     string query = @"
                         SELECT ID_Empleado, CONCAT(Nombres, ' ', Apellidos) AS NombreCompleto
-                        FROM Empleados";
+                        FROM Empleados
+                        WHERE esPersonalLimpieza is null;";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
