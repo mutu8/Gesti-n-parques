@@ -10,3 +10,9 @@ C:\Users\Steven\Downloads\Proyectos\ProyectoParques\Nueva carpeta\Gestion-parque
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\Nueva carpeta\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.csproj.CoreCompileInputs.cache
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\Nueva carpeta\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.dll
 C:\Users\Steven\Downloads\Proyectos\ProyectoParques\Nueva carpeta\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.pdb
+C:\Users\USUARIO\source\repos\mutu8\Gestion-parques\CapaEntidad\bin\Debug\CapaEntidad.dll
+C:\Users\USUARIO\source\repos\mutu8\Gestion-parques\CapaEntidad\bin\Debug\CapaEntidad.pdb
+C:\Users\USUARIO\source\repos\mutu8\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.csproj.AssemblyReference.cache
+C:\Users\USUARIO\source\repos\mutu8\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.csproj.CoreCompileInputs.cache
+C:\Users\USUARIO\source\repos\mutu8\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.dll
+C:\Users\USUARIO\source\repos\mutu8\Gestion-parques\CapaEntidad\obj\Debug\CapaEntidad.pdb

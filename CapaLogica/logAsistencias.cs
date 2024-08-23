@@ -17,12 +17,14 @@ namespace CapaLogica
             get { return logAsistencias._instancia; }
         }
 
+
+
         // Método para insertar una asistencia (usa datGenerarAsistencia)
-        public void InsertarAsistencia(int idEmpleado, DateTime fechaAsistencia, bool asistio)
+        public void InsertarAsistencia(int idEmpleado, DateTime fechaAsistencia, int idOpcion, int idSector)
         {
             try
             {
-                datGenerarAsistencia.Instancia.InsertarAsistencia(idEmpleado, fechaAsistencia, asistio);
+                datGenerarAsistencia.Instancia.InsertarAsistencia(idEmpleado, fechaAsistencia, idOpcion, idSector);
             }
             catch (Exception ex)
             {
@@ -31,7 +33,7 @@ namespace CapaLogica
             }
         }
 
-       
+
         public bool ValidarAsistenciasPorFecha(DateTime fechaAsistencia)
         {
             try
@@ -86,6 +88,7 @@ namespace CapaLogica
             return datGenerarAsistencia.Instancia.ListarAsistenciasPorMesAñoEmpleado(idEmpleado, primerDiaDelMes, ultimoDiaDelMes);
         }
 
+
         // Método para validar asistencias por fecha
         public bool ValidarAsistenciasPorFechaMes(DateTime fechaAsistencia)
         {
@@ -99,5 +102,44 @@ namespace CapaLogica
                 throw new Exception("Error al validar asistencias: " + ex.Message);
             }
         }
+        // Método para obtener opciones desde la capa lógica
+        public DataTable ObtenerOpciones()
+        {
+            try
+            {
+                return datGenerarAsistencia.Instancia.ObtenerOpciones();
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones (registrar en log, notificar al usuario, etc.)
+                throw new Exception("Error al obtener opciones: " + ex.Message);
+            }
+        }
+
+        public DataTable ObtenerSectores()
+        {
+            try
+            {
+                return datGenerarAsistencia.Instancia.ObtenerSectoresTurnos();
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones (registrar en log, notificar al usuario, etc.)
+                throw new Exception("Error al obtener opciones: " + ex.Message);
+            }
+        }
+        // Método para obtener ID_SectorTurno e ID_Opcion por ID_Asistencia e ID_Empleado
+        public (int idSectorTurno, int idOpcion) ObtenerIdSectorYIdOpcionPorAsistenciaYEmpleado(int idAsistencia, int idEmpleado)
+        {
+            try
+            {
+                return datGenerarAsistencia.Instancia.ObtenerIdSectorYIdOpcionPorAsistenciaYEmpleado(idAsistencia, idEmpleado);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el ID del sector y la opción: " + ex.Message);
+            }
+        }
+
     }
 }

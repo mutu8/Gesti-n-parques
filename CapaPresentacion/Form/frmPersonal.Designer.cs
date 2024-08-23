@@ -34,18 +34,21 @@
             this.materialFloatingActionButton1 = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.materialComboBox1 = new MaterialSkin.Controls.MaterialComboBox();
             this.panelVisitas.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelVisitas
             // 
+            this.panelVisitas.Controls.Add(this.materialComboBox1);
             this.panelVisitas.Controls.Add(this.materialTextBox1);
             this.panelVisitas.Controls.Add(this.materialFloatingActionButton1);
             this.panelVisitas.Controls.Add(this.flowLayoutPanel1);
             this.panelVisitas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelVisitas.Location = new System.Drawing.Point(0, 0);
+            this.panelVisitas.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panelVisitas.Name = "panelVisitas";
-            this.panelVisitas.Size = new System.Drawing.Size(1255, 770);
+            this.panelVisitas.Size = new System.Drawing.Size(1673, 948);
             this.panelVisitas.TabIndex = 0;
             this.panelVisitas.Paint += new System.Windows.Forms.PaintEventHandler(this.panelVisitas_Paint);
             // 
@@ -57,13 +60,14 @@
             this.materialTextBox1.Depth = 0;
             this.materialTextBox1.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.materialTextBox1.LeadingIcon = null;
-            this.materialTextBox1.Location = new System.Drawing.Point(109, 42);
+            this.materialTextBox1.Location = new System.Drawing.Point(145, 52);
+            this.materialTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.materialTextBox1.MaxLength = 50;
             this.materialTextBox1.MouseState = MaterialSkin.MouseState.OUT;
             this.materialTextBox1.Multiline = false;
             this.materialTextBox1.Name = "materialTextBox1";
             this.materialTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.materialTextBox1.Size = new System.Drawing.Size(146, 36);
+            this.materialTextBox1.Size = new System.Drawing.Size(195, 36);
             this.materialTextBox1.TabIndex = 35;
             this.materialTextBox1.Text = "";
             this.materialTextBox1.TrailingIcon = null;
@@ -75,11 +79,12 @@
             this.materialFloatingActionButton1.AnimateShowHideButton = true;
             this.materialFloatingActionButton1.Depth = 0;
             this.materialFloatingActionButton1.Icon = global::CapaPresentacion.Properties.Resources.plus__4_;
-            this.materialFloatingActionButton1.Location = new System.Drawing.Point(53, 38);
+            this.materialFloatingActionButton1.Location = new System.Drawing.Point(71, 47);
+            this.materialFloatingActionButton1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.materialFloatingActionButton1.Mini = true;
             this.materialFloatingActionButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFloatingActionButton1.Name = "materialFloatingActionButton1";
-            this.materialFloatingActionButton1.Size = new System.Drawing.Size(40, 40);
+            this.materialFloatingActionButton1.Size = new System.Drawing.Size(53, 49);
             this.materialFloatingActionButton1.TabIndex = 34;
             this.materialFloatingActionButton1.Text = "materialFloatingActionButton1";
             this.materialFloatingActionButton1.UseVisualStyleBackColor = true;
@@ -92,18 +97,43 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(53, 89);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(71, 110);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1148, 592);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1531, 729);
             this.flowLayoutPanel1.TabIndex = 25;
+            // 
+            // materialComboBox1
+            // 
+            this.materialComboBox1.AutoResize = false;
+            this.materialComboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialComboBox1.Depth = 0;
+            this.materialComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.materialComboBox1.DropDownHeight = 174;
+            this.materialComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.materialComboBox1.DropDownWidth = 121;
+            this.materialComboBox1.Font = new System.Drawing.Font("Roboto Medium", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialComboBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialComboBox1.FormattingEnabled = true;
+            this.materialComboBox1.IntegralHeight = false;
+            this.materialComboBox1.ItemHeight = 43;
+            this.materialComboBox1.Location = new System.Drawing.Point(375, 47);
+            this.materialComboBox1.MaxDropDownItems = 4;
+            this.materialComboBox1.MouseState = MaterialSkin.MouseState.OUT;
+            this.materialComboBox1.Name = "materialComboBox1";
+            this.materialComboBox1.Size = new System.Drawing.Size(216, 49);
+            this.materialComboBox1.StartIndex = 0;
+            this.materialComboBox1.TabIndex = 36;
+            this.materialComboBox1.TextChanged += new System.EventHandler(this.materialComboBox1_TextChanged);
             // 
             // frmPersonal
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1255, 770);
+            this.ClientSize = new System.Drawing.Size(1673, 948);
             this.Controls.Add(this.panelVisitas);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmPersonal";
             this.Text = "frmVisitas";
             this.Load += new System.EventHandler(this.frmPersonal_Load);
@@ -119,5 +149,6 @@
         private MaterialSkin.Controls.MaterialFloatingActionButton materialFloatingActionButton1;
         private MaterialSkin.Controls.MaterialTextBox materialTextBox1;
         private System.Windows.Forms.ToolTip toolTip1;
+        private MaterialSkin.Controls.MaterialComboBox materialComboBox1;
     }
 }

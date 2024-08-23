@@ -21,7 +21,7 @@ namespace CapaDatos
             string machineName = Environment.MachineName;
 
             //connectionString = "Server=mssql-178919-0.cloudclusters.net,10056;Database=BD_GestionAmbiental;User Id=Steven;Password=#sWbQy)J[^mJPF9atbpVA^c*b#%zn0ZkqcUDU>EDtaGXBDh<c+65B]w0rf0y#TnU;";
-            connectionString = $"Server={machineName}\\SQLEXPRESS;Database=BD_GestionAmbiental;Integrated Security=True;";
+            connectionString = $"Server={machineName};Database=BD_GestionAmbiental;Integrated Security=True;";
         }
 
         public string obtenerConexion()

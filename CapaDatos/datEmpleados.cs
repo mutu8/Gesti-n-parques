@@ -14,21 +14,57 @@ namespace CapaDatos
             get { return datEmpleados._instancia; }
         }
 
-
-        public void InsertarEmpleado(string nombres, string apellidos, bool esApoyo, string direccionCorreo, string urlFoto, string dni)
+        public void ActualizarEstadoEsPersonal(int idEmpleado)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = @"INSERT INTO Empleados (Nombres, Apellidos, esApoyo, DireccionCorreo, urlFoto, DNI)
-                        VALUES (@Nombres, @Apellidos, @EsApoyo, @DireccionCorreo, @UrlFoto, @DNI)";
+                // Consulta SQL para actualizar esPersonalLimpieza a true
+                string query = @"
+            UPDATE Empleados
+            SET esPersonalLimpieza = 1
+            WHERE ID_Empleado = @IdEmpleado";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@IdEmpleado", idEmpleado);
+
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new Exception("No se encontró ningún empleado con el ID especificado.");
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception("Error al actualizar el estado de esPersonalLimpieza en la base de datos: " + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        public void InsertarEmpleado(string nombres, string apellidos, bool esApoyo, string direccionCorreo, string urlFoto, string dni, bool? esPersonalLimpieza)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+            INSERT INTO Empleados 
+            (Nombres, Apellidos, esApoyo, DireccionCorreo, urlFoto, DNI, esPersonalLimpieza)
+            VALUES 
+            (@Nombres, @Apellidos, @EsApoyo, @DireccionCorreo, @UrlFoto, @DNI, @EsPersonalLimpieza)";
 
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Nombres", nombres);
                 command.Parameters.AddWithValue("@Apellidos", apellidos);
                 command.Parameters.AddWithValue("@EsApoyo", esApoyo);
-                command.Parameters.AddWithValue("@DireccionCorreo", direccionCorreo);
-                command.Parameters.AddWithValue("@UrlFoto", urlFoto);
-                command.Parameters.AddWithValue("@DNI", dni);
+                command.Parameters.AddWithValue("@DireccionCorreo", (object)direccionCorreo ?? DBNull.Value);
+                command.Parameters.AddWithValue("@UrlFoto", (object)urlFoto ?? DBNull.Value);
+                command.Parameters.AddWithValue("@DNI", (object)dni ?? DBNull.Value);
+                command.Parameters.AddWithValue("@esPersonalLimpieza", (object)esPersonalLimpieza ?? DBNull.Value);
 
                 try
                 {
@@ -37,7 +73,6 @@ namespace CapaDatos
                 }
                 catch (SqlException ex)
                 {
-                    // Manejo de excepciones, por ejemplo:
                     throw new Exception("Error al insertar el empleado en la base de datos: " + ex.Message);
                 }
                 finally
@@ -48,13 +83,17 @@ namespace CapaDatos
         }
 
 
+
+
+
+
         public DataTable ObtenerTodosLosEmpleados()
         {
             DataTable dtEmpleados = new DataTable();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Empleados WHERE esPersonalLimpieza is null;"; // Consulta para obtener todos los campos
+                string query = "SELECT * FROM Empleados;"; // Consulta para obtener todos los campos
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -237,6 +276,45 @@ namespace CapaDatos
             return dtEmpleados;
         }
 
+        public DataTable ObtenerEmpleadosPersonalYParques(string filtro)
+        {
+            DataTable dtEmpleados = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Inicializamos el comando de SQL
+                using (SqlCommand command = new SqlCommand())
+                {
+                    command.Connection = connection;
+
+                    // Establecemos la consulta en función del filtro
+                    if (filtro == "parques")
+                    {
+                        command.CommandText = @"SELECT * FROM Empleados WHERE esPersonalLimpieza IS NULL";
+                    }
+                    else if (filtro == "limpieza")
+                    {
+                        command.CommandText = @"SELECT * FROM Empleados WHERE esPersonalLimpieza = 1";
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Filtro no válido. Debe ser 'parques' o 'limpieza'.");
+                    }
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        dtEmpleados.Load(reader);
+                    }
+                }
+            }
+
+            return dtEmpleados;
+        }
+
+
+
         public DataTable ListarEmpleadosQueSeanLimpieza()
         {
             DataTable dtEmpleados = new DataTable();
@@ -244,23 +322,21 @@ namespace CapaDatos
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"
-                
-                SELECT 
-                    E.ID_Empleado, 
-                    E.Nombres, 
-                    E.Apellidos, 
-                    A.Asistio,
-                    A.ID_Asistencia
-                FROM 
-                    Empleados E
-                LEFT JOIN 
-                    Asistencias A 
-                ON 
-                    E.ID_Empleado = A.ID_Empleado 
-                    AND CAST(A.Fecha_Asistencia AS DATE) = CAST(GETDATE() AS DATE)
-                WHERE 
-                    E.esPersonalLimpieza = 1;
-                ";
+        SELECT 
+            E.ID_Empleado, 
+            E.Nombres, 
+            E.Apellidos, 
+            A.ID_Asistencia
+        FROM 
+            Empleados E
+        LEFT JOIN 
+            Asistencias A 
+        ON 
+            E.ID_Empleado = A.ID_Empleado 
+            AND CONVERT(DATE, A.Fecha_Asistencia) = CONVERT(DATE, GETDATE())
+        WHERE 
+            E.esPersonalLimpieza = 1;
+        ";
                 SqlCommand command = new SqlCommand(query, connection);
 
                 try
@@ -282,6 +358,8 @@ namespace CapaDatos
 
             return dtEmpleados;
         }
+
+
         public DataTable datObtenerPersonalLimpiezaParaComboBox()
         {
             DataTable dtEmpleados = new DataTable();

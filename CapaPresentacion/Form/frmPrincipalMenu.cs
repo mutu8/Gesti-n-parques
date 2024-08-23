@@ -142,6 +142,17 @@ namespace CapaPresentacion
         }
 
         // Método auxiliar para cargar formularios en el panel (sin cambios)
+        private void LimpiarControles(Control container)
+        {
+            foreach (Control control in container.Controls)
+            {
+                control.Dispose();  // Libera recursos del control
+            }
+            container.Controls.Clear();  // Limpia los controles del contenedor
+            GC.Collect();  // Forzar recolección de basura
+            GC.WaitForPendingFinalizers();  // Esperar a que finalicen los finalizadores pendientes
+        }
+
         private void CargarFormularioEnPanel(Form formulario)
         {
             LimpiarControles(panelCentral);
@@ -203,22 +214,6 @@ namespace CapaPresentacion
             {
                 Point nuevaPosicion = PointToScreen(e.Location);
                 Location = new Point(nuevaPosicion.X - mousePosicion.X, nuevaPosicion.Y - mousePosicion.Y);
-            }
-        }
-
-
-        private void LimpiarControles(Control container)
-        {
-            // Verificar si existen controles en el estado visible especificado
-            if (!ExistenControlesEnEstado(container.Controls.OfType<Control>().ToArray(), false))
-            {
-                // Eliminar y liberar todos los controles hijos del contenedor
-                while (container.Controls.Count > 0)
-                {
-                    var control = container.Controls[0];
-                    container.Controls.Remove(control);
-                    control.Dispose();
-                }
             }
         }
 

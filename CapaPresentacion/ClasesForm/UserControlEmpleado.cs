@@ -131,6 +131,10 @@ namespace CapaPresentacion
                                 frmDetallesEmpleado.FechaNacimiento = fechaNacimiento;
                             }
 
+                            // Verificar si esPersonalLimpieza es true
+                            bool esPersonalLimpieza = row["esPersonalLimpieza"] != DBNull.Value && (bool)row["esPersonalLimpieza"];
+                            frmDetallesEmpleado.EsPersonalLimpieza = esPersonalLimpieza;
+
                             frmDetallesEmpleado.textoBoton = "Guardar";
                         }
                         else
@@ -224,6 +228,10 @@ namespace CapaPresentacion
                     {
                         frmDetallesEmpleado.FechaNacimiento = fechaNacimiento;
                     }
+
+                    // Verificar si esPersonalLimpieza es true
+                    bool esPersonalLimpieza = row["esPersonalLimpieza"] != DBNull.Value && (bool)row["esPersonalLimpieza"];
+                    frmDetallesEmpleado.EsPersonalLimpieza = esPersonalLimpieza;
 
                     frmDetallesEmpleado.textoBoton = "";
                 }

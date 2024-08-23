@@ -24,7 +24,6 @@ namespace CapaPresentacion
             InitializeComponent();
 
             // Configurar el texto del ToolTip para un botón
-            toolTip1.SetToolTip(btnDelete, "Eliminar fila");
             toolTip1.SetToolTip(btnUpdate, "Marcar las asistencias como completadas");
             toolTip1.SetToolTip(btnImprimier, "Imprimir reporte del día");
             toolTip1.SetToolTip(materialFloatingActionButton2, "Imprimir reporte de fecha específica");
@@ -41,6 +40,24 @@ namespace CapaPresentacion
             }
 
         }
+
+        public void MostrarNombresColumnas(DataGridView dgv)
+        {
+            List<string> nombresColumnas = new List<string>();
+
+            foreach (DataGridViewColumn columna in dgv.Columns)
+            {
+                nombresColumnas.Add(columna.Name);
+            }
+
+            // Unir todos los nombres de las columnas en una sola cadena separada por comas
+            string nombresColumnasTexto = string.Join(", ", nombresColumnas);
+
+            // Mostrar los nombres en un MessageBox
+            MessageBox.Show(nombresColumnasTexto, "Nombres de las Columnas", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+
         private void CargarEmpleadosLimpieza()
         {
             try
@@ -60,7 +77,6 @@ namespace CapaPresentacion
             dgv.AllowUserToDeleteRows = false;
             dgv.AllowUserToResizeRows = false;
             dgv.AllowUserToResizeColumns = false;
-            //dgv.ReadOnly = true;
 
             dgv.EnableHeadersVisualStyles = false;
             dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
@@ -80,13 +96,43 @@ namespace CapaPresentacion
                 dgv.Columns["ID_Empleado"].Visible = false;
             }
 
-            // Ocultar la columna ID
             if (dgv.Columns.Contains("ID_Asistencia"))
             {
                 dgv.Columns["ID_Asistencia"].Visible = false;
             }
 
+            // Cargar las opciones en el ComboBox de cada fila
+            if (!dgv.Columns.Contains("Opción"))
+            {
+                DataTable dtOpciones = logAsistencias.Instancia.ObtenerOpciones();
+                if (dtOpciones != null && dtOpciones.Rows.Count > 0)
+                {
+                    DataGridViewComboBoxColumn comboBoxColumnOpcion = new DataGridViewComboBoxColumn();
+                    comboBoxColumnOpcion.Name = "Opción";
+                    comboBoxColumnOpcion.DataSource = dtOpciones;
+                    comboBoxColumnOpcion.DisplayMember = "Nombre_Opcion";
+                    comboBoxColumnOpcion.ValueMember = "ID_Opcion";
+                    dgv.Columns.Add(comboBoxColumnOpcion);
+                }
+            }
+
+            // Cargar los sectores en el ComboBox de cada fila
+            if (!dgv.Columns.Contains("Sector"))
+            {
+                DataTable dtSectoresTurnos = logAsistencias.Instancia.ObtenerSectores();
+                if (dtSectoresTurnos != null && dtSectoresTurnos.Rows.Count > 0)
+                {
+                    DataGridViewComboBoxColumn comboBoxColumnSector = new DataGridViewComboBoxColumn();
+                    comboBoxColumnSector.Name = "Sector";
+                    comboBoxColumnSector.DataSource = dtSectoresTurnos;
+                    comboBoxColumnSector.DisplayMember = "Sector";
+                    comboBoxColumnSector.ValueMember = "ID";
+                    dgv.Columns.Add(comboBoxColumnSector);
+                }
+            }
         }
+
+
 
 
         private void EstablecerColumnasReadonly(DataGridView dgv)
@@ -113,7 +159,7 @@ namespace CapaPresentacion
 
 
 
-        private void generarAsistencia() 
+        private void generarAsistencia()
         {
             // Obtener la fecha actual
             DateTime now = DateTime.Now;
@@ -121,7 +167,7 @@ namespace CapaPresentacion
             // Crear una nueva fecha que solo contiene la parte de la fecha (sin la hora)
             DateTime fechaSoloFecha = new DateTime(now.Year, now.Month, now.Day);
 
-
+            // Verificar si ya existen asistencias para la fecha actual
             if (!logAsistencias.Instancia.ValidarAsistenciasPorFecha(fechaSoloFecha))
             {
                 foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -130,15 +176,36 @@ namespace CapaPresentacion
                     {
                         int idEmpleado = Convert.ToInt32(row.Cells["ID_Empleado"].Value);
 
+                        // Obtener el ID de la opción seleccionada en el ComboBox
+                        int idOpcion = 2; // Valor predeterminado si el ComboBox no tiene un valor seleccionado
 
-                        // Llamar a la capa lógica para insertar la asistencia con estado false
-                        logAsistencias.Instancia.InsertarAsistencia(idEmpleado, fechaSoloFecha, false);
+                        if (row.Cells["Opción"].Value != null)
+                        {
+                            idOpcion = Convert.ToInt32(row.Cells["Opción"].Value);
+                        }
+
+                        // Obtener el ID del sector seleccionado en el ComboBox
+                        int idSector = 48; // Valor predeterminado si el ComboBox no tiene un valor seleccionado
+
+                        if (row.Cells["Sector"].Value != null)
+                        {
+                            idSector = Convert.ToInt32(row.Cells["Sector"].Value);
+                        }
+
+                        // Llamar a la capa lógica para insertar la asistencia con el ID de la opción y el ID del sector
+                        logAsistencias.Instancia.InsertarAsistencia(idEmpleado, fechaSoloFecha, idOpcion, idSector);
                     }
                 }
             }
 
-            else return;
+            else
+            {
+                // Si ya existen asistencias para la fecha, no hacer nada o mostrar un mensaje
+                //MessageBox.Show("Ya existen asistencias registradas para la fecha de hoy.", "Asistencia Registrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
         }
+
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
@@ -202,34 +269,7 @@ namespace CapaPresentacion
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            // Verificar que el cambio esté en la columna de CheckBox y que la fila sea válida
-            if (e.ColumnIndex == dataGridView1.Columns["Asistio"].Index && e.RowIndex >= 0)
-            {
-                // Obtener la fila actual
-                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-
-                //// Obtener el valor del CheckBox (se espera que sea bool)
-                bool isChecked = Convert.ToBoolean(row.Cells["Asistio"].Value);
-
-                // Si ya está marcado, evitar que el usuario lo cambie
-                if (isChecked)
-                {
-                    MessageBox.Show("No se puede desmarcar la asistencia ya completada.", "Asistencia Completada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Cancelar el cambio en el DataGridView
-                    dataGridView1.CancelEdit();
-                    return; // Salir del método sin realizar cambios
-                }
-
-                // Si no está marcado, continuar con el proceso de marcado
-                int idAsistencia = Convert.ToInt32(row.Cells["ID_Asistencia"].Value);
-
-                // Llamar al método para actualizar la asistencia
-                logAsistencias.Instancia.MarcarAsistencia(idAsistencia);
-
-                // Actualizar el valor del CheckBox en el DataGridView
-                row.Cells["Asistio"].Value = true; // Marca como completado
-            }
+          
         }
         private DataTable ObtenerDatosDesdeDataGridView(DataGridView dgv)
         {
@@ -263,7 +303,7 @@ namespace CapaPresentacion
         {
             // Mostrar un mensaje de confirmación al usuario
             DialogResult result = MessageBox.Show(
-                "¿Está seguro de que desea marcar todas las asistencias del día como completadas?",
+                "¿Está seguro de que desea marcar todas las asistencias de la tabla?",
                 "Confirmación",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
@@ -284,11 +324,8 @@ namespace CapaPresentacion
 
                     MessageBox.Show("Todas las asistencias del día han sido marcadas como completadas.");
 
-                    // Llama a Refresh si es necesario para actualizar la visualización
-                    dataGridView1.Refresh();
-                    //Ejecutar el método FormPersonalLimpieza_Load
-                    FormPersonalLimpieza_Load(sender, e);
-             
+                    
+
                 }
                 catch (Exception ex)
                 {
@@ -301,130 +338,89 @@ namespace CapaPresentacion
         {
             try
             {
-                // Capturar la fecha actual
-                DateTime fechaActual = DateTime.Now.Date;
-
-                // Obtener las asistencias del día desde la capa lógica
-                DataTable dtAsistencias = logAsistencias.Instancia.ListarAsistenciasPorFecha(fechaActual);
-
-                // Validar si hay asistencias registradas para el día
-                if (dtAsistencias.Rows.Count == 0)
-                {
-                    MessageBox.Show("No hay asistencias registradas para el día.");
-                    return;
-                }
-
                 // Configuración del diálogo para guardar el archivo PDF
                 using (SaveFileDialog saveFileDialog = new SaveFileDialog())
                 {
                     saveFileDialog.Filter = "Archivos PDF (*.pdf)|*.pdf";
-                    saveFileDialog.FileName = $"Reporte de Asistencias del Día - {fechaActual.ToString("yyyy-MM-dd")}.pdf";
+                    saveFileDialog.FileName = $"Reporte - {DateTime.Now:yyyy-MM-dd}.pdf";
 
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        Document doc = new Document();
+                        // Crear un documento en orientación horizontal (landscape)
+                        Document doc = new Document(PageSize.A4.Rotate(), 10f, 10f, 20f, 20f);
                         try
                         {
                             PdfWriter.GetInstance(doc, new FileStream(saveFileDialog.FileName, FileMode.Create));
                             doc.Open();
 
                             // Título del reporte
-                            iTextSharp.text.Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.DARK_GRAY);
-                            Paragraph title = new Paragraph("REPORTE DE ASISTENCIAS", titleFont);
+                            iTextSharp.text.Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.BLACK);
+                            Paragraph title = new Paragraph("REPORTE DEL DÍA", titleFont);
                             title.Alignment = Element.ALIGN_CENTER;
-                            title.SpacingAfter = 10f;
+                            title.SpacingAfter = 20f;
                             doc.Add(title);
 
-                            // Fecha actual
+                            // Añadir fecha al reporte
                             iTextSharp.text.Font dateFont = FontFactory.GetFont(FontFactory.HELVETICA, 12, BaseColor.BLACK);
-                            Paragraph dateParagraph = new Paragraph($"Fecha: {fechaActual.ToString("dd/MM/yyyy")}", dateFont);
-                            dateParagraph.Alignment = Element.ALIGN_CENTER;
-                            dateParagraph.SpacingAfter = 20f;
+                            Paragraph dateParagraph = new Paragraph($"Fecha: {DateTime.Now.ToString("dd/MM/yyyy")}", dateFont);
+                            dateParagraph.Alignment = Element.ALIGN_RIGHT;
+                            dateParagraph.SpacingAfter = 10f;
                             doc.Add(dateParagraph);
 
-                            // Subtítulo: Sí Asistió
-                            iTextSharp.text.Font sectionTitleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK);
-                            Paragraph asistioTitle = new Paragraph("Asistió", sectionTitleFont);
-                            asistioTitle.Alignment = Element.ALIGN_LEFT;
-                            asistioTitle.SpacingAfter = 10f;
-                            doc.Add(asistioTitle);
+                            // Crear la tabla PDF con columnas seleccionadas (sin los IDs)
+                            PdfPTable pdfTable = new PdfPTable(4); // Número de columnas visibles (Opción, Sector, Nombres, Apellidos)
+                            pdfTable.WidthPercentage = 100;
+                            pdfTable.SpacingBefore = 20f;
+                            pdfTable.SpacingAfter = 20f;
 
-                            // Crear tabla para asistencias "Sí Asistió"
-                            PdfPTable tableAsistio = new PdfPTable(2); // Dos columnas: Nombre, Apellido
-                            tableAsistio.WidthPercentage = 100;
-                            tableAsistio.SpacingBefore = 10f;
-                            tableAsistio.SpacingAfter = 10f;
-                            tableAsistio.DefaultCell.Padding = 5;
-                            tableAsistio.DefaultCell.BorderColor = BaseColor.LIGHT_GRAY;
+                            // Configurar anchos de columna para distribuir el espacio
+                            float[] columnWidths = new float[] { 15f, 25f, 30f, 30f };
+                            pdfTable.SetWidths(columnWidths);
 
-                            // Encabezados de columna para "Sí Asistió"
-                            string[] headersAsistio = { "Nombre", "Apellido" };
-
-                            // Estilo de los encabezados
+                            // Añadir encabezados de columna al PDF
+                            string[] columnHeaders = { "Opción", "Sector", "Nombres", "Apellidos" };
                             iTextSharp.text.Font headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE);
-                            PdfPCell headerCell = new PdfPCell();
-                            headerCell.BackgroundColor = BaseColor.DARK_GRAY;
-                            headerCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                            headerCell.Padding = 5;
-
-                            // Añadir encabezados a la tabla "Sí Asistió"
-                            foreach (string header in headersAsistio)
+                            foreach (string columnHeader in columnHeaders)
                             {
-                                headerCell.Phrase = new Phrase(header, headerFont);
-                                tableAsistio.AddCell(headerCell);
+                                PdfPCell headerCell = new PdfPCell(new Phrase(columnHeader, headerFont));
+                                headerCell.BackgroundColor = BaseColor.GRAY;
+                                headerCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                                headerCell.Padding = 8f;
+                                pdfTable.AddCell(headerCell);
                             }
 
-                            // Añadir los datos de las asistencias "Sí Asistió"
-                            foreach (DataRow row in dtAsistencias.Rows)
+                            // Añadir filas al PDF con los nombres en lugar de los IDs
+                            iTextSharp.text.Font cellFont = FontFactory.GetFont(FontFactory.HELVETICA, 11, BaseColor.BLACK);
+                            foreach (DataGridViewRow row in dataGridView1.Rows)
                             {
-                                bool asistio = Convert.ToBoolean(row["Asistio"]);
-                                if (asistio)
+                                if (!row.IsNewRow) // Evitar agregar la fila "nueva"
                                 {
-                                    tableAsistio.AddCell(new Phrase(row["Nombres"].ToString()));
-                                    tableAsistio.AddCell(new Phrase(row["Apellidos"].ToString()));
+                                    // Obtener el nombre de la opción en lugar del ID
+                                    string nombreOpcion = row.Cells["Opción"].FormattedValue.ToString();
+
+                                    // Obtener el nombre del sector en lugar del ID
+                                    string nombreSector = row.Cells["Sector"].FormattedValue.ToString();
+
+                                    // Agregar las celdas con los valores correspondientes al PDF
+                                    PdfPCell opcionCell = new PdfPCell(new Phrase(nombreOpcion, cellFont));
+                                    PdfPCell sectorCell = new PdfPCell(new Phrase(nombreSector, cellFont));
+                                    PdfPCell nombresCell = new PdfPCell(new Phrase(row.Cells["Nombres"].Value.ToString(), cellFont));
+                                    PdfPCell apellidosCell = new PdfPCell(new Phrase(row.Cells["Apellidos"].Value.ToString(), cellFont));
+
+                                    opcionCell.Padding = 5f;
+                                    sectorCell.Padding = 5f;
+                                    nombresCell.Padding = 5f;
+                                    apellidosCell.Padding = 5f;
+
+                                    pdfTable.AddCell(opcionCell);
+                                    pdfTable.AddCell(sectorCell);
+                                    pdfTable.AddCell(nombresCell);
+                                    pdfTable.AddCell(apellidosCell);
                                 }
                             }
 
-                            // Agregar la tabla "Sí Asistió" al documento
-                            doc.Add(tableAsistio);
-
-                            // Subtítulo: No Asistió
-                            Paragraph noAsistioTitle = new Paragraph("Faltó", sectionTitleFont);
-                            noAsistioTitle.Alignment = Element.ALIGN_LEFT;
-                            noAsistioTitle.SpacingAfter = 10f;
-                            doc.Add(noAsistioTitle);
-
-                            // Crear tabla para asistencias "No Asistió"
-                            PdfPTable tableNoAsistio = new PdfPTable(2); // Dos columnas: Nombre, Apellido
-                            tableNoAsistio.WidthPercentage = 100;
-                            tableNoAsistio.SpacingBefore = 10f;
-                            tableNoAsistio.SpacingAfter = 10f;
-                            tableNoAsistio.DefaultCell.Padding = 5;
-                            tableNoAsistio.DefaultCell.BorderColor = BaseColor.LIGHT_GRAY;
-
-                            // Encabezados de columna para "No Asistió"
-                            string[] headersNoAsistio = { "Nombre", "Apellido" };
-
-                            // Añadir encabezados a la tabla "No Asistió"
-                            foreach (string header in headersNoAsistio)
-                            {
-                                headerCell.Phrase = new Phrase(header, headerFont);
-                                tableNoAsistio.AddCell(headerCell);
-                            }
-
-                            // Añadir los datos de las asistencias "No Asistió"
-                            foreach (DataRow row in dtAsistencias.Rows)
-                            {
-                                bool asistio = Convert.ToBoolean(row["Asistio"]);
-                                if (!asistio)
-                                {
-                                    tableNoAsistio.AddCell(new Phrase(row["Nombres"].ToString()));
-                                    tableNoAsistio.AddCell(new Phrase(row["Apellidos"].ToString()));
-                                }
-                            }
-
-                            // Agregar la tabla "No Asistió" al documento
-                            doc.Add(tableNoAsistio);
+                            // Agregar la tabla completa al documento
+                            doc.Add(pdfTable);
                         }
                         catch (Exception ex)
                         {
@@ -449,9 +445,11 @@ namespace CapaPresentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al obtener las asistencias del día: {ex.Message}");
+                MessageBox.Show($"Error al generar el reporte: {ex.Message}");
             }
         }
+
+
 
         private void materialFloatingActionButton2_Click(object sender, EventArgs e)
         {
@@ -463,6 +461,49 @@ namespace CapaPresentacion
                 if (frmReporteAsistencias.ShowDialog() == DialogResult.OK)
                 {
 
+                }
+            }
+        }
+
+        private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            DataGridView dgv = sender as DataGridView;
+
+            // Verificar que las columnas "Opción" y "Sector" existan antes de intentar usarlas
+            if (!dgv.Columns.Contains("Opción") || !dgv.Columns.Contains("Sector"))
+            {
+
+                return;
+            }
+
+            // Asignar los valores seleccionados desde la base de datos
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                if (row.Cells["ID_Asistencia"].Value != DBNull.Value && row.Cells["ID_Empleado"].Value != DBNull.Value)
+                {
+                    int idAsistencia = Convert.ToInt32(row.Cells["ID_Asistencia"].Value);
+                    int idEmpleado = Convert.ToInt32(row.Cells["ID_Empleado"].Value);
+
+                    // Obtener los IDs desde la base de datos
+                    var ids = logAsistencias.Instancia.ObtenerIdSectorYIdOpcionPorAsistenciaYEmpleado(idAsistencia, idEmpleado);
+                    int idOpcion = ids.idOpcion;
+                    int idSectorTurno = ids.idSectorTurno;
+
+                    // Asignar el índice correcto en el ComboBox de la columna "Opción"
+                    if (row.Cells["Opción"] is DataGridViewComboBoxCell comboBoxCellOpcion)
+                    {
+                        comboBoxCellOpcion.Value = idOpcion;
+                    }
+
+                    // Asignar el índice correcto en el ComboBox de la columna "Sector"
+                    if (row.Cells["Sector"] is DataGridViewComboBoxCell comboBoxCellSector)
+                    {
+                        comboBoxCellSector.Value = idSectorTurno;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("ID_Asistencia o ID_Empleado es nulo para la fila: " + row.Index.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

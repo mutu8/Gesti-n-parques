@@ -71,6 +71,15 @@ namespace CapaPresentacion
             get { return txtDNI.Text; }
             set { txtDNI.Text = value; }
         }
+
+        // Propiedad para acceder al CheckBox
+        public bool EsPersonalLimpieza
+        {
+            get { return materialCheckbox1.Checked; }
+            set { materialCheckbox1.Checked = value; }
+        }
+
+
         public string ImageUrl { get; set; }
         public int idEmpleado { get; set; }
 
@@ -262,8 +271,14 @@ namespace CapaPresentacion
                 btnGuardar.Enabled = false;
                 cboRol.Enabled = false;
                 dateTimePicker1.Enabled = false;
-                btnAccion.Enabled = false;
+                materialCheckbox1.Enabled = false;
             }
+            else if(btnAccion.Text == "Guardar")
+            {
+                materialCheckbox1.Enabled = false;
+
+            }
+
 
             CargarImagenDesdeUrl(ImageUrl, ImgCli);
         }
@@ -283,7 +298,10 @@ namespace CapaPresentacion
             string correo = txtCorreo.Text.Trim();
             string DNI = txtDNI.Text.Trim();
             string url = ImageUrl ?? ""; // Si ImageUrl es null, asigna una cadena vacía ("")
-                                      
+
+            // Obtener el valor del CheckBox de esPersonalLimpieza
+            bool esPersonalLimpieza = materialCheckbox1.Checked;
+
             DateTime fechaNacimiento = dateTimePicker1.Value;
 
             // Obtener el nombre completo del empleado desde los TextBox
@@ -304,11 +322,18 @@ namespace CapaPresentacion
                     }
 
                     // 3. Usar logEmpleados para insertar (lógica de negocio)
-                    logEmleados.Instancia.InsertarEmpleado(nombres, apellidos, esApoyo, correo, url, DNI);
+                    logEmleados.Instancia.InsertarEmpleado(nombres, apellidos, esApoyo, correo, url, DNI, esPersonalLimpieza);
                     //empleadoId = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(nombreCompleto); // Implementa esta función
 
                     // 3. Usar logEmpleados para modificar (lógica de negocio)
-                    //logEmleados.Instancia.ModificarEmpleado(empleadoId, esApoyo, correo, url, DNI, fechaNacimiento);
+                    logEmleados.Instancia.ModificarEmpleado(empleadoId, esApoyo, correo, url, DNI, fechaNacimiento);
+
+                    if (materialCheckbox1.Checked) 
+                    {
+                        int nvID = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(nombres + " " + apellidos);
+
+                        logEmleados.Instancia.ActualizarEstadoEsPersonal(nvID);
+                    }
 
                     // 4. Mensaje de éxito y limpiar controles
                     txtNombre.Clear();

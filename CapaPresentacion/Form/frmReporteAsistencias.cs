@@ -115,7 +115,7 @@ namespace CapaPresentacion
                 // Generar el PDF incluyendo la fecha
                 GenerarReporteAsistencias(dtAsistencias, $"Reporte de Asistencias - {formattedDate}", false);
             }
-            
+
             // Obtener asistencias para un rango de fechas basado en el mes y año
             else if (cboMeses.Visible && comboBoxPersonal.Visible && domainUpDown1.Visible)
             {
@@ -149,45 +149,27 @@ namespace CapaPresentacion
                 }
                 int idEmpleado = Convert.ToInt32(comboBoxPersonal.SelectedValue);
 
-                // Calcular el primer y último día del mes
-                DateTime primerDiaDelMes = new DateTime(año, mes, 1);
-                DateTime ultimoDiaDelMes = primerDiaDelMes.AddMonths(1).AddDays(-1);
+                // Obtener las asistencias para el mes y año seleccionados
+                DataTable dtAsistencias = logAsistencias.Instancia.ListarAsistenciasPorMesAñoEmpleado(idEmpleado, mes, año);
 
-                // Variable para verificar si hay al menos una asistencia
-                bool hayAsistencias = false;
-
-                // Validar asistencias para cada fecha en el rango del mes
-                for (DateTime fecha = primerDiaDelMes; fecha <= ultimoDiaDelMes; fecha = fecha.AddDays(1))
-                {
-                    if (logAsistencias.Instancia.ValidarAsistenciasPorFecha(fecha))
-                    {
-                        hayAsistencias = true;
-                        break; // No es necesario seguir verificando si ya hay asistencias
-                    }
-                }
-
-                if (!hayAsistencias)
+                // Verificar si hay asistencias registradas para el mes
+                if (dtAsistencias.Rows.Count == 0)
                 {
                     MessageBox.Show("No hay asistencias registradas para el mes seleccionado.");
                     return;
                 }
 
                 // Obtener el nombre del mes en letras
-                string mesNombre = primerDiaDelMes.ToString("MMMM", new CultureInfo("es-ES"));
-
-                // Obtener las asistencias para el mes y año seleccionados
-                DataTable dtAsistencias = logAsistencias.Instancia.ListarAsistenciasPorMesAñoEmpleado(idEmpleado, mes, año);
+                string mesNombre = new DateTime(año, mes, 1).ToString("MMMM", new CultureInfo("es-ES"));
 
                 // Obtener nombre del empleado
                 string nombreEmpleado = comboBoxPersonal.Text;
 
                 // Generar el PDF incluyendo la fecha
-                GenerarReporteAsistencias(dtAsistencias, $"Reporte de asistencias del mensual", true);
+                GenerarReporteAsistencias(dtAsistencias, $"Reporte de asistencias del mes de {mesNombre} de {año} para {nombreEmpleado}", true);
             }
-
-
-
         }
+
 
 
         private void GenerarReporteAsistencias(DataTable dtAsistencias, string tituloReporte, bool incluirFecha)
@@ -199,129 +181,42 @@ namespace CapaPresentacion
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    Document doc = new Document();
+                    // Crear documento PDF en modo horizontal
+                    Document doc = new Document(PageSize.A4.Rotate());
                     try
                     {
+                        // Crear el escritor de PDF
                         PdfWriter.GetInstance(doc, new FileStream(saveFileDialog.FileName, FileMode.Create));
                         doc.Open();
 
                         // Título del reporte
-                        iTextSharp.text.Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.DARK_GRAY);
-                        Paragraph title = new Paragraph(tituloReporte, titleFont);
-                        title.Alignment = Element.ALIGN_CENTER;
-                        title.SpacingAfter = 10f;
+                        iTextSharp.text.Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 20, BaseColor.BLACK);
+                        Paragraph title = new Paragraph(tituloReporte, titleFont)
+                        {
+                            Alignment = Element.ALIGN_CENTER,
+                            SpacingAfter = 20f
+                        };
                         doc.Add(title);
 
-                        // Subtítulo: Sí Asistió
-                        iTextSharp.text.Font subtitleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16, BaseColor.BLACK);
-                        Paragraph asistioTitle = new Paragraph("Asistió", subtitleFont);
-                        asistioTitle.Alignment = Element.ALIGN_LEFT;
-                        asistioTitle.SpacingAfter = 10f;
-                        doc.Add(asistioTitle);
-
-                        // Crear tabla para asistencias "Sí Asistió"
-                        int numColumns = incluirFecha ? 2 : 1; // Determinar el número de columnas
-                        PdfPTable tableAsistio = new PdfPTable(numColumns);
-                        tableAsistio.WidthPercentage = 100;
-                        tableAsistio.SpacingBefore = 10f;
-                        tableAsistio.SpacingAfter = 10f;
-                        tableAsistio.DefaultCell.Padding = 5;
-                        tableAsistio.DefaultCell.BorderColor = BaseColor.LIGHT_GRAY;
-
-                        // Encabezados de columna para "Sí Asistió"
-                        string[] headersAsistio = incluirFecha ? new[] { "Fecha", "Nombre" } : new[] { "Nombre" };
-                        iTextSharp.text.Font headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE);
-                        PdfPCell headerCell = new PdfPCell
+                        // Crear tabla con columnas dinámicas basadas en si se incluye la fecha
+                        PdfPTable table = new PdfPTable(incluirFecha ? 5 : 4)
                         {
-                            BackgroundColor = BaseColor.DARK_GRAY,
-                            HorizontalAlignment = Element.ALIGN_CENTER,
-                            Padding = 5
+                            WidthPercentage = 100,
+                            SpacingBefore = 10f,
+                            SpacingAfter = 10f
                         };
+                        // Ajustar el ancho de las columnas (proporcionalmente)
+                        float[] widths = incluirFecha ? new float[] { 2f, 1.5f, 1.5f, 2.5f, 2.5f } : new float[] { 1.5f, 1.5f, 2.5f, 2.5f };
+                        table.SetWidths(widths);
 
-                        // Añadir encabezados a la tabla "Sí Asistió"
-                        foreach (string header in headersAsistio)
-                        {
-                            headerCell.Phrase = new Phrase(header, headerFont);
-                            tableAsistio.AddCell(headerCell);
-                        }
+                        // Añadir encabezados de tabla
+                        AddTableHeader(table, incluirFecha);
 
-                        // Añadir los datos de las asistencias "Sí Asistió"
-                        foreach (DataRow row in dtAsistencias.Rows)
-                        {
-                            bool asistio = Convert.ToBoolean(row["Asistio"]);
-                            if (asistio)
-                            {
-                                if (incluirFecha)
-                                {
-                                    try
-                                    {
-                                        DateTime fechaAsistencia = Convert.ToDateTime(row["Fecha_Asistencia"]);
-                                        tableAsistio.AddCell(new Phrase(fechaAsistencia.ToString("dd MMMM yyyy"))); // Formato de fecha completa
-                                    }
-                                    catch
-                                    {
-                                        tableAsistio.AddCell(""); // Omite la fecha en caso de error
-                                    }
-                                }
+                        // Añadir datos de la tabla
+                        AddTableData(table, dtAsistencias, incluirFecha);
 
-                                string nombreCompleto = $"{row["Nombres"]} {row["Apellidos"]}";
-                                tableAsistio.AddCell(new Phrase(nombreCompleto));
-                            }
-                        }
-
-                        // Agregar la tabla "Sí Asistió" al documento
-                        doc.Add(tableAsistio);
-
-                        // Subtítulo: No Asistió
-                        Paragraph noAsistioTitle = new Paragraph("No Asistió", subtitleFont);
-                        noAsistioTitle.Alignment = Element.ALIGN_LEFT;
-                        noAsistioTitle.SpacingAfter = 10f;
-                        doc.Add(noAsistioTitle);
-
-                        // Crear tabla para asistencias "No Asistió"
-                        PdfPTable tableNoAsistio = new PdfPTable(numColumns); // Número de columnas ajustado
-                        tableNoAsistio.WidthPercentage = 100;
-                        tableNoAsistio.SpacingBefore = 10f;
-                        tableNoAsistio.SpacingAfter = 10f;
-                        tableNoAsistio.DefaultCell.Padding = 5;
-                        tableNoAsistio.DefaultCell.BorderColor = BaseColor.LIGHT_GRAY;
-
-                        // Encabezados de columna para "No Asistió"
-                        string[] headersNoAsistio = incluirFecha ? new[] { "Fecha", "Nombre" } : new[] { "Nombre" };
-
-                        // Añadir encabezados a la tabla "No Asistió"
-                        foreach (string header in headersNoAsistio)
-                        {
-                            headerCell.Phrase = new Phrase(header, headerFont);
-                            tableNoAsistio.AddCell(headerCell);
-                        }
-
-                        // Añadir los datos de las asistencias "No Asistió"
-                        foreach (DataRow row in dtAsistencias.Rows)
-                        {
-                            bool asistio = Convert.ToBoolean(row["Asistio"]);
-                            if (!asistio)
-                            {
-                                if (incluirFecha)
-                                {
-                                    try
-                                    {
-                                        DateTime fechaAsistencia = Convert.ToDateTime(row["Fecha_Asistencia"]);
-                                        tableNoAsistio.AddCell(new Phrase(fechaAsistencia.ToString("dd MMMM yyyy"))); // Formato de fecha completa
-                                    }
-                                    catch
-                                    {
-                                        tableNoAsistio.AddCell(""); // Omite la fecha en caso de error
-                                    }
-                                }
-
-                                string nombreCompleto = $"{row["Nombres"]} {row["Apellidos"]}";
-                                tableNoAsistio.AddCell(new Phrase(nombreCompleto));
-                            }
-                        }
-
-                        // Agregar la tabla "No Asistió" al documento
-                        doc.Add(tableNoAsistio);
+                        // Agregar la tabla completa al documento
+                        doc.Add(table);
                     }
                     catch (Exception ex)
                     {
@@ -331,7 +226,7 @@ namespace CapaPresentacion
                     {
                         doc.Close(); // Cerrar el documento ANTES de abrirlo
 
-                        // Abrir el PDF
+                        // Abrir el PDF automáticamente
                         try
                         {
                             System.Diagnostics.Process.Start(saveFileDialog.FileName);
@@ -344,6 +239,95 @@ namespace CapaPresentacion
                 }
             }
         }
+
+        private void AddTableHeader(PdfPTable table, bool incluirFecha)
+        {
+            // Definir encabezados
+            string[] headers = incluirFecha ?
+                new[] { "Fecha", "Opción", "Sector", "Nombres", "Apellidos" } :
+                new[] { "Opción", "Sector", "Nombres", "Apellidos" };
+
+            // Fuente para los encabezados
+            iTextSharp.text.Font headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE);
+            BaseColor headerBackgroundColor = new BaseColor(0, 119, 204); // Color azul oscuro
+
+            // Añadir cada encabezado al PDF
+            foreach (string header in headers)
+            {
+                PdfPCell cell = new PdfPCell(new Phrase(header, headerFont))
+                {
+                    BackgroundColor = headerBackgroundColor,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Padding = 8
+                };
+                table.AddCell(cell);
+            }
+        }
+
+        private void AddTableData(PdfPTable table, DataTable dtAsistencias, bool incluirFecha)
+        {
+            // Fuente para los datos
+            iTextSharp.text.Font dataFont = FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.BLACK);
+            BaseColor evenRowColor = new BaseColor(245, 245, 245); // Color gris claro para filas pares
+
+            // Añadir datos fila por fila
+            bool isEvenRow = false;
+            foreach (DataRow row in dtAsistencias.Rows)
+            {
+                if (incluirFecha)
+                {
+                    DateTime fecha = Convert.ToDateTime(row["Fecha_Asistencia"]);
+                    PdfPCell cellFecha = new PdfPCell(new Phrase(fecha.ToString("dd MMMM yyyy"), dataFont))
+                    {
+                        BackgroundColor = isEvenRow ? evenRowColor : BaseColor.WHITE,
+                        HorizontalAlignment = Element.ALIGN_CENTER,
+                        Padding = 5
+                    };
+                    table.AddCell(cellFecha);
+                }
+
+                // Opción
+                PdfPCell cellOpcion = new PdfPCell(new Phrase(row["Opcion"].ToString(), dataFont))
+                {
+                    BackgroundColor = isEvenRow ? evenRowColor : BaseColor.WHITE,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Padding = 5
+                };
+                table.AddCell(cellOpcion);
+
+                // Sector
+                PdfPCell cellSector = new PdfPCell(new Phrase(row["Sector"].ToString(), dataFont))
+                {
+                    BackgroundColor = isEvenRow ? evenRowColor : BaseColor.WHITE,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Padding = 5
+                };
+                table.AddCell(cellSector);
+
+                // Nombres
+                PdfPCell cellNombres = new PdfPCell(new Phrase(row["Nombres"].ToString(), dataFont))
+                {
+                    BackgroundColor = isEvenRow ? evenRowColor : BaseColor.WHITE,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Padding = 5
+                };
+                table.AddCell(cellNombres);
+
+                // Apellidos
+                PdfPCell cellApellidos = new PdfPCell(new Phrase(row["Apellidos"].ToString(), dataFont))
+                {
+                    BackgroundColor = isEvenRow ? evenRowColor : BaseColor.WHITE,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Padding = 5
+                };
+                table.AddCell(cellApellidos);
+
+                isEvenRow = !isEvenRow; // Alternar color de fila
+            }
+        }
+
+
+
 
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

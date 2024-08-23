@@ -12,19 +12,36 @@ namespace CapaLogica
         {
             get { return logEmleados._instancia; }
         }
-        // Método para insertar un empleado (usa datEmpleados)
-        public void InsertarEmpleado(string nombres, string apellidos, bool esApoyo, string direccionCorreo, string urlFoto, string DNI)
+
+        public void ActualizarEstadoEsPersonal(int idEmpleado)
         {
             try
             {
-                datEmpleados.Instancia.InsertarEmpleado(nombres, apellidos, esApoyo, direccionCorreo, urlFoto, DNI);
+                // Llamar al método de la capa de datos para actualizar el estado
+                datEmpleados.Instancia.ActualizarEstadoEsPersonal(idEmpleado);
             }
             catch (Exception ex)
             {
                 // Manejo de excepciones (registrar en log, notificar al usuario, etc.)
-                throw new Exception("Error" + ex);
+                throw new Exception("Error al actualizar el estado de esPersonalLimpieza en la capa lógica: " + ex.Message);
             }
         }
+
+
+        // Método para insertar un empleado (usa datEmpleados)
+        public void InsertarEmpleado(string nombres, string apellidos, bool esApoyo, string direccionCorreo, string urlFoto, string DNI, bool? esPersonalLimpieza)
+        {
+            try
+            {
+                datEmpleados.Instancia.InsertarEmpleado(nombres, apellidos, esApoyo, direccionCorreo, urlFoto, DNI, esPersonalLimpieza);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones (registrar en log, notificar al usuario, etc.)
+                throw new Exception("Error al insertar el empleado: " + ex.Message);
+            }
+        }
+
 
         public DataTable ObtenerTodosLosEmpleados()
         {
@@ -98,7 +115,18 @@ namespace CapaLogica
                 throw new Exception("Error en la capa de lógica al obtener empleados filtrados: " + ex.Message);
             }
         }
-
+        public DataTable ObtenerEmpleadosPersonalYParques(string filtro)
+        {
+            try
+            {
+                return datEmpleados.Instancia.ObtenerEmpleadosPersonalYParques(filtro);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones (puedes registrar en un log, mostrar mensajes, etc.)
+                throw new Exception("Error al obtener los empleados y parques: " + ex.Message);
+            }
+        }
         public DataTable ListarEmpleadosQueSeanLimpieza()
         {
             try

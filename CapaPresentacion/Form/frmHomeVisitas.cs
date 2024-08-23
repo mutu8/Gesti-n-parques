@@ -833,7 +833,6 @@ namespace CapaPresentacion
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al agregar la nueva nota: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Console.WriteLine(ex.ToString());
             }
         }
 
