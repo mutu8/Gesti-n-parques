@@ -25,7 +25,7 @@ namespace CapaPresentacion
         public frmPrincipal()
         {
             InitializeComponent();
-            menuButtons = new List<ucMenu>() { btnHome, btnPuntos, btnPersonal, btnLimpiezaPersonal };
+            menuButtons = new List<ucMenu>() { btnHome, btnPuntos, btnPersonal, btnLimpiezaPersonal, ucMenu1};
             ClickMenu(menuButtons);
         }
 
@@ -81,7 +81,7 @@ namespace CapaPresentacion
                 },
                 { "btnPuntos", () =>
                     {
-                        activeMenu(btnPuntos, btnHome, btnPersonal, btnLimpiezaPersonal);
+                        activeMenu(btnPuntos, btnHome, btnPersonal, btnLimpiezaPersonal, ucMenu1);
                         botones(btnPersonal, btnPuntos);
                         botones(btnLimpiezaPersonal, btnPuntos);
 
@@ -91,7 +91,7 @@ namespace CapaPresentacion
                 },
                 { "btnPersonal", () =>
                     {
-                        activeMenu(btnPersonal, btnHome, btnPuntos, btnLimpiezaPersonal);
+                        activeMenu(btnPersonal, btnHome, btnPuntos, btnLimpiezaPersonal, ucMenu1);
                         botones(btnPuntos, btnPersonal);
                         botones(btnLimpiezaPersonal, btnPersonal);
 
@@ -102,12 +102,23 @@ namespace CapaPresentacion
 
                 { "btnLimpiezaPersonal", () =>
                     {
-                        activeMenu(btnLimpiezaPersonal, btnHome, btnPuntos, btnPersonal);
+                        activeMenu(btnLimpiezaPersonal, btnHome, btnPuntos, btnPersonal, ucMenu1);
                         botones(btnPuntos, btnLimpiezaPersonal);
                         botones(btnPersonal, btnLimpiezaPersonal);
 
                         btnHome.Enabled = true;
                         CargarFormularioEnPanel(new FormPersonalLimpieza());
+                    }
+                },
+                { "ucMenu1", () =>
+                    {
+                        activeMenu(ucMenu1, btnHome, btnPuntos, btnPersonal, btnLimpiezaPersonal);
+                        botones(btnPuntos, ucMenu1);
+                        botones(btnPersonal, ucMenu1);
+                        botones(ucMenu1, btnPersonal);
+
+                        btnHome.Enabled = true;
+                        CargarFormularioEnPanel(new frmComapactasAsistencia());
                     }
                 }
             };

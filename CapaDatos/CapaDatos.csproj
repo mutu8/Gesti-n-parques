@@ -65,6 +65,7 @@
     <Compile Include="datGenerarAsistencia.cs" />
     <Compile Include="datLocalidades.cs" />
     <Compile Include="datVisitas.cs" />
+    <Compile Include="datVisitasCompactas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

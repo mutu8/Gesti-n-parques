@@ -30,16 +30,16 @@ namespace CapaPresentacion
 
         }
 
-        private void test()
-        {
-            // Iterar sobre todas las columnas del DataGridView
-            foreach (DataGridViewColumn column in dataGridView1.Columns)
-            {
-                // Establecer el modo de ordenación a NotSortable
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
+        //private void test()
+        //{
+        //    // Iterar sobre todas las columnas del DataGridView
+        //    foreach (DataGridViewColumn column in dataGridView1.Columns)
+        //    {
+        //        // Establecer el modo de ordenación a NotSortable
+        //        column.SortMode = DataGridViewColumnSortMode.NotSortable;
+        //    }
 
-        }
+        //}
 
         public void MostrarNombresColumnas(DataGridView dgv)
         {
@@ -65,71 +65,79 @@ namespace CapaPresentacion
                 DataTable dtEmpleados = logEmleados.Instancia.ListarEmpleadosQueSeanLimpieza();
                 dataGridView1.DataSource = dtEmpleados;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show("Error al cargar empleados: " + ex.Message);
+                // Manejar la excepción sin mostrar MessageBox
             }
         }
 
         private void ConfigurarDataGridView(DataGridView dgv)
         {
-            dgv.AllowUserToAddRows = false;
-            dgv.AllowUserToDeleteRows = false;
-            dgv.AllowUserToResizeRows = false;
-            dgv.AllowUserToResizeColumns = false;
-
-            dgv.EnableHeadersVisualStyles = false;
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
-            dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Arial", 10, FontStyle.Bold);
-
-            dgv.DefaultCellStyle.SelectionBackColor = Color.LightBlue;
-            dgv.DefaultCellStyle.SelectionForeColor = Color.Black;
-
-            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-
-            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-            // Ocultar la columna ID
-            if (dgv.Columns.Contains("ID_Empleado"))
+            try
             {
-                dgv.Columns["ID_Empleado"].Visible = false;
-            }
+                dgv.AllowUserToAddRows = false;
+                dgv.AllowUserToDeleteRows = false;
+                dgv.AllowUserToResizeRows = false;
+                dgv.AllowUserToResizeColumns = false;
 
-            if (dgv.Columns.Contains("ID_Asistencia"))
-            {
-                dgv.Columns["ID_Asistencia"].Visible = false;
-            }
+                dgv.EnableHeadersVisualStyles = false;
+                dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
+                dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Arial", 10, FontStyle.Bold);
 
-            // Cargar las opciones en el ComboBox de cada fila
-            if (!dgv.Columns.Contains("Opción"))
-            {
-                DataTable dtOpciones = logAsistencias.Instancia.ObtenerOpciones();
-                if (dtOpciones != null && dtOpciones.Rows.Count > 0)
+                dgv.DefaultCellStyle.SelectionBackColor = Color.LightBlue;
+                dgv.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
+                dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+                // Ocultar la columna ID
+                if (dgv.Columns.Contains("ID_Empleado"))
                 {
-                    DataGridViewComboBoxColumn comboBoxColumnOpcion = new DataGridViewComboBoxColumn();
-                    comboBoxColumnOpcion.Name = "Opción";
-                    comboBoxColumnOpcion.DataSource = dtOpciones;
-                    comboBoxColumnOpcion.DisplayMember = "Nombre_Opcion";
-                    comboBoxColumnOpcion.ValueMember = "ID_Opcion";
-                    dgv.Columns.Add(comboBoxColumnOpcion);
+                    dgv.Columns["ID_Empleado"].Visible = false;
+                }
+
+                if (dgv.Columns.Contains("ID_Asistencia"))
+                {
+                    dgv.Columns["ID_Asistencia"].Visible = false;
+                }
+
+                // Cargar las opciones en el ComboBox de cada fila
+                if (!dgv.Columns.Contains("Opción"))
+                {
+                    DataTable dtOpciones = logAsistencias.Instancia.ObtenerOpciones();
+                    if (dtOpciones != null && dtOpciones.Rows.Count > 0)
+                    {
+                        DataGridViewComboBoxColumn comboBoxColumnOpcion = new DataGridViewComboBoxColumn();
+                        comboBoxColumnOpcion.Name = "Opción";
+                        comboBoxColumnOpcion.DataSource = dtOpciones;
+                        comboBoxColumnOpcion.DisplayMember = "Nombre_Opcion";
+                        comboBoxColumnOpcion.ValueMember = "ID_Opcion";
+                        dgv.Columns.Add(comboBoxColumnOpcion);
+                    }
+                }
+
+                // Cargar los sectores en el ComboBox de cada fila
+                if (!dgv.Columns.Contains("Sector"))
+                {
+                    DataTable dtSectoresTurnos = logAsistencias.Instancia.ObtenerSectores();
+                    if (dtSectoresTurnos != null && dtSectoresTurnos.Rows.Count > 0)
+                    {
+                        DataGridViewComboBoxColumn comboBoxColumnSector = new DataGridViewComboBoxColumn();
+                        comboBoxColumnSector.Name = "Sector";
+                        comboBoxColumnSector.DataSource = dtSectoresTurnos;
+                        comboBoxColumnSector.DisplayMember = "Sector";
+                        comboBoxColumnSector.ValueMember = "ID";
+                        dgv.Columns.Add(comboBoxColumnSector);
+                    }
                 }
             }
-
-            // Cargar los sectores en el ComboBox de cada fila
-            if (!dgv.Columns.Contains("Sector"))
+            catch(Exception ex) 
             {
-                DataTable dtSectoresTurnos = logAsistencias.Instancia.ObtenerSectores();
-                if (dtSectoresTurnos != null && dtSectoresTurnos.Rows.Count > 0)
-                {
-                    DataGridViewComboBoxColumn comboBoxColumnSector = new DataGridViewComboBoxColumn();
-                    comboBoxColumnSector.Name = "Sector";
-                    comboBoxColumnSector.DataSource = dtSectoresTurnos;
-                    comboBoxColumnSector.DisplayMember = "Sector";
-                    comboBoxColumnSector.ValueMember = "ID";
-                    dgv.Columns.Add(comboBoxColumnSector);
-                }
+                Console.WriteLine(ex.Message);
             }
+            
         }
 
 
@@ -148,106 +156,104 @@ namespace CapaPresentacion
 
         private void FormPersonalLimpieza_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = null;
-            CargarEmpleadosLimpieza();
-            ConfigurarDataGridView(dataGridView1);
-            EstablecerColumnasReadonly(dataGridView1);
-            test();
+            try
+            {
+                dataGridView1.DataSource = null;
+                CargarEmpleadosLimpieza();
+                ConfigurarDataGridView(dataGridView1);
+                EstablecerColumnasReadonly(dataGridView1);
 
-            generarAsistencia();
+                generarAsistencia();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
 
 
         private void generarAsistencia()
         {
-            // Obtener la fecha actual
-            DateTime now = DateTime.Now;
-
-            // Crear una nueva fecha que solo contiene la parte de la fecha (sin la hora)
-            DateTime fechaSoloFecha = new DateTime(now.Year, now.Month, now.Day);
-
-            // Verificar si ya existen asistencias para la fecha actual
-            if (!logAsistencias.Instancia.ValidarAsistenciasPorFecha(fechaSoloFecha))
+            try
             {
-                foreach (DataGridViewRow row in dataGridView1.Rows)
+                // Obtener la fecha actual
+                DateTime now = DateTime.Now;
+
+                // Crear una nueva fecha que solo contiene la parte de la fecha (sin la hora)
+                DateTime fechaSoloFecha = new DateTime(now.Year, now.Month, now.Day);
+
+                // Verificar si ya existen asistencias para la fecha actual
+                if (!logAsistencias.Instancia.ValidarAsistenciasPorFecha(fechaSoloFecha))
                 {
-                    if (row.Cells["ID_Empleado"].Value != null)
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
                     {
-                        int idEmpleado = Convert.ToInt32(row.Cells["ID_Empleado"].Value);
-
-                        // Obtener el ID de la opción seleccionada en el ComboBox
-                        int idOpcion = 2; // Valor predeterminado si el ComboBox no tiene un valor seleccionado
-
-                        if (row.Cells["Opción"].Value != null)
+                        if (row.Cells["ID_Empleado"].Value != null)
                         {
-                            idOpcion = Convert.ToInt32(row.Cells["Opción"].Value);
+                            int idEmpleado = Convert.ToInt32(row.Cells["ID_Empleado"].Value);
+
+                            // Obtener el ID de la opción seleccionada en el ComboBox
+                            int idOpcion = 2; // Valor predeterminado si el ComboBox no tiene un valor seleccionado
+
+                            if (row.Cells["Opción"].Value != null)
+                            {
+                                idOpcion = Convert.ToInt32(row.Cells["Opción"].Value);
+                            }
+
+                            // Obtener el ID del sector seleccionado en el ComboBox
+                            int idSector = 48; // Valor predeterminado si el ComboBox no tiene un valor seleccionado
+
+                            if (row.Cells["Sector"].Value != null)
+                            {
+                                idSector = Convert.ToInt32(row.Cells["Sector"].Value);
+                            }
+
+                            // Llamar a la capa lógica para insertar la asistencia con el ID de la opción y el ID del sector
+                            logAsistencias.Instancia.InsertarAsistencia(idEmpleado, fechaSoloFecha, idOpcion, idSector);
                         }
-
-                        // Obtener el ID del sector seleccionado en el ComboBox
-                        int idSector = 48; // Valor predeterminado si el ComboBox no tiene un valor seleccionado
-
-                        if (row.Cells["Sector"].Value != null)
-                        {
-                            idSector = Convert.ToInt32(row.Cells["Sector"].Value);
-                        }
-
-                        // Llamar a la capa lógica para insertar la asistencia con el ID de la opción y el ID del sector
-                        logAsistencias.Instancia.InsertarAsistencia(idEmpleado, fechaSoloFecha, idOpcion, idSector);
                     }
                 }
             }
-
-            else
+            catch (Exception ex)
             {
-                // Si ya existen asistencias para la fecha, no hacer nada o mostrar un mensaje
-                //MessageBox.Show("Ya existen asistencias registradas para la fecha de hoy.", "Asistencia Registrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                Console.WriteLine(ex);
             }
         }
 
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            // Verificar si hay filas seleccionadas
-            if (dataGridView1.SelectedRows.Count > 0)
+            try
             {
-                // Obtener la fila seleccionada
-                DataGridViewRow filaSeleccionada = dataGridView1.SelectedRows[0];
-
-                // Verificar si la columna "ID_Empleado" existe
-                if (dataGridView1.Columns.Contains("ID_Empleado"))
+                // Verificar si hay filas seleccionadas
+                if (dataGridView1.SelectedRows.Count > 0)
                 {
-                    // Obtener el valor de la columna ID_Empleado en la fila seleccionada
-                    var cellValue = filaSeleccionada.Cells["ID_Empleado"].Value;
+                    // Obtener la fila seleccionada
+                    DataGridViewRow filaSeleccionada = dataGridView1.SelectedRows[0];
 
-                    if (cellValue != null)
+                    // Verificar si la columna "ID_Empleado" existe
+                    if (dataGridView1.Columns.Contains("ID_Empleado"))
                     {
-                        string id = cellValue.ToString();
-                        lblIdEmpleado.Text = id;
-                    }
-                    else
-                    {
-                        MessageBox.Show("La celda seleccionada no contiene valor.");
+                        // Obtener el valor de la columna ID_Empleado en la fila seleccionada
+                        var cellValue = filaSeleccionada.Cells["ID_Empleado"].Value;
+
+                        if (cellValue != null)
+                        {
+                            string id = cellValue.ToString();
+                            lblIdEmpleado.Text = id;
+                        }
+                        else
+                        {
+                            MessageBox.Show("La celda seleccionada no contiene valor.");
+                        }
                     }
                 }
             }
-
-        }
-
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            // Verifica si hay una fila seleccionada
-            if (dataGridView1.SelectedRows.Count > 0)
+            catch (Exception ex)
             {
-                // Elimina la fila seleccionada del DataGridView
-                dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
+                Console.WriteLine(ex.Message);
             }
-            else
-            {
-                MessageBox.Show("Por favor, selecciona una fila para eliminar.");
-            }
+
         }
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -467,44 +473,46 @@ namespace CapaPresentacion
 
         private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            DataGridView dgv = sender as DataGridView;
-
-            // Verificar que las columnas "Opción" y "Sector" existan antes de intentar usarlas
-            if (!dgv.Columns.Contains("Opción") || !dgv.Columns.Contains("Sector"))
+            try
             {
+                DataGridView dgv = sender as DataGridView;
 
-                return;
+                // Verificar que las columnas "Opción" y "Sector" existan antes de intentar usarlas
+                if (!dgv.Columns.Contains("Opción") || !dgv.Columns.Contains("Sector"))
+                {
+                    return;
+                }
+
+                // Asignar los valores seleccionados desde la base de datos
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    if (row.Cells["ID_Asistencia"].Value != DBNull.Value && row.Cells["ID_Empleado"].Value != DBNull.Value)
+                    {
+                        int idAsistencia = Convert.ToInt32(row.Cells["ID_Asistencia"].Value);
+                        int idEmpleado = Convert.ToInt32(row.Cells["ID_Empleado"].Value);
+
+                        // Obtener los IDs desde la base de datos
+                        var ids = logAsistencias.Instancia.ObtenerIdSectorYIdOpcionPorAsistenciaYEmpleado(idAsistencia, idEmpleado);
+                        int idOpcion = ids.idOpcion;
+                        int idSectorTurno = ids.idSectorTurno;
+
+                        // Asignar el índice correcto en el ComboBox de la columna "Opción"
+                        if (row.Cells["Opción"] is DataGridViewComboBoxCell comboBoxCellOpcion)
+                        {
+                            comboBoxCellOpcion.Value = idOpcion;
+                        }
+
+                        // Asignar el índice correcto en el ComboBox de la columna "Sector"
+                        if (row.Cells["Sector"] is DataGridViewComboBoxCell comboBoxCellSector)
+                        {
+                            comboBoxCellSector.Value = idSectorTurno;
+                        }
+                    }
+                }
             }
-
-            // Asignar los valores seleccionados desde la base de datos
-            foreach (DataGridViewRow row in dgv.Rows)
+            catch (Exception)
             {
-                if (row.Cells["ID_Asistencia"].Value != DBNull.Value && row.Cells["ID_Empleado"].Value != DBNull.Value)
-                {
-                    int idAsistencia = Convert.ToInt32(row.Cells["ID_Asistencia"].Value);
-                    int idEmpleado = Convert.ToInt32(row.Cells["ID_Empleado"].Value);
-
-                    // Obtener los IDs desde la base de datos
-                    var ids = logAsistencias.Instancia.ObtenerIdSectorYIdOpcionPorAsistenciaYEmpleado(idAsistencia, idEmpleado);
-                    int idOpcion = ids.idOpcion;
-                    int idSectorTurno = ids.idSectorTurno;
-
-                    // Asignar el índice correcto en el ComboBox de la columna "Opción"
-                    if (row.Cells["Opción"] is DataGridViewComboBoxCell comboBoxCellOpcion)
-                    {
-                        comboBoxCellOpcion.Value = idOpcion;
-                    }
-
-                    // Asignar el índice correcto en el ComboBox de la columna "Sector"
-                    if (row.Cells["Sector"] is DataGridViewComboBoxCell comboBoxCellSector)
-                    {
-                        comboBoxCellSector.Value = idSectorTurno;
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("ID_Asistencia o ID_Empleado es nulo para la fila: " + row.Index.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                // Manejar la excepción sin mostrar MessageBox
             }
         }
     }

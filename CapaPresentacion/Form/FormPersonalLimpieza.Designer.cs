@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.materialFloatingActionButton2 = new MaterialSkin.Controls.MaterialFloatingActionButton();
@@ -49,18 +49,18 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Transparent;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 145);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
@@ -81,7 +81,7 @@
             this.panel1.Controls.Add(this.lblIdEmpleado);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1067, 145);
             this.panel1.TabIndex = 55;
@@ -93,7 +93,7 @@
             this.materialFloatingActionButton2.Depth = 0;
             this.materialFloatingActionButton2.Icon = global::CapaPresentacion.Properties.Resources.file__1_;
             this.materialFloatingActionButton2.Location = new System.Drawing.Point(157, 64);
-            this.materialFloatingActionButton2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.materialFloatingActionButton2.Margin = new System.Windows.Forms.Padding(4);
             this.materialFloatingActionButton2.Mini = true;
             this.materialFloatingActionButton2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFloatingActionButton2.Name = "materialFloatingActionButton2";
@@ -119,7 +119,7 @@
             this.btnUpdate.Depth = 0;
             this.btnUpdate.Icon = global::CapaPresentacion.Properties.Resources.check;
             this.btnUpdate.Location = new System.Drawing.Point(35, 64);
-            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4);
             this.btnUpdate.Mini = true;
             this.btnUpdate.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnUpdate.Name = "btnUpdate";
@@ -135,7 +135,7 @@
             this.btnImprimier.Depth = 0;
             this.btnImprimier.Icon = global::CapaPresentacion.Properties.Resources.printer__3_;
             this.btnImprimier.Location = new System.Drawing.Point(96, 64);
-            this.btnImprimier.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnImprimier.Margin = new System.Windows.Forms.Padding(4);
             this.btnImprimier.Mini = true;
             this.btnImprimier.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnImprimier.Name = "btnImprimier";
@@ -163,7 +163,7 @@
             this.panelCarta.Controls.Add(this.panel1);
             this.panelCarta.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelCarta.Location = new System.Drawing.Point(0, 0);
-            this.panelCarta.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelCarta.Margin = new System.Windows.Forms.Padding(4);
             this.panelCarta.Name = "panelCarta";
             this.panelCarta.Size = new System.Drawing.Size(1067, 554);
             this.panelCarta.TabIndex = 4;
@@ -173,7 +173,7 @@
             this.panel5.BackColor = System.Drawing.Color.Transparent;
             this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel5.Location = new System.Drawing.Point(0, 409);
-            this.panel5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(1067, 145);
             this.panel5.TabIndex = 60;
@@ -185,7 +185,7 @@
             this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.panelCarta);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormPersonalLimpieza";
             this.Text = "FormPersonalLimpieza";
             this.Load += new System.EventHandler(this.FormPersonalLimpieza_Load);

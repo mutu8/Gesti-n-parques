@@ -104,11 +104,11 @@ namespace CapaLogica
         {
             return datEmpleados.Instancia.EliminarEmpleado(empleadoId, out mensajeError);
         }
-        public DataTable ObtenerEmpleadosFiltrados(string filtro)
+        public DataTable ObtenerEmpleadosFiltrados(string filtro, string categoria)
         {
             try
             {
-                return datEmpleados.Instancia.ObtenerEmpleadosFiltrados(filtro);
+                return datEmpleados.Instancia.ObtenerEmpleadosFiltrados(filtro, categoria);
             }
             catch (Exception ex)
             {
@@ -153,7 +153,101 @@ namespace CapaLogica
             }
         }
 
+       
+        public DataTable ObtenerPlacas()
+        {
+            try
+            {
+                return datEmpleados.Instancia.ObtenerPlacas();  // Llama al método de la capa de datos
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener las placas: " + ex.Message);
+            }
+        }
+
+        // Método para obtener los empleados que no son parte del personal compacta
+        public DataTable ListarEmpleadosQueSeanComapacta()
+        {
+            try
+            {
+                return datEmpleados.Instancia.datObtenerPersonalCompacta();
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                throw new Exception("Error al listar empleados que son personal de limpieza: " + ex.Message);
+            }
+        }
+
+        public int InsertarDetallePersonalCompacta(int idEmpleado, int idCompacta, bool esConductor, string zona, string turno)
+        {
+            try
+            {
+               return  datEmpleados.Instancia.InsertarDetallePersonalCompacta(idEmpleado, idCompacta, esConductor, zona, turno);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al insertar el detalle del personal compacta en la capa lógica: " + ex.Message);
+            }
+        }
+
+
+        // Método para insertar una visita compacta
+        public void InsertarVisitaCompacta(int id_DetallePersonalCompacta, DateTime fechaVisita, bool completada)
+        {
+            try
+            {
+                // Llamar al método de la capa de datos para realizar la inserción
+                datEmpleados.Instancia.InsertarVisitaCompacta(id_DetallePersonalCompacta, fechaVisita, completada);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones, registrar en un log, notificar al usuario, etc.
+                throw new Exception("Error al insertar la visita compacta en la capa lógica: " + ex.Message);
+            }
+        }
+
+        public int ObtenerIDCompactaPorPlaca(string placaVehicular)
+        {
+            try
+            {
+                return datEmpleados.Instancia.ObtenerIDCompactaPorPlaca(placaVehicular);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el ID de la compacta en la capa lógica: " + ex.Message);
+            }
+        }
+
+        public DataTable ObtenerVisitasCompactasDeHoy()
+        {
+            try
+            {
+                return datEmpleados.Instancia.ObtenerVisitasCompactasDeHoy();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener las visitas compactas del día en la capa lógica: " + ex.Message);
+            }
+        }
+
+        public int ObtenerIDVisitaCompacta(string placaVehicular, string nombreEmpleado, string zona, bool esConductor, DateTime fechaVisita)
+        {
+            try
+            {
+                // Llamar al método de la capa de datos para obtener el ID de la visita compacta
+                return datEmpleados.Instancia.ObtenerIDVisitaCompacta(placaVehicular, nombreEmpleado, zona, esConductor, fechaVisita);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones, registrar en un log o lanzar la excepción a la capa superior
+                throw new Exception("Error al obtener el ID de la visita compacta en la capa lógica: " + ex.Message);
+            }
+        }
 
 
     }
+
 }
+

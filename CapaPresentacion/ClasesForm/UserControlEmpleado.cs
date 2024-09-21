@@ -182,7 +182,18 @@ namespace CapaPresentacion
                         {
                             MessageBox.Show("Empleado eliminado correctamente.");
                             InstanciFrmE.seDebeActualizar = true;
-                            InstanciFrmE.CargarUserControlsEmpleados();
+
+                            //Solo cargar is esPersonal es "Limpieza"
+                            if (InstanciFrmE.getComboBox() == "Limpieza")
+                            {
+                                InstanciFrmE.CargarUserControlsEmpleados("", "Limpieza");
+
+                            }
+                            else
+                            {
+                                InstanciFrmE.CargarUserControlsEmpleados("", "Parques");
+                            }
+
                         }
                         else
                         {

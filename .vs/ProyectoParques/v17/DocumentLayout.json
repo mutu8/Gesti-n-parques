@@ -3,28 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|c:\\users\\usuario\\source\\repos\\mutu8\\gestion-parques\\capapresentacion\\form\\frmhomevisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|solutionrelative:capapresentacion\\form\\frmhomevisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\capapresentacion\\form\\frmhomevisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|solutionrelative:capapresentacion\\form\\frmhomevisitas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\capapresentacion\\form\\frmimagen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|solutionrelative:capapresentacion\\form\\frmimagen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\capapresentacion\\form\\frmimagen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|solutionrelative:capapresentacion\\form\\frmimagen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\capapresentacion\\form\\frmdatospersonal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|solutionrelative:capapresentacion\\form\\frmdatospersonal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\capapresentacion\\form\\frmdatospersonal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|solutionrelative:capapresentacion\\form\\frmdatospersonal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|c:\\users\\usuario\\source\\repos\\mutu8\\gestion-parques\\capapresentacion\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA002BF4-2068-4465-B4A6-BF99E7E0B8DE}|CapaPresentacion\\CapaPresentacion.csproj|solutionrelative:capapresentacion\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,72 +19,15 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "frmHomeVisitas.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmHomeVisitas.cs",
-              "RelativeDocumentMoniker": "CapaPresentacion\\Form\\frmHomeVisitas.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmHomeVisitas.cs",
-              "RelativeToolTip": "CapaPresentacion\\Form\\frmHomeVisitas.cs",
-              "ViewState": "AgIAAOoCAAAAAAAAAAAiwAIDAAANAAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Program.cs",
+              "RelativeDocumentMoniker": "CapaPresentacion\\Program.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Program.cs",
+              "RelativeToolTip": "CapaPresentacion\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-22T13:43:11.903Z",
+              "WhenOpened": "2024-09-21T19:26:45.972Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "frmHomeVisitas.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmHomeVisitas.cs",
-              "RelativeDocumentMoniker": "CapaPresentacion\\Form\\frmHomeVisitas.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmHomeVisitas.cs [Dise\u00F1o]",
-              "RelativeToolTip": "CapaPresentacion\\Form\\frmHomeVisitas.cs [Dise\u00F1o]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-22T13:43:10.099Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "frmImagen.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmImagen.cs",
-              "RelativeDocumentMoniker": "CapaPresentacion\\Form\\frmImagen.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmImagen.cs",
-              "RelativeToolTip": "CapaPresentacion\\Form\\frmImagen.cs",
-              "ViewState": "AgIAAEIAAAAAAAAAAAAowFkAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-22T13:42:36.721Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "frmImagen.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmImagen.cs",
-              "RelativeDocumentMoniker": "CapaPresentacion\\Form\\frmImagen.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmImagen.cs [Dise\u00F1o]",
-              "RelativeToolTip": "CapaPresentacion\\Form\\frmImagen.cs [Dise\u00F1o]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-22T13:42:33.054Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "frmDatosPersonal.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmDatosPersonal.cs",
-              "RelativeDocumentMoniker": "CapaPresentacion\\Form\\frmDatosPersonal.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmDatosPersonal.cs",
-              "RelativeToolTip": "CapaPresentacion\\Form\\frmDatosPersonal.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-22T13:41:39.351Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "frmDatosPersonal.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmDatosPersonal.cs",
-              "RelativeDocumentMoniker": "CapaPresentacion\\Form\\frmDatosPersonal.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\mutu8\\Gestion-parques\\CapaPresentacion\\Form\\frmDatosPersonal.cs [Dise\u00F1o]",
-              "RelativeToolTip": "CapaPresentacion\\Form\\frmDatosPersonal.cs [Dise\u00F1o]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-22T13:41:37.034Z"
             }
           ]
         }

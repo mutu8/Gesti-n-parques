@@ -124,9 +124,9 @@ namespace CapaPresentacion
                         pictureBox.Image = imagen;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    MessageBox.Show("Error al cargar la imagen: " + ex.Message);
+                    // Manejo de excepciones sin mostrar MessageBox
                 }
             }
         }
@@ -144,9 +144,8 @@ namespace CapaPresentacion
                         DeleteImageByUrl(ImageUrl);
                     }
 
-                    // Asignar una cadena vacía a ImageUrl y mostrar un mensaje
+                    // Asignar una cadena vacía a ImageUrl
                     ImageUrl = "";
-                    MessageBox.Show("Guardado completado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     return; // Salir del método
                 }
@@ -172,16 +171,11 @@ namespace CapaPresentacion
                 {
                     // Actualizar la URL de la imagen con la URL segura de Cloudinary
                     ImageUrl = uploadResult.SecureUrl.ToString();
-                    MessageBox.Show("Imagen subida exitosamente. URL: " + uploadResult.SecureUrl, "Subida Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Error al subir la imagen. Código de estado: " + uploadResult.StatusCode, "Error al subir", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Manejo de excepciones sin mostrar MessageBox
             }
         }
 
@@ -205,27 +199,14 @@ namespace CapaPresentacion
 
                         if (deletionResult.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            MessageBox.Show("Imagen eliminada del servicio en la nube.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Error al eliminar la imagen del servicio en la nube. Código de estado: " + deletionResult.StatusCode, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            // Imagen eliminada exitosamente
                         }
                     }
-                    else
-                    {
-                        MessageBox.Show("No se pudo obtener el identificador público de la URL proporcionada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("No se proporcionó una URL válida.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e.Message);
-                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Manejo de excepciones sin mostrar MessageBox
             }
         }
 
@@ -241,7 +222,7 @@ namespace CapaPresentacion
 
                 return publicId;
             }
-            catch
+            catch (Exception)
             {
                 return null;
             }
@@ -302,6 +283,9 @@ namespace CapaPresentacion
             // Obtener el valor del CheckBox de esPersonalLimpieza
             bool esPersonalLimpieza = materialCheckbox1.Checked;
 
+            //esPersonalLimpieza a texto
+            string esPersonal = esPersonalLimpieza ? "Limpieza" : "Parques";
+
             DateTime fechaNacimiento = dateTimePicker1.Value;
 
             // Obtener el nombre completo del empleado desde los TextBox
@@ -317,7 +301,6 @@ namespace CapaPresentacion
                     // 2. Validaciones (¡IMPORTANTE!)
                     if (string.IsNullOrWhiteSpace(nombres) || string.IsNullOrWhiteSpace(apellidos))
                     {
-                        MessageBox.Show("Por favor, ingrese los nombres y apellidos.");
                         return; // Detener el proceso si falta información
                     }
 
@@ -328,14 +311,14 @@ namespace CapaPresentacion
                     // 3. Usar logEmpleados para modificar (lógica de negocio)
                     logEmleados.Instancia.ModificarEmpleado(empleadoId, esApoyo, correo, url, DNI, fechaNacimiento);
 
-                    if (materialCheckbox1.Checked) 
+                    if (materialCheckbox1.Checked)
                     {
                         int nvID = logEmleados.Instancia.ObtenerEmpleadoIdPorNombre(nombres + " " + apellidos);
 
                         logEmleados.Instancia.ActualizarEstadoEsPersonal(nvID);
                     }
 
-                    // 4. Mensaje de éxito y limpiar controles
+                    // 4. Limpiar controles
                     txtNombre.Clear();
                     txtApellidos.Clear();
                     txtCorreo.Clear();
@@ -344,35 +327,51 @@ namespace CapaPresentacion
                     dateTimePicker1.Format = DateTimePickerFormat.Custom;
                     cboRol.SelectedIndex = -1;
 
-                    MessageBox.Show("Empleado agregado correctamente.");
 
+                   
                     InstanciFrmE.seDebeActualizar = true;
-                    InstanciFrmE.CargarUserControlsEmpleados();
+                    //Solo cargar is esPersonal es "Limpieza"
+                    if(esPersonal == "Limpieza")
+                    {
+                        InstanciFrmE.setComboBox("Limpieza");
+                        InstanciFrmE.CargarUserControlsEmpleados("", "Limpieza");
+
+                    }
+                    else
+                    {
+                        InstanciFrmE.setComboBox("Parques");
+                        InstanciFrmE.CargarUserControlsEmpleados("", "Parques");
+                    }
+
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    // Manejo de excepciones: mostrar mensaje amigable al usuario
-                    MessageBox.Show("Por favor, verifique la información");
+                    // Manejo de excepciones sin mostrar MessageBox
                 }
             }
             else if (btnAccion.Text == "Guardar")
             {
                 try
                 {
-
                     // 3. Usar logEmpleados para modificar (lógica de negocio)
                     logEmleados.Instancia.ModificarEmpleado(empleadoId, esApoyo, correo, url, DNI, fechaNacimiento);
 
-                    // 4. Mensaje de éxito y limpiar controles
-                    MessageBox.Show("Empleado modificado correctamente.");
-
                     InstanciFrmE.seDebeActualizar = true;
-                    InstanciFrmE.CargarUserControlsEmpleados();
 
+                    //Solo cargar is esPersonal es "Limpieza"
+                    if (esPersonal == "Limpieza")
+                    {
+                        InstanciFrmE.CargarUserControlsEmpleados("", "Limpieza");
+
+                    }
+                    else
+                    {
+                        InstanciFrmE.CargarUserControlsEmpleados("", "Parques");
+                    }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    MessageBox.Show("Error al modificar el empleado: " + ex.Message);
+                    // Manejo de excepciones sin mostrar MessageBox
                 }
             }
         }
@@ -389,31 +388,39 @@ namespace CapaPresentacion
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (ImgCli.Image != null)
+            try
             {
-                // Elimina la imagen del formulario
-                ImgCli.Image = null;
+                if (ImgCli.Image != null)
+                {
+                    // Elimina la imagen del formulario
+                    ImgCli.Image = null;
 
-                // Restablece la ruta de la imagen a vacía después de eliminarla
-                imagePath = string.Empty;
-
-                MessageBox.Show("Imagen eliminada.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Restablece la ruta de la imagen a vacía después de eliminarla
+                    imagePath = string.Empty;
+                }
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("No hay ninguna imagen para eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Manejo de excepciones sin mostrar MessageBox
             }
         }
 
         private void btnAbrir_Click(object sender, EventArgs e)
         {
-            OpenFileDialog fo = new OpenFileDialog();
-            DialogResult rs = fo.ShowDialog();
-            if (rs == DialogResult.OK)
+            try
             {
-                ImgCli.Image = Image.FromFile(fo.FileName);
-                // Guarda la ruta de la imagen seleccionada
-                imagePath = fo.FileName;
+                OpenFileDialog fo = new OpenFileDialog();
+                DialogResult rs = fo.ShowDialog();
+                if (rs == DialogResult.OK)
+                {
+                    ImgCli.Image = Image.FromFile(fo.FileName);
+                    // Guarda la ruta de la imagen seleccionada
+                    imagePath = fo.FileName;
+                }
+            }
+            catch (Exception)
+            {
+                // Manejo de excepciones sin mostrar MessageBox
             }
         }
 
@@ -433,19 +440,25 @@ namespace CapaPresentacion
 
         private void txtDNI_TextChanged(object sender, EventArgs e)
         {
-            // Verificar si el texto tiene más de 8 caracteres
-            if (txtDNI.Text.Length > 8)
+            try
             {
-                // Si tiene más de 8 caracteres, truncar el texto
-                txtDNI.Text = txtDNI.Text.Substring(0, 8);
-            }
+                // Verificar si el texto tiene más de 8 caracteres
+                if (txtDNI.Text.Length > 8)
+                {
+                    // Si tiene más de 8 caracteres, truncar el texto
+                    txtDNI.Text = txtDNI.Text.Substring(0, 8);
+                }
 
-            // Verificar si todos los caracteres son números
-            if (!string.IsNullOrEmpty(txtDNI.Text) && !EsNumero(txtDNI.Text))
+                // Verificar si todos los caracteres son números
+                if (!string.IsNullOrEmpty(txtDNI.Text) && !EsNumero(txtDNI.Text))
+                {
+                    // Si no son números, limpiar el campo
+                    txtDNI.Text = string.Empty;
+                }
+            }
+            catch (Exception)
             {
-                // Si no son números, mostrar un mensaje o corregir el valor
-                MessageBox.Show("El DNI debe contener solo números.");
-                txtDNI.Text = string.Empty; // Limpiar el campo o tomar otra acción
+                // Manejo de excepciones sin mostrar MessageBox
             }
         }
 

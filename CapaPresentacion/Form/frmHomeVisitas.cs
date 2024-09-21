@@ -32,7 +32,6 @@ namespace CapaPresentacion
 
             // Configurar el texto del ToolTip para un botón
             toolTip1.SetToolTip(materialFloatingActionButton1, "Programar visitas del día");
-            toolTip1.SetToolTip(btnDelete, "Eliminar fila");
             toolTip1.SetToolTip(btnAddNota, "Agregar nota");
             toolTip1.SetToolTip(btnUpdate, "Marcar las visitas como completadas");
             toolTip1.SetToolTip(btnImprimier, "Imprimir reporte del día");
@@ -58,7 +57,6 @@ namespace CapaPresentacion
                 MostrarVisitasRegistradasEnDGV();
                 dataGridView1.Visible = true;
                 dataGridView1.ReadOnly = true;
-                btnDelete.Enabled = false;
                 btnAddNota.Enabled = false;
                 materialFloatingActionButton1.Enabled = false;
             }
@@ -300,7 +298,6 @@ namespace CapaPresentacion
                                     bool exito = logVisitas.Instancia.GenerarVisitasParaLocalidades(fechaVisita, estado, idLocalidad, idEmpleado, nota);
                                 }
                             }
-                            btnDelete.Enabled = false;
                             btnAddNota.Enabled = false;
                             materialFloatingActionButton1.Enabled = false;
                             MessageBox.Show("Visitas generadas exitosamente.");

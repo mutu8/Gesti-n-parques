@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -254,19 +255,31 @@ namespace CapaDatos
             }
         }
 
-        public DataTable ObtenerEmpleadosFiltrados(string filtro)
+        public DataTable ObtenerEmpleadosFiltrados(string filtro, string categoria)
         {
             DataTable dtEmpleados = new DataTable();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // Nueva consulta que concatena Nombres y Apellidos
+                // Base de la consulta SQL
                 string query = @"SELECT * FROM Empleados
                          WHERE CONCAT(Nombres, ' ', Apellidos) LIKE @Filtro";
 
+                // Ajustar la consulta según la categoría seleccionada
+                if (categoria == "Limpieza")
+                {
+                    query += " AND esPersonalLimpieza = 1"; // Filtra empleados de limpieza
+                }
+                else if (categoria == "Parques")
+                {
+                    query += " AND (esPersonalLimpieza = 0 OR esPersonalLimpieza IS NULL)"; // Filtra empleados que no son de limpieza o tienen NULL en esPersonalLimpieza
+                }
+
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    // Parámetro para el filtro de texto (nombres y apellidos)
                     command.Parameters.AddWithValue("@Filtro", "%" + filtro + "%");
+
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
                     dtEmpleados.Load(reader);
@@ -275,6 +288,7 @@ namespace CapaDatos
 
             return dtEmpleados;
         }
+
 
         public DataTable ObtenerEmpleadosPersonalYParques(string filtro)
         {
@@ -322,42 +336,42 @@ namespace CapaDatos
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"
-        SELECT 
-            E.ID_Empleado, 
-            E.Nombres, 
-            E.Apellidos, 
-            A.ID_Asistencia
-        FROM 
-            Empleados E
-        LEFT JOIN 
-            Asistencias A 
-        ON 
-            E.ID_Empleado = A.ID_Empleado 
-            AND CONVERT(DATE, A.Fecha_Asistencia) = CONVERT(DATE, GETDATE())
-        WHERE 
-            E.esPersonalLimpieza = 1;
-        ";
-                SqlCommand command = new SqlCommand(query, connection);
+                SELECT 
+                    E.ID_Empleado, 
+                    E.Nombres, 
+                    E.Apellidos, 
+                    A.ID_Asistencia
+                FROM 
+                    Empleados E
+                LEFT JOIN 
+                    Asistencias A 
+                ON 
+                    E.ID_Empleado = A.ID_Empleado 
+                    AND CONVERT(DATE, A.Fecha_Asistencia) = CONVERT(DATE, GETDATE())
+                WHERE 
+                    E.esPersonalLimpieza = 1;
+                ";
+                        SqlCommand command = new SqlCommand(query, connection);
 
-                try
-                {
-                    connection.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    adapter.Fill(dtEmpleados);
-                }
-                catch (SqlException ex)
-                {
-                    // Manejo de excepciones
-                    throw new Exception("Error al listar empleados: " + ex.Message);
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
+                        try
+                        {
+                            connection.Open();
+                            SqlDataAdapter adapter = new SqlDataAdapter(command);
+                            adapter.Fill(dtEmpleados);
+                        }
+                        catch (SqlException ex)
+                        {
+                            // Manejo de excepciones
+                            throw new Exception("Error al listar empleados: " + ex.Message);
+                        }
+                        finally
+                        {
+                            connection.Close();
+                        }
+                    }
 
-            return dtEmpleados;
-        }
+                    return dtEmpleados;
+                }
 
 
         public DataTable datObtenerPersonalLimpiezaParaComboBox()
@@ -399,6 +413,264 @@ namespace CapaDatos
             return dtEmpleados;
         }
 
+        public DataTable ObtenerPlacas()
+        {
+            DataTable dtPlacas = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(Conexion.Instancia.obtenerConexion()))
+            {
+                string query = "SELECT PlacaVehicular FROM DetalleCompactas";  // Consulta para obtener las placas
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(dtPlacas);
+                }
+            }
+
+            return dtPlacas;
+        }
+
+        public DataTable datObtenerPersonalCompacta()
+        {
+            DataTable dtEmpleados = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Consulta para obtener los empleados que son personal de limpieza
+                string query = @"
+                SELECT 
+                    ID_Empleado, 
+                    CONCAT(Nombres, ' ', Apellidos) AS NombreCompleto
+                FROM 
+                    Empleados
+                WHERE 
+                    esPersonalCompacta = 0;
+                ";
+
+                SqlCommand command = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(dtEmpleados);
+                }
+                catch (SqlException ex)
+                {
+                    // Manejo de excepciones
+                    throw new Exception("Error al obtener el personal compactas: " + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            return dtEmpleados;
+        }
+        public int InsertarDetallePersonalCompacta(int idEmpleado, int idCompacta, bool esConductor, string zona, string turno)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Consulta SQL para insertar un nuevo detalle y devolver el ID generado
+                string query = @"
+            INSERT INTO DetallePersonalCompacta (ID_Empleado, ID_Compacta, esConductor, Zona, Turno)
+            OUTPUT INSERTED.ID_PersonalCompacta
+            VALUES (@ID_Empleado, @ID_Compacta, @EsConductor, @Zona, @Turno)";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ID_Empleado", idEmpleado);
+                command.Parameters.AddWithValue("@ID_Compacta", idCompacta);
+                command.Parameters.AddWithValue("@EsConductor", esConductor);
+                command.Parameters.AddWithValue("@Zona", zona);
+                command.Parameters.AddWithValue("@Turno", turno);
+
+                try
+                {
+                    connection.Open();
+                    // Retornar el ID generado por la inserción
+                    return (int)command.ExecuteScalar();
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception("Error al insertar el detalle del personal compacta: " + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+
+        public void InsertarVisitaCompacta(int id_DetallePersonalCompacta, DateTime fechaVisita, bool completada)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Consulta SQL para insertar una nueva visita compacta
+                string query = @"
+            INSERT INTO VisitasCompactas (ID_DetallePersonalCompacta, Fecha_Visita, Completada)
+            VALUES (@ID_DetallePersonalCompacta, @Fecha_Visita, @Completada)";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ID_DetallePersonalCompacta", id_DetallePersonalCompacta);
+                command.Parameters.AddWithValue("@Fecha_Visita", fechaVisita);
+                command.Parameters.AddWithValue("@Completada", completada);
+
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new Exception("Error al insertar la visita compacta. No se afectaron filas.");
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception("Error al insertar la visita compacta en la base de datos: " + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        public int ObtenerIDCompactaPorPlaca(string placaVehicular)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Consulta SQL para obtener el ID de la compacta a partir de la placa vehicular
+                string query = @"
+                SELECT ID_Compacta 
+                FROM DetalleCompactas 
+                WHERE PlacaVehicular = @PlacaVehicular";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@PlacaVehicular", placaVehicular);
+
+                try
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+
+                    // Verificar si se obtuvo algún resultado
+                    if (result != null)
+                    {
+                        return Convert.ToInt32(result);  // Convertir el resultado a entero (ID_Compacta)
+                    }
+                    else
+                    {
+                        throw new Exception("No se encontró ningún vehículo con la placa proporcionada.");
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception("Error al obtener el ID de la compacta: " + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        public DataTable ObtenerVisitasCompactasDeHoy()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+                SELECT 
+                    vc.ID_VisitaCompacta, 
+                    vc.ID_DetallePersonalCompacta, 
+                    vc.Fecha_Visita, 
+                    vc.Completada, 
+                    dp.ID_Empleado, 
+                    dp.Zona, 
+                    dp.Turno, 
+                    dp.esConductor, 
+                    e.Nombres + ' ' + e.Apellidos AS NombreCompleto,
+                    c.PlacaVehicular
+                FROM VisitasCompactas vc
+                JOIN DetallePersonalCompacta dp ON vc.ID_DetallePersonalCompacta = dp.ID_PersonalCompacta
+                JOIN Empleados e ON dp.ID_Empleado = e.ID_Empleado
+                JOIN DetalleCompactas c ON dp.ID_Compacta = c.ID_Compacta
+                WHERE vc.Fecha_Visita = CAST(GETDATE() AS DATE)";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                DataTable dtVisitasCompactas = new DataTable();
+
+                try
+                {
+                    connection.Open();
+                    adapter.Fill(dtVisitasCompactas);
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception("Error al obtener las visitas compactas del día: " + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+                return dtVisitasCompactas;
+            }
+        }
+
+        public int ObtenerIDVisitaCompacta(string placaVehicular, string nombreEmpleado, string zona, bool esConductor, DateTime fechaVisita)
+        {
+            int idVisitaCompacta = -1; // Valor por defecto si no se encuentra
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT vc.ID_VisitaCompacta
+            FROM VisitasCompactas vc
+            JOIN DetallePersonalCompacta dp ON vc.ID_DetallePersonalCompacta = dp.ID_PersonalCompacta
+            JOIN Empleados e ON dp.ID_Empleado = e.ID_Empleado
+            JOIN DetalleCompactas c ON dp.ID_Compacta = c.ID_Compacta
+            WHERE c.PlacaVehicular = @PlacaVehicular
+            AND e.Nombres + ' ' + e.Apellidos = @NombreEmpleado
+            AND dp.Zona = @Zona
+            AND dp.esConductor = @EsConductor
+            AND vc.Fecha_Visita = @FechaVisita";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@PlacaVehicular", placaVehicular);
+                command.Parameters.AddWithValue("@NombreEmpleado", nombreEmpleado);
+                command.Parameters.AddWithValue("@Zona", zona);
+                command.Parameters.AddWithValue("@EsConductor", esConductor);
+                command.Parameters.AddWithValue("@FechaVisita", fechaVisita);
+
+                try
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                        idVisitaCompacta = Convert.ToInt32(result);  // Asignar el ID si se encuentra
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception("Error al obtener el ID de la visita compacta: " + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            return idVisitaCompacta;
+        }
+
 
     }
+
 }

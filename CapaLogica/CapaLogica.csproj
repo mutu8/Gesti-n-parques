@@ -96,6 +96,7 @@
     <Compile Include="logEmleados.cs" />
     <Compile Include="logLocalidades.cs" />
     <Compile Include="logVisitas.cs" />
+    <Compile Include="logVisitasCompactas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

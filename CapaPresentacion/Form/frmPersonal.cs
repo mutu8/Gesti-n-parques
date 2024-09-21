@@ -35,6 +35,15 @@ namespace CapaPresentacion
             materialComboBox1.SelectedIndex = -1;
         }
 
+        public string getComboBox()
+        {
+           return materialComboBox1.Text;
+        }
+        
+        public string setComboBox(string valor)
+        {
+            return materialComboBox1.Text = valor;
+        }
 
         // Propiedad pública para exponer el panel
         public FlowLayoutPanel panelPersonal
@@ -53,16 +62,23 @@ namespace CapaPresentacion
             return esApoyo ? "Apoyo" : "728";
         }
 
-        public void CargarUserControlsEmpleados(string filtro = "")
+        public void CargarUserControlsEmpleados(string filtro = "", string categoria = "")
         {
             try
             {
                 DataTable dtEmpleados;
 
-                // Obtener empleados según el filtro
-                dtEmpleados = string.IsNullOrEmpty(filtro) ?
-                              logEmleados.Instancia.ObtenerTodosLosEmpleados() :
-                              logEmleados.Instancia.ObtenerEmpleadosFiltrados(filtro);
+                // Obtener empleados según el filtro de texto y categoría
+                if (string.IsNullOrEmpty(filtro) && string.IsNullOrEmpty(categoria))
+                {
+                    // Si no hay filtro de texto ni categoría, cargar todos los empleados
+                    dtEmpleados = logEmleados.Instancia.ObtenerTodosLosEmpleados();
+                }
+                else
+                {
+                    // Si hay filtro de texto o categoría, aplicar ambos filtros
+                    dtEmpleados = logEmleados.Instancia.ObtenerEmpleadosFiltrados(filtro, categoria);
+                }
 
                 panelPersonal.SuspendLayout(); // Suspender el diseño para mejorar el rendimiento
 
@@ -116,9 +132,10 @@ namespace CapaPresentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar los empleados: " + ex.Message);
+                //MessageBox.Show("Error al cargar los empleados: " + ex.Message);
             }
         }
+
 
 
 
@@ -158,7 +175,7 @@ namespace CapaPresentacion
 
         private void frmPersonal_Load(object sender, EventArgs e)
         {
-            CargarUserControlsEmpleados();
+            //CargarUserControlsEmpleados();
             CargarComboBox();
         }
 
@@ -174,9 +191,13 @@ namespace CapaPresentacion
 
         private void materialTextBox1_TextChanged(object sender, EventArgs e)
         {
-            string filtro = materialTextBox1.Text;
-            CargarUserControlsEmpleados(filtro); // Recargar con el filtro aplicado
+            string filtro = materialTextBox1.Text.Trim(); // Eliminar espacios en blanco
+            string categoria = materialComboBox1.SelectedItem?.ToString() ?? ""; // Obtener la selección del ComboBox
+
+            // Cargar empleados filtrados por texto y categoría
+            CargarUserControlsEmpleados(filtro, categoria);
         }
+
 
         private void materialComboBox1_TextChanged(object sender, EventArgs e)
         {
@@ -249,7 +270,7 @@ namespace CapaPresentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar los empleados: " + ex.Message);
+                //MessageBox.Show("Error al cargar los empleados: " + ex.Message);
             }
         }
     }

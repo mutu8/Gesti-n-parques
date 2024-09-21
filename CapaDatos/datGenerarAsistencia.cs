@@ -252,9 +252,9 @@ namespace CapaDatos
         public void MarcarTodasAsistenciasDelDia(DataTable dtAsistencias, DateTime fecha)
         {
             string query = @"
-    UPDATE Asistencias
-    SET ID_Opcion = @ID_Opcion, ID_SectorTurno = @ID_SectorTurno
-    WHERE Fecha_Asistencia = @Fecha AND ID_Asistencia = @ID_Asistencia";
+        UPDATE Asistencias
+        SET ID_Opcion = @ID_Opcion, ID_SectorTurno = @ID_SectorTurno
+        WHERE Fecha_Asistencia = @Fecha AND ID_Asistencia = @ID_Asistencia";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {

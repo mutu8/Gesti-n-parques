@@ -179,6 +179,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form\frmComapactasAsistencia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmComapactasAsistencia.Designer.cs">
+      <DependentUpon>frmComapactasAsistencia.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\FormPersonalLimpieza.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -273,6 +279,12 @@
     <Compile Include="Form\frmReporteAsistencias.Designer.cs">
       <DependentUpon>frmReporteAsistencias.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\frmVisitasCompactas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmVisitasCompactas.Designer.cs">
+      <DependentUpon>frmVisitasCompactas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClasesForm\UserControlTarget.cs">
@@ -289,6 +301,9 @@
     </Compile>
     <EmbeddedResource Include="ClasesForm\UserControlTarget.resx">
       <DependentUpon>UserControlTarget.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmComapactasAsistencia.resx">
+      <DependentUpon>frmComapactasAsistencia.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\FormPersonalLimpieza.resx">
       <DependentUpon>FormPersonalLimpieza.cs</DependentUpon>
@@ -334,6 +349,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmReporteAsistencias.resx">
       <DependentUpon>frmReporteAsistencias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmVisitasCompactas.resx">
+      <DependentUpon>frmVisitasCompactas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
